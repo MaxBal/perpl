@@ -1,4 +1,5 @@
 import React from 'react';
+import { Check } from 'lucide-react';
 
 interface Props {
   logoMaterial: 'brass' | 'steel';
@@ -24,18 +25,18 @@ const LogoMaterialSelector: React.FC<Props> = ({ logoMaterial, setLogoMaterial }
               onChange={() => setLogoMaterial(material.id)}
               className="sr-only"
             />
-            <div className={`
-              h-4 w-4 rounded border-2 transition-colors
+            <span className={`
+              h-4 w-4 rounded-sm border transition-colors flex items-center justify-center
               ${logoMaterial === material.id 
-                ? 'bg-[#00d1b3] border-[#00d1b3]' 
+                ? 'bg-brand border-brand' 
                 : 'border-gray-400 bg-white'
               }
             `}>
               {logoMaterial === material.id && (
-                <div className="w-2 h-2 bg-white rounded-sm absolute transform translate-x-[2px] translate-y-[2px]" />
+                <Check className="h-3 w-3 text-white" strokeWidth={2} />
               )}
-            </div>
-            <span className="text-[15px] select-none">{material.label}</span>
+            </span>
+            <span className="text-base select-none">{material.label}</span>
           </label>
         ))}
       </div>

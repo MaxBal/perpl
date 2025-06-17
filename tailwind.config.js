@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      colors: {
+        brand: '#00d1b3',
+      },
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
       },

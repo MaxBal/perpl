@@ -68,7 +68,13 @@ export const FixationSelector: React.FC<Props> = ({
         {FIX_OPTS.map(option => (
           <label
             key={option.id}
-            className="rounded-[14px] bg-[#F2F4F6] h-[46px] flex justify-between items-center px-4 cursor-pointer hover:bg-gray-200 transition-colors"
+            className={`
+              flex items-center justify-between p-4 rounded-md cursor-pointer transition-all
+              ${selectedOption === option.id
+                ? 'bg-white border-2 border-brand'
+                : 'bg-gray-50 border border-transparent hover:bg-gray-100'
+              }
+            `}
           >
             <span className="text-sm">
               {option.label} {option.price > 0 ? `${option.price} ₴` : '0 ₴'}
@@ -84,7 +90,7 @@ export const FixationSelector: React.FC<Props> = ({
               />
               <div className={`w-5 h-5 rounded-full border-2 transition-colors ${
                 selectedOption === option.id 
-                  ? 'border-[#00d1b3] bg-[#00d1b3]' 
+                  ? 'border-brand bg-brand' 
                   : 'border-gray-300 bg-white'
               }`}>
                 {selectedOption === option.id && (
