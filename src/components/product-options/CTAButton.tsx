@@ -1,4 +1,5 @@
 import React from 'react';
+import { ShoppingCart } from 'lucide-react';
 import { ProductData } from './types';
 
 interface Props {
@@ -9,23 +10,23 @@ interface Props {
 }
 
 const CTAButton: React.FC<Props> = ({ product, onBuyNow, fixationPrice = 0, className = "" }) => {
-  const totalPrice = product.price + fixationPrice;
-  const oldPrice = 2600; // Original price for strikethrough
+  const currentPrice = product.price + fixationPrice;
+  const oldPrice = 2600;
   
   return (
     <button
       onClick={onBuyNow}
       className={`
-        w-full py-4 bg-black hover:bg-gray-900 
-        text-white font-semibold rounded-full 
-        flex items-center justify-center gap-2 
+        w-full flex items-center justify-center gap-2 py-4 
+        bg-black hover:bg-gray-900 text-white rounded-full 
         transition-colors md:sticky md:bottom-8
         ${className}
       `}
     >
-      <span>Купити</span>
-      <span className="ml-2 text-2xl font-bold">{totalPrice} ₴</span>
-      <span className="ml-2 line-through text-gray-500">{oldPrice} ₴</span>
+      <ShoppingCart className="h-5 w-5 text-white mr-2" />
+      <span className="text-2xl font-semibold">Купити</span>
+      <span className="text-xl font-bold">{currentPrice} ₴</span>
+      <span className="text-base line-through text-gray-300">{oldPrice} ₴</span>
     </button>
   );
 };
