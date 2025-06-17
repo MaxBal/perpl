@@ -37,8 +37,8 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, fixatio
         арт. L2.0.лого-метал.toyota.дно+стінка
       </p>
 
-      {/* Price section under H1 - increased sizes */}
-      <div className="mt-2 flex items-baseline gap-2">
+      {/* Price section under H1 - reduced by 12% */}
+      <div className="mt-2 flex items-baseline gap-2 transform scale-[0.88]">
         <span className="text-3xl font-semibold">{currentPrice} ₴</span>
         <span className="text-xl line-through text-gray-500">{oldPrice} ₴</span>
       </div>
