@@ -17,16 +17,16 @@ const CTAButton: React.FC<Props> = ({ product, onBuyNow, fixationPrice = 0, clas
     <button
       onClick={onBuyNow}
       className={`
-        w-full flex items-center justify-center gap-2 py-4 
+        w-full flex items-center justify-center gap-2 py-3.5 
         bg-black hover:bg-gray-900 text-white rounded-full 
         transition-colors md:sticky md:bottom-8
         ${className}
       `}
     >
       <ShoppingCart className="h-5 w-5 text-white mr-2" />
-      <span className="text-2xl font-semibold">Купити</span>
-      <span className="text-xl font-bold">{currentPrice} ₴</span>
-      <span className="text-base line-through text-gray-300">{oldPrice} ₴</span>
+      <span className="text-xl font-semibold">Купити</span>
+      <span className="text-lg font-bold">{currentPrice} ₴</span>
+      <span className="text-sm line-through text-gray-300">{oldPrice} ₴</span>
     </button>
   );
 };
