@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Palette, Ruler, Image as ImageIcon } from 'lucide-react';
+import { FixationDots } from '../../icons/FixationDots';
 import DesignSelector from './DesignSelector';
 import SizeSelector   from './SizeSelector';
 import LogoSelector   from './LogoSelector';
@@ -6,10 +8,10 @@ import { FixationSelector } from './FixationSelector';
 import { ProductData } from './types';
 
 const TAB_META = [
-  { key: 'design', label: 'Дизайни' },
-  { key: 'size',   label: 'Розміри' },
-  { key: 'logo',   label: 'Лого' },
-  { key: 'fixation', label: 'Фіксація' },
+  { key: 'design', label: 'Дизайни', Icon: Palette },
+  { key: 'size',   label: 'Розміри', Icon: Ruler },
+  { key: 'logo',   label: 'Лого',    Icon: ImageIcon },
+  { key: 'fixation', label: 'Фіксація', Icon: FixationDots },
 ];
 
 interface Props {
@@ -39,20 +41,18 @@ const TabContainer: React.FC<Props> = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-2 bg-[#F2F4F6] p-1 rounded-[28px]">
-        {TAB_META.map(({ key, label }) => (
+      <div className="bg-gray-100 p-1 rounded-[18px] flex gap-1">
+        {TAB_META.map(({ key, label, Icon }) => (
           <button
             key={key}
             onClick={() => setActiveTab(key as any)}
-            className={`
-              inline-flex items-center justify-center h-[40px] px-6
-              text-base font-medium rounded-[22px] transition-colors
-              ${activeTab === key 
-                ? 'text-black bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.15)]' 
-                : 'text-[#6C6C6C] bg-transparent hover:bg-white/40'
-              }
-            `}
+            className={`flex-1 px-3 py-2.5 rounded-[12px] flex items-center justify-center gap-1 text-xs transition-colors
+              ${activeTab === key ? 'bg-white shadow border-2 border-[#00d1b3]' : 'hover:bg-white/50'}`}
           >
+            <Icon 
+              className={`w-4 h-4 shrink-0 ${activeTab === key ? 'text-[#00d1b3]' : ''}`} 
+              strokeWidth={1.5}
+            />
             {label}
           </button>
         ))}
