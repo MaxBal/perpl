@@ -18,6 +18,8 @@ interface Props {
   setCurrentSize: (size: string) => void;
   logo: string;
   setLogo: (logo: string) => void;
+  logoMaterial: 'brass' | 'steel';
+  setLogoMaterial: (material: 'brass' | 'steel') => void;
   fixationMode: 'none' | 'with';
   setFixationMode: (mode: 'none' | 'with') => void;
   fixationSub: string[];
@@ -30,6 +32,8 @@ const TabContainer: React.FC<Props> = ({
   setCurrentSize,
   logo,
   setLogo,
+  logoMaterial,
+  setLogoMaterial,
   fixationMode,
   setFixationMode,
   fixationSub,
@@ -44,7 +48,7 @@ const TabContainer: React.FC<Props> = ({
           <button
             key={key}
             onClick={() => setActiveTab(key as any)}
-            className={`flex-1 px-3 py-2.5 rounded-[12px] flex items-center justify-center text-xs transition-colors
+            className={`flex-1 px-3 py-2.5 rounded-[12px] flex items-center justify-center text-[15px] md:text-sm transition-colors
               ${activeTab === key 
                 ? 'bg-white text-black border border-[#D0D0D0]' 
                 : 'bg-transparent text-[#6C6C6C] hover:bg-white/50'
@@ -68,6 +72,8 @@ const TabContainer: React.FC<Props> = ({
           product={product}
           logo={logo}
           setLogo={setLogo}
+          logoMaterial={logoMaterial}
+          setLogoMaterial={setLogoMaterial}
         />
       )}
       {activeTab === 'fixation' && (

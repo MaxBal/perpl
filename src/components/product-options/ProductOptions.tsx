@@ -20,6 +20,8 @@ interface Props {
   setCurrentSize: (size: string) => void;
   logo: string;
   setLogo: (logo: string) => void;
+  logoMaterial: 'brass' | 'steel';
+  setLogoMaterial: (material: 'brass' | 'steel') => void;
   hasLogo: boolean;
   fixation: 'yes' | 'no';
   setFixation: (value: 'yes' | 'no') => void;
@@ -38,6 +40,8 @@ const ProductOptions: React.FC<Props> = ({
   setCurrentSize,
   logo,
   setLogo,
+  logoMaterial,
+  setLogoMaterial,
   hasLogo,
   fixation,
   setFixation,
@@ -75,6 +79,8 @@ const ProductOptions: React.FC<Props> = ({
             setCurrentSize={setCurrentSize}
             logo={logo}
             setLogo={setLogo}
+            logoMaterial={logoMaterial}
+            setLogoMaterial={setLogoMaterial}
             fixationMode={fixationMode}
             setFixationMode={setFixationMode}
             fixationSub={fixationSub}
@@ -114,6 +120,8 @@ const ProductOptions: React.FC<Props> = ({
               setCurrentSize={setCurrentSize}
               logo={logo}
               setLogo={setLogo}
+              logoMaterial={logoMaterial}
+              setLogoMaterial={setLogoMaterial}
               fixationMode={fixationMode}
               setFixationMode={setFixationMode}
               fixationSub={fixationSub}
@@ -125,6 +133,7 @@ const ProductOptions: React.FC<Props> = ({
             product={product} 
             onBuyNow={handleBuyNow} 
             fixationPrice={fixationPrice}
+            className="mt-8"
           />
 
           <div className="mt-6">

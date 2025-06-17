@@ -38,7 +38,7 @@ const ProductPage: React.FC = () => {
         ...PRODUCT,
         price: PRODUCT.price + fixationPrice,
         quantity: 1,
-        options: `Розмір: ${productConfig.currentSize}`,
+        options: `Розмір: ${productConfig.currentSize}, Матеріал лого: ${productConfig.logoMaterial === 'brass' ? 'Латунь' : 'Нержавіюча сталь'}`,
         fixation: fixationMode,
         fixationDetails: fixationSub,
         designVersion: 'carzo2', // Default design
@@ -89,6 +89,8 @@ const ProductPage: React.FC = () => {
             setCurrentSize={productConfig.setCurrentSize}
             logo={productConfig.logo}
             setLogo={productConfig.setLogo}
+            logoMaterial={productConfig.logoMaterial}
+            setLogoMaterial={productConfig.setLogoMaterial}
             hasLogo={productConfig.hasLogo}
             fixation={productConfig.fixation}
             setFixation={productConfig.setFixation}
