@@ -3,7 +3,6 @@ import { useModal } from '../useModal';
 import { ProductData, NavItem } from './types';
 import ProductHeader from './ProductHeader';
 import TabContainer from './TabContainer';
-import FixationSection from './FixationSection';
 import CircularNav from './CircularNav';
 import CTAButton from './CTAButton';
 
@@ -19,6 +18,16 @@ interface Props {
   product: ProductData;
   currentSize: string;
   setCurrentSize: (size: string) => void;
+  logo: string;
+  setLogo: (logo: string) => void;
+  hasLogo: boolean;
+  fixation: 'yes' | 'no';
+  setFixation: (value: 'yes' | 'no') => void;
+  hasFixation: boolean;
+  fixationMode: 'none' | 'with';
+  setFixationMode: (mode: 'none' | 'with') => void;
+  fixationSub: string[];
+  toggleSubOption: (option: string) => void;
   onBuyNow: () => void;
 }
 
@@ -26,34 +35,49 @@ const ProductOptions: React.FC<Props> = ({
   product,
   currentSize,
   setCurrentSize,
+  logo,
+  setLogo,
+  hasLogo,
+  fixation,
+  setFixation,
+  hasFixation,
+  fixationMode,
+  setFixationMode,
+  fixationSub,
+  toggleSubOption,
   onBuyNow
 }) => {
-  const [activeTab, setActiveTab] = useState<'none' | 'with'>('none');
-  const [selectedFixation, setSelectedFixation] = useState<string | null>(null);
-  const [logo, setLogo] = useState(product.logoOptions[0]);
+  // Update fixation prop when mode changes
+  React.useEffect(() => {
+    setFixation(fixationMode === 'with' ? 'yes' : 'no');
+  }, [fixationMode, setFixation]);
+
+  const handleBuyNow = () => {
+    // Pass fixation details to parent component
+    onBuyNow();
+  };
 
   return (
     <>
       {/* MOBILE */}
       <div className="md:hidden px-4 mt-4 mb-16">
         <div className="flex flex-col gap-[1.13rem]">
-          <ProductHeader product={product} />
+          <ProductHeader 
+            product={product} 
+            hasLogo={hasLogo}
+            hasFixation={hasFixation}
+          />
           <TabContainer
             product={product}
             currentSize={currentSize}
             setCurrentSize={setCurrentSize}
             logo={logo}
             setLogo={setLogo}
+            fixationMode={fixationMode}
+            setFixationMode={setFixationMode}
+            fixationSub={fixationSub}
+            toggleSubOption={toggleSubOption}
           />
-          <div className="border-t border-gray-200 pt-4">
-            <FixationSection
-              product={product}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              selectedFixation={selectedFixation}
-              setSelectedFixation={setSelectedFixation}
-            />
-          </div>
         </div>
 
         <div className="mt-6 -mx-4 px-4 overflow-x-auto pb-4">
@@ -66,7 +90,11 @@ const ProductOptions: React.FC<Props> = ({
       {/* DESKTOP */}
       <aside className="hidden md:block md:col-span-5 md:col-start-8 md:sticky md:top-24">
         <div className="rounded-2xl p-8 border border-gray-100 shadow-sm">
-          <ProductHeader product={product} />
+          <ProductHeader 
+            product={product} 
+            hasLogo={hasLogo}
+            hasFixation={hasFixation}
+          />
           
           <div className="flex flex-col gap-[1.6rem] mt-8">
             <TabContainer
@@ -75,19 +103,14 @@ const ProductOptions: React.FC<Props> = ({
               setCurrentSize={setCurrentSize}
               logo={logo}
               setLogo={setLogo}
+              fixationMode={fixationMode}
+              setFixationMode={setFixationMode}
+              fixationSub={fixationSub}
+              toggleSubOption={toggleSubOption}
             />
-            <div className="border-t border-gray-200 pt-4">
-              <FixationSection
-                product={product}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                selectedFixation={selectedFixation}
-                setSelectedFixation={setSelectedFixation}
-              />
-            </div>
           </div>
 
-          <CTAButton product={product} onBuyNow={onBuyNow} />
+          <CTAButton product={product} onBuyNow={handleBuyNow} />
 
           <div className="mt-6">
             <CircularNav items={NAV_ITEMS} />

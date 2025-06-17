@@ -14,6 +14,8 @@ import { GALLERY, PRODUCT, NAV_ITEMS } from '../data/constants';
 
 const ProductPage: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [fixationMode, setFixationMode] = useState<'none' | 'with'>('none');
+  const [fixationSub, setFixationSub] = useState<string[]>([]);
   const modal = useModalProvider();
   const { items: cartItems, dispatch } = useCart();
   const productConfig = useProductConfig();
@@ -26,14 +28,28 @@ const ProductPage: React.FC = () => {
   };
 
   const addToCart = () => {
+    // Calculate fixation price
+    const fixationPrice = fixationSub.includes('both') ? 80 : 0;
+    
     dispatch({
       type: "ADD_TO_CART",
       payload: {
         ...PRODUCT,
+        price: PRODUCT.price + fixationPrice,
         quantity: 1,
-        options: `Розмір: ${productConfig.currentSize}`
+        options: `Розмір: ${productConfig.currentSize}`,
+        fixation: fixationMode,
+        fixationDetails: fixationSub
       }
     });
+  };
+
+  const toggleSubOption = (option: string) => {
+    setFixationSub(prev => 
+      prev.includes(option) 
+        ? prev.filter(item => item !== option)
+        : [...prev, option]
+    );
   };
 
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -67,6 +83,10 @@ const ProductPage: React.FC = () => {
             fixation={productConfig.fixation}
             setFixation={productConfig.setFixation}
             hasFixation={productConfig.hasFixation}
+            fixationMode={fixationMode}
+            setFixationMode={setFixationMode}
+            fixationSub={fixationSub}
+            toggleSubOption={toggleSubOption}
             onBuyNow={addToCart}
           />
         </div>
@@ -98,7 +118,7 @@ const ProductPage: React.FC = () => {
           >
             <span>Купити</span>
             <span className="w-px h-4 bg-white/60" />
-            <span>2090 ₴</span>
+            <span>{PRODUCT.price + (fixationSub.includes('both') ? 80 : 0)} ₴</span>
             <span className="text-xs text-[#ADADAD] line-through">2600 ₴</span>
           </button>
         </div>

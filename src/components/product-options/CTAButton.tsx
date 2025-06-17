@@ -4,9 +4,12 @@ import { ProductData } from './types';
 interface Props {
   product: ProductData;
   onBuyNow: () => void;
+  fixationPrice?: number;
 }
 
-const CTAButton: React.FC<Props> = ({ product, onBuyNow }) => {
+const CTAButton: React.FC<Props> = ({ product, onBuyNow, fixationPrice = 0 }) => {
+  const totalPrice = product.price + fixationPrice;
+  
   return (
     <button
       onClick={onBuyNow}
@@ -22,7 +25,7 @@ const CTAButton: React.FC<Props> = ({ product, onBuyNow }) => {
       "
     >
       <span>Купити</span>
-      <span>{product.price} ₴</span>
+      <span>{totalPrice} ₴</span>
     </button>
   );
 };

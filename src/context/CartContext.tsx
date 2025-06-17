@@ -4,6 +4,8 @@ import { ProductData } from "../components/product-options/types";
 interface CartItem extends ProductData {
   quantity: number;
   options?: string;
+  fixation?: 'none' | 'with';
+  fixationDetails?: string[];
 }
 
 type CartAction = 
