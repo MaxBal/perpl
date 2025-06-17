@@ -69,10 +69,10 @@ export const FixationSelector: React.FC<Props> = ({
           <label
             key={option.id}
             className={`
-              flex items-center justify-between p-4 rounded-md cursor-pointer transition-all
+              flex items-center justify-between px-4 h-12 rounded-[12px] cursor-pointer transition-all
               ${selectedOption === option.id
                 ? 'bg-white border-2 border-brand'
-                : 'bg-gray-50 border border-transparent hover:bg-gray-100'
+                : 'bg-white border border-gray-200 hover:bg-gray-50'
               }
             `}
           >
