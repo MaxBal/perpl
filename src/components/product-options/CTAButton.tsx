@@ -10,6 +10,7 @@ interface Props {
 
 const CTAButton: React.FC<Props> = ({ product, onBuyNow, fixationPrice = 0, className = "" }) => {
   const totalPrice = product.price + fixationPrice;
+  const oldPrice = 2600; // Original price for strikethrough
   
   return (
     <button
@@ -23,7 +24,8 @@ const CTAButton: React.FC<Props> = ({ product, onBuyNow, fixationPrice = 0, clas
       `}
     >
       <span>Купити</span>
-      <span>{totalPrice} ₴</span>
+      <span className="ml-2 text-2xl font-bold">{totalPrice} ₴</span>
+      <span className="ml-2 line-through text-gray-500">{oldPrice} ₴</span>
     </button>
   );
 };
