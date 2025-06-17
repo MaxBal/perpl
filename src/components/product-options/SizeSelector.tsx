@@ -41,14 +41,14 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       <div className="grid grid-cols-2 gap-2">
         {SIZES.map(size => (
           <button
             key={size.id}
             onClick={() => setCurrentSize(size.id)}
             className={`
-              px-4 py-2.5 rounded-[14px] text-sm transition-all
+              px-4 py-2.5 rounded-[12px] text-sm transition-all
               ${currentSize === size.id
                 ? 'bg-white border-2 border-[#00d1b3] shadow'
                 : 'bg-white border border-gray-200 hover:bg-gray-50'
@@ -68,13 +68,15 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
         ))}
       </div>
 
-      <button
-        onClick={showSizeInfo}
-        className="inline-flex items-center text-gray-900 underline hover:no-underline"
-      >
-        <InfoBadge />
-        Детальніше про розміри
-      </button>
+      <div className="mt-6">
+        <button
+          onClick={showSizeInfo}
+          className="inline-flex items-center text-gray-900 underline hover:no-underline"
+        >
+          <InfoBadge />
+          Детально про розміри
+        </button>
+      </div>
     </div>
   );
 };

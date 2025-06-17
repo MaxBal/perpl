@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Palette, Ruler, Image as ImageIcon, Magnet } from 'lucide-react';
+import { Palette, Ruler, Image as ImageIcon } from 'lucide-react';
+import { FixationDots } from '../../icons/FixationDots';
 import DesignSelector from './DesignSelector';
 import SizeSelector   from './SizeSelector';
 import LogoSelector   from './LogoSelector';
@@ -10,7 +11,7 @@ const TAB_META = [
   { key: 'design', label: 'Дизайни', Icon: Palette },
   { key: 'size',   label: 'Розміри', Icon: Ruler },
   { key: 'logo',   label: 'Лого',    Icon: ImageIcon },
-  { key: 'fixation', label: 'Фіксація', Icon: Magnet },
+  { key: 'fixation', label: 'Фіксація', Icon: FixationDots },
 ];
 
 interface Props {
@@ -45,8 +46,8 @@ const TabContainer: React.FC<Props> = ({
           <button
             key={key}
             onClick={() => setActiveTab(key as any)}
-            className={`flex-1 px-3 py-2.5 rounded-[14px] flex items-center justify-center gap-1 text-xs
-              ${activeTab === key ? 'bg-white shadow' : 'hover:bg-white/50'}`}
+            className={`flex-1 px-3 py-2.5 rounded-[12px] flex items-center justify-center gap-1 text-xs transition-colors
+              ${activeTab === key ? 'bg-white shadow border-2 border-[#00d1b3]' : 'hover:bg-white/50'}`}
           >
             <Icon 
               className={`w-4 h-4 shrink-0 ${activeTab === key ? 'text-[#00d1b3]' : ''}`} 

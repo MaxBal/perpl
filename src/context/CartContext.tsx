@@ -6,6 +6,8 @@ interface CartItem extends ProductData {
   options?: string;
   fixation?: 'none' | 'with';
   fixationDetails?: string[];
+  designVersion?: string;
+  fixationType?: string;
 }
 
 type CartAction = 
@@ -17,7 +19,9 @@ function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
   switch (action.type) {
     case "ADD_TO_CART": {
       const existingItemIndex = state.findIndex(
-        item => item.id === action.payload.id && item.options === action.payload.options
+        item => item.id === action.payload.id && 
+                item.options === action.payload.options &&
+                item.fixationType === action.payload.fixationType
       );
       
       if (existingItemIndex !== -1) {

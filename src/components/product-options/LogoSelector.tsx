@@ -35,8 +35,8 @@ const LogoSelector: React.FC<Props> = ({ product, logo, setLogo }) => {
   };
 
   return (
-    <div className="space-y-2">
-      <div className="rounded-[14px] border border-gray-200 px-4 py-2.5 w-full">
+    <div className="space-y-4">
+      <div className="rounded-[12px] border border-gray-200 px-4 py-2.5 w-full">
         <select
           value={logo}
           onChange={(e) => setLogo(e.target.value)}
@@ -50,13 +50,15 @@ const LogoSelector: React.FC<Props> = ({ product, logo, setLogo }) => {
         </select>
       </div>
 
-      <button
-        onClick={showLogoInfo}
-        className="inline-flex items-center text-gray-900 underline hover:no-underline"
-      >
-        <InfoBadge />
-        Детальніше про лого
-      </button>
+      <div className="mt-6">
+        <button
+          onClick={showLogoInfo}
+          className="inline-flex items-center text-gray-900 underline hover:no-underline"
+        >
+          <InfoBadge />
+          Детально про лого
+        </button>
+      </div>
     </div>
   );
 };

@@ -16,6 +16,7 @@ const ProductPage: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [fixationMode, setFixationMode] = useState<'none' | 'with'>('none');
   const [fixationSub, setFixationSub] = useState<string[]>([]);
+  const [selectedFixationType, setSelectedFixationType] = useState('none');
   const modal = useModalProvider();
   const { items: cartItems, dispatch } = useCart();
   const productConfig = useProductConfig();
@@ -28,8 +29,8 @@ const ProductPage: React.FC = () => {
   };
 
   const addToCart = () => {
-    // Calculate fixation price
-    const fixationPrice = fixationSub.includes('both') ? 80 : 0;
+    // Calculate fixation price based on selected type
+    const fixationPrice = selectedFixationType === 'combo' ? 80 : 0;
     
     dispatch({
       type: "ADD_TO_CART",
@@ -39,20 +40,29 @@ const ProductPage: React.FC = () => {
         quantity: 1,
         options: `Розмір: ${productConfig.currentSize}`,
         fixation: fixationMode,
-        fixationDetails: fixationSub
+        fixationDetails: fixationSub,
+        designVersion: 'carzo2', // Default design
+        fixationType: selectedFixationType
       }
     });
   };
 
   const toggleSubOption = (option: string) => {
-    setFixationSub(prev => 
-      prev.includes(option) 
-        ? prev.filter(item => item !== option)
-        : [...prev, option]
-    );
+    setSelectedFixationType(option);
+    setFixationSub(prev => {
+      // Clear previous selections and set new one
+      if (option === 'none') {
+        setFixationMode('none');
+        return [];
+      } else {
+        setFixationMode('with');
+        return [option];
+      }
+    });
   };
 
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const fixationPrice = selectedFixationType === 'combo' ? 80 : 0;
 
   return (
     <ModalCtx.Provider value={modal}>
@@ -118,7 +128,7 @@ const ProductPage: React.FC = () => {
           >
             <span>Купити</span>
             <span className="w-px h-4 bg-white/60" />
-            <span>{PRODUCT.price + (fixationSub.includes('both') ? 80 : 0)} ₴</span>
+            <span>{PRODUCT.price + fixationPrice} ₴</span>
             <span className="text-xs text-[#ADADAD] line-through">2600 ₴</span>
           </button>
         </div>
