@@ -15,13 +15,13 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, fixatio
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Badges above H1 - with scale transform */}
-      <div className="flex gap-2 flex-wrap">
-        <span className="inline-flex items-center gap-1.5 bg-black text-white text-xs font-medium px-2 py-0.5 rounded-full transform scale-105">
+      {/* Badges above H1 - increased height and gap */}
+      <div className="flex gap-3 flex-wrap">
+        <span className="inline-flex items-center gap-1.5 bg-black text-white text-xs font-medium px-2 py-1 rounded-full transform scale-105">
           <Magnet className="h-4 w-4 text-[#00d1b3] animate-pulse" strokeWidth={1.5} />
           Магнітна система
         </span>
-        <span className="inline-flex items-center gap-1.5 bg-[#fe5e03]/20 text-[#fe5e03] text-xs font-medium px-2 py-0.5 rounded-full transform scale-105">
+        <span className="inline-flex items-center gap-1.5 bg-[#fe5e03]/20 text-[#fe5e03] text-xs font-medium px-2 py-1 rounded-full transform scale-105">
           <Rocket className="h-4 w-4" strokeWidth={1.5} />
           В наявності
         </span>
@@ -32,15 +32,15 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, fixatio
         Автокейс з&nbsp;лого&nbsp;Toyota
       </h1>
 
-      {/* Article number - reduced font size */}
+      {/* Article number */}
       <p className="text-sm text-gray-500">
         арт. L2.0.лого-метал.toyota.дно+стінка
       </p>
 
-      {/* Price section under H1 */}
+      {/* Price section under H1 - increased sizes */}
       <div className="mt-2 flex items-baseline gap-2">
-        <span className="text-base font-semibold">{currentPrice} ₴</span>
-        <span className="text-sm line-through text-gray-500">{oldPrice} ₴</span>
+        <span className="text-3xl font-semibold">{currentPrice} ₴</span>
+        <span className="text-xl line-through text-gray-500">{oldPrice} ₴</span>
       </div>
     </div>
   );
