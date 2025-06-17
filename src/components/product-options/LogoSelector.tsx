@@ -50,7 +50,7 @@ const LogoSelector: React.FC<Props> = ({ product, logo, setLogo }) => {
         </select>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-10">
         <button
           onClick={showLogoInfo}
           className="inline-flex items-center text-gray-900 underline hover:no-underline"

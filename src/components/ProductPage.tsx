@@ -97,41 +97,12 @@ const ProductPage: React.FC = () => {
             setFixationMode={setFixationMode}
             fixationSub={fixationSub}
             toggleSubOption={toggleSubOption}
+            fixationPrice={fixationPrice}
             onBuyNow={addToCart}
           />
         </div>
 
         <FeatureSection />
-
-        <div
-          className="
-            md:hidden
-            fixed inset-x-0 bottom-0
-            bg-white border-t border-gray-200
-            px-4 pt-2
-            flex items-center justify-center
-            z-40
-          "
-          style={{
-            paddingBottom: "calc(env(safe-area-inset-bottom) + 0.5rem)"
-          }}
-        >
-          <button 
-            onClick={addToCart}
-            className="
-              flex-1 h-[48px]
-              rounded-full bg-black hover:bg-gray-900
-              text-white font-semibold
-              flex items-center justify-center gap-2
-              transition-colors
-            "
-          >
-            <span>Купити</span>
-            <span className="w-px h-4 bg-white/60" />
-            <span>{PRODUCT.price + fixationPrice} ₴</span>
-            <span className="text-xs text-[#ADADAD] line-through">2600 ₴</span>
-          </button>
-        </div>
 
         <Modal state={modal.state} onClose={modal.close} />
       </div>

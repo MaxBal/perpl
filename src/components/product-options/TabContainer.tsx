@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Palette, Ruler, Image as ImageIcon } from 'lucide-react';
-import { FixationDots } from '../../icons/FixationDots';
 import DesignSelector from './DesignSelector';
 import SizeSelector   from './SizeSelector';
 import LogoSelector   from './LogoSelector';
@@ -8,10 +6,10 @@ import { FixationSelector } from './FixationSelector';
 import { ProductData } from './types';
 
 const TAB_META = [
-  { key: 'design', label: 'Дизайни', Icon: Palette },
-  { key: 'size',   label: 'Розміри', Icon: Ruler },
-  { key: 'logo',   label: 'Лого',    Icon: ImageIcon },
-  { key: 'fixation', label: 'Фіксація', Icon: FixationDots },
+  { key: 'design', label: 'Дизайни' },
+  { key: 'size',   label: 'Розміри' },
+  { key: 'logo',   label: 'Лого' },
+  { key: 'fixation', label: 'Фіксація' },
 ];
 
 interface Props {
@@ -42,20 +40,16 @@ const TabContainer: React.FC<Props> = ({
   return (
     <div className="space-y-4">
       <div className="bg-gray-100 p-1 rounded-[18px] flex gap-1">
-        {TAB_META.map(({ key, label, Icon }) => (
+        {TAB_META.map(({ key, label }) => (
           <button
             key={key}
             onClick={() => setActiveTab(key as any)}
-            className={`flex-1 px-3 py-2.5 rounded-[12px] flex items-center justify-center gap-1 text-xs transition-colors
+            className={`flex-1 px-3 py-2.5 rounded-[12px] flex items-center justify-center text-xs transition-colors
               ${activeTab === key 
                 ? 'bg-white text-black border border-[#D0D0D0]' 
                 : 'bg-transparent text-[#6C6C6C] hover:bg-white/50'
               }`}
           >
-            <Icon 
-              className="w-4 h-4 shrink-0" 
-              strokeWidth={1.5}
-            />
             {label}
           </button>
         ))}

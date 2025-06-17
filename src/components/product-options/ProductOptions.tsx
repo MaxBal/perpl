@@ -28,6 +28,7 @@ interface Props {
   setFixationMode: (mode: 'none' | 'with') => void;
   fixationSub: string[];
   toggleSubOption: (option: string) => void;
+  fixationPrice?: number;
   onBuyNow: () => void;
 }
 
@@ -45,6 +46,7 @@ const ProductOptions: React.FC<Props> = ({
   setFixationMode,
   fixationSub,
   toggleSubOption,
+  fixationPrice = 0,
   onBuyNow
 }) => {
   // Update fixation prop when mode changes
@@ -60,7 +62,7 @@ const ProductOptions: React.FC<Props> = ({
   return (
     <>
       {/* MOBILE */}
-      <div className="md:hidden px-4 mt-4 mb-16">
+      <div className="md:hidden px-4 mt-4 mb-8">
         <div className="flex flex-col gap-[1.13rem]">
           <ProductHeader 
             product={product} 
@@ -78,8 +80,17 @@ const ProductOptions: React.FC<Props> = ({
             fixationSub={fixationSub}
             toggleSubOption={toggleSubOption}
           />
+          
+          {/* Buy button directly under tabs */}
+          <CTAButton 
+            product={product} 
+            onBuyNow={handleBuyNow} 
+            fixationPrice={fixationPrice}
+            className="mt-6" 
+          />
         </div>
 
+        {/* Circular navigation under buy button */}
         <div className="mt-6 -mx-4 px-4 overflow-x-auto pb-4">
           <div className="inline-flex gap-4 min-w-max">
             <CircularNav items={NAV_ITEMS} />
@@ -110,7 +121,11 @@ const ProductOptions: React.FC<Props> = ({
             />
           </div>
 
-          <CTAButton product={product} onBuyNow={handleBuyNow} />
+          <CTAButton 
+            product={product} 
+            onBuyNow={handleBuyNow} 
+            fixationPrice={fixationPrice}
+          />
 
           <div className="mt-6">
             <CircularNav items={NAV_ITEMS} />

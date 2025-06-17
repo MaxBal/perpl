@@ -96,7 +96,7 @@ export const FixationSelector: React.FC<Props> = ({
         ))}
       </div>
 
-      <div className="mt-6">
+      <div className="mt-10">
         <button
           onClick={showFixationInfo}
           className="inline-flex items-center text-gray-900 underline hover:no-underline"

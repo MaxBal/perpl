@@ -68,7 +68,7 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
         ))}
       </div>
 
-      <div className="mt-6">
+      <div className="mt-10">
         <button
           onClick={showSizeInfo}
           className="inline-flex items-center text-gray-900 underline hover:no-underline"

@@ -65,7 +65,7 @@ const DesignSelector: React.FC<Props> = ({ product }) => {
         ))}
       </div>
       
-      <div className="mt-6">
+      <div className="mt-10">
         <button
           onClick={showDesignInfo}
           className="inline-flex items-center text-gray-900 underline hover:no-underline"
