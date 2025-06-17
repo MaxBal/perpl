@@ -47,10 +47,13 @@ const TabContainer: React.FC<Props> = ({
             key={key}
             onClick={() => setActiveTab(key as any)}
             className={`flex-1 px-3 py-2.5 rounded-[12px] flex items-center justify-center gap-1 text-xs transition-colors
-              ${activeTab === key ? 'bg-white shadow border-2 border-[#00d1b3]' : 'hover:bg-white/50'}`}
+              ${activeTab === key 
+                ? 'bg-white text-black border border-[#D0D0D0]' 
+                : 'bg-transparent text-[#6C6C6C] hover:bg-white/50'
+              }`}
           >
             <Icon 
-              className={`w-4 h-4 shrink-0 ${activeTab === key ? 'text-[#00d1b3]' : ''}`} 
+              className="w-4 h-4 shrink-0" 
               strokeWidth={1.5}
             />
             {label}
