@@ -1,5 +1,4 @@
 import React from 'react';
-import { Truck, CreditCard, Repeat, Tag, MessageCircle } from 'lucide-react';
 import { useModal } from '../useModal';
 import { NavItem } from './types';
 
@@ -9,9 +8,6 @@ interface Props {
 
 const CircularNav: React.FC<Props> = ({ items }) => {
   const modal = useModal();
-
-  const ICONS = [Truck, CreditCard, Repeat, Tag, MessageCircle];
-  const LABELS = ['Доставка', 'Оплата', 'Обмін', 'Акції', 'Відгуки'];
 
   const handleNavItemClick = (label: string) => {
     const modalContent = {
@@ -82,16 +78,25 @@ const CircularNav: React.FC<Props> = ({ items }) => {
 
   return (
     <div className="flex gap-4">
-      {ICONS.map((Icon, index) => (
+      {items.map(item => (
         <button
-          key={LABELS[index]}
-          onClick={() => handleNavItemClick(LABELS[index])}
+          key={item.label}
+          onClick={() => handleNavItemClick(item.label)}
           className="flex flex-col items-center gap-2"
         >
-          <div className="p-3 bg-[#f2f4f6] rounded-full">
-            <Icon className="h-6 w-6 text-black" />
+          <div className="relative w-14 h-14">
+            <div className="absolute inset-0 rounded-full border-[3px] border-[#e8e8e8]" />
+            <div className="absolute inset-[3px] bg-white rounded-full">
+              <div className="absolute inset-[3px] rounded-full overflow-hidden">
+                <img
+                  src={item.image}
+                  alt={item.label}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
           </div>
-          <span className="text-xs text-gray-600">{LABELS[index]}</span>
+          <span className="text-xs text-gray-600">{item.label}</span>
         </button>
       ))}
     </div>
