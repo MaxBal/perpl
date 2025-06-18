@@ -1,5 +1,6 @@
-import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogClose, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { X } from "lucide-react";
 
 export interface TabSpec {
@@ -13,6 +14,7 @@ interface Props {
   onOpenChange: (v: boolean) => void;
   tabs: TabSpec[];
   defaultTab: string;
+  title: string;
 }
 
 export const InfoModal: React.FC<Props> = ({
@@ -20,9 +22,14 @@ export const InfoModal: React.FC<Props> = ({
   onOpenChange,
   tabs,
   defaultTab,
+  title,
 }) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent className="max-w-[640px] p-6">
+      <VisuallyHidden.Root>
+        <DialogTitle>{title}</DialogTitle>
+      </VisuallyHidden.Root>
+      
       {/* 1️⃣  Всё внутри <Tabs> */}
       <Tabs defaultValue={defaultTab} className="w-full">
         {/* Шапка — вкладки + крестик */}

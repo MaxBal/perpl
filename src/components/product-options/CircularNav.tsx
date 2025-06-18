@@ -120,6 +120,7 @@ const CircularNav: React.FC<Props> = ({ items }) => {
         onOpenChange={setInfoModalOpen}
         tabs={deliveryTabs}
         defaultTab="delivery"
+        title="Доставка"
       />
     </>
   );
