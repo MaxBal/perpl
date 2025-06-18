@@ -11,9 +11,9 @@ interface Props {
 }
 
 const FIXATION_OPTIONS: FixationOption[] = [
-  { label: 'на дні 0 ₴', value: 'floor', priceDelta: 0 },
-  { label: 'на стінці 0 ₴', value: 'wall', priceDelta: 0 },
-  { label: 'дно + стінка 80 ₴', value: 'both', priceDelta: 80 },
+  { label: 'фікс.на дні 0 ₴', value: 'floor', priceDelta: 0 },
+  { label: 'фікс.на стінці 0 ₴', value: 'wall', priceDelta: 0 },
+  { label: 'фікс.дно+стінка 80 ₴', value: 'both', priceDelta: 80 },
 ];
 
 const FixationSection: React.FC<Props> = ({ fixEnabled, fixVariant, onFixationChange }) => {

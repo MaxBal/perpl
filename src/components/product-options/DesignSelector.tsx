@@ -49,10 +49,10 @@ const DesignSelector: React.FC<Props> = ({ product, selectedDesign, setSelectedD
         {DESIGN_OPTIONS.map((item) => (
           <button
             key={item.id}
-            onClick={() => setSelectedDesign(item.id)}
+            onClick={() => setSelectedDesign(item.label)}
             className={`
               px-4 py-2.5 rounded-[12px] text-sm transition-all flex flex-col items-start
-              ${selectedDesign === item.id
+              ${selectedDesign === item.label
                 ? 'bg-white border-2 border-[#00d1b3] shadow'
                 : 'bg-white border border-gray-200 hover:bg-gray-50'
               }
