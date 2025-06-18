@@ -17,6 +17,7 @@ const ProductPage: React.FC = () => {
   const [fixationMode, setFixationMode] = useState<'none' | 'with'>('none');
   const [fixationSub, setFixationSub] = useState<string[]>([]);
   const [selectedFixationType, setSelectedFixationType] = useState('none');
+  const [material, setMaterial] = useState<'steel' | 'brass'>('brass');
   const modal = useModalProvider();
   const { items: cartItems, dispatch } = useCart();
   const productConfig = useProductConfig();
@@ -29,16 +30,18 @@ const ProductPage: React.FC = () => {
   };
 
   const addToCart = () => {
-    // Calculate fixation price based on selected type
+    // Calculate prices
     const fixationPrice = selectedFixationType === 'combo' ? 80 : 0;
+    const logoPrice = productConfig.logo ? (material === 'steel' ? 280 : 200) : 0;
+    const totalPrice = PRODUCT.price + fixationPrice + logoPrice;
     
     dispatch({
       type: "ADD_TO_CART",
       payload: {
         ...PRODUCT,
-        price: PRODUCT.price + fixationPrice,
+        price: totalPrice,
         quantity: 1,
-        options: `Розмір: ${productConfig.currentSize}, Матеріал лого: ${productConfig.logoMaterial === 'brass' ? 'Латунь' : 'Нержавіюча сталь'}`,
+        options: `Розмір: ${productConfig.currentSize}, Матеріал лого: ${material === 'brass' ? 'Латунь' : 'Нержавіюча сталь'}`,
         fixation: fixationMode,
         fixationDetails: fixationSub,
         designVersion: 'carzo2', // Default design
@@ -89,8 +92,8 @@ const ProductPage: React.FC = () => {
             setCurrentSize={productConfig.setCurrentSize}
             logo={productConfig.logo}
             setLogo={productConfig.setLogo}
-            logoMaterial={productConfig.logoMaterial}
-            setLogoMaterial={productConfig.setLogoMaterial}
+            logoMaterial={material}
+            setLogoMaterial={setMaterial}
             hasLogo={productConfig.hasLogo}
             fixation={productConfig.fixation}
             setFixation={productConfig.setFixation}

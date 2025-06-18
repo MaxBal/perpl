@@ -5,12 +5,11 @@ import { ProductData } from './types';
 interface Props {
   product: ProductData;
   onBuyNow: () => void;
-  fixationPrice?: number;
+  totalPrice: number;
   className?: string;
 }
 
-const CTAButton: React.FC<Props> = ({ product, onBuyNow, fixationPrice = 0, className = "" }) => {
-  const currentPrice = product.price + fixationPrice;
+const CTAButton: React.FC<Props> = ({ product, onBuyNow, totalPrice, className = "" }) => {
   const oldPrice = 2600;
   
   return (
@@ -25,7 +24,7 @@ const CTAButton: React.FC<Props> = ({ product, onBuyNow, fixationPrice = 0, clas
     >
       <ShoppingCart className="h-5 w-5 mr-2 text-white" />
       <span className="text-lg font-semibold md:text-base md:font-semibold">Купити</span>
-      <span className="text-base font-bold md:text-sm md:font-bold">{currentPrice} ₴</span>
+      <span className="text-base font-bold md:text-sm md:font-bold">{totalPrice} ₴</span>
       <span className="text-xs line-through text-gray-300">{oldPrice} ₴</span>
     </button>
   );

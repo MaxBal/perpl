@@ -6,11 +6,10 @@ interface Props {
   product: ProductData;
   hasLogo: boolean;
   hasFixation: boolean;
-  fixationPrice?: number;
+  totalPrice: number;
 }
 
-const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, fixationPrice = 0 }) => {
-  const currentPrice = product.price + fixationPrice;
+const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPrice }) => {
   const oldPrice = 2600;
 
   return (
@@ -39,7 +38,7 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, fixatio
 
       {/* Price section under H1 - aligned to left edge */}
       <div className="flex items-baseline gap-2">
-        <span className="text-2xl font-semibold">{currentPrice} ₴</span>
+        <span className="text-2xl font-semibold">{totalPrice} ₴</span>
         <span className="text-lg line-through text-gray-500">{oldPrice} ₴</span>
       </div>
     </div>

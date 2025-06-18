@@ -1,8 +1,11 @@
 import React from 'react';
+import { Camera, Info } from 'lucide-react';
 import { useModal } from '../useModal';
 import { ProductData } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
 import LogoMaterialSelector from './LogoMaterialSelector';
+import { Select, SelectItem } from '../ui/select';
+import { LOGOS } from '../../data/logos';
 
 interface Props {
   product: ProductData;
@@ -14,6 +17,23 @@ interface Props {
 
 const LogoSelector: React.FC<Props> = ({ product, logo, setLogo, logoMaterial, setLogoMaterial }) => {
   const modal = useModal();
+
+  // Calculate logo price based on material
+  const logoPrice = logoMaterial === 'steel' ? 280 : 200;
+
+  // Create logo options
+  const logoOptions = [
+    { label: 'без лого', value: '' },
+    ...LOGOS.map(l => ({
+      label: `${l.name} +${logoPrice} ₴`,
+      value: l.slug,
+      img: l.img,
+      thumb: l.thumb
+    }))
+  ];
+
+  // Find current logo data
+  const currentLogo = logoOptions.find(opt => opt.value === logo);
 
   const showLogoInfo = () => {
     modal.open(
@@ -28,16 +48,16 @@ const LogoSelector: React.FC<Props> = ({ product, logo, setLogo, logoMaterial, s
         <div className="bg-gray-100 rounded-lg p-4">
           <h3 className="font-medium mb-2">Доступні логотипи:</h3>
           <ul className="list-disc list-inside text-gray-700">
-            {product.logoOptions.map(option => (
-              <li key={option}>{option}</li>
+            {LOGOS.map(logo => (
+              <li key={logo.slug}>{logo.name}</li>
             ))}
           </ul>
         </div>
         <div className="bg-gray-100 rounded-lg p-4">
           <h3 className="font-medium mb-2">Матеріали:</h3>
           <ul className="list-disc list-inside text-gray-700">
-            <li>Нержавіюча сталь - класичний варіант з високою стійкістю</li>
-            <li>Латунь - преміальний варіант з благородним відтінком</li>
+            <li>Нержавіюча сталь - класичний варіант з високою стійкістю (+280₴)</li>
+            <li>Латунь - преміальний варіант з благородним відтінком (+200₴)</li>
           </ul>
         </div>
       </div>
@@ -51,28 +71,40 @@ const LogoSelector: React.FC<Props> = ({ product, logo, setLogo, logoMaterial, s
         setLogoMaterial={setLogoMaterial}
       />
       
-      <div className="rounded-[12px] border border-gray-200 px-4 py-2.5 w-full">
-        <select
-          value={logo}
-          onChange={(e) => setLogo(e.target.value)}
-          className="w-full bg-transparent outline-none text-sm"
-        >
-          {product.logoOptions.map(option => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Select value={logo} onValueChange={setLogo}>
+        {logoOptions.map(option => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </Select>
 
+      {/* Details section */}
       <div className="mt-14 md:mt-8">
-        <button
-          onClick={showLogoInfo}
-          className="inline-flex items-center text-gray-900 underline hover:no-underline"
-        >
-          <InfoBadge />
-          Детально про лого
-        </button>
+        {logo === '' ? (
+          <button
+            onClick={showLogoInfo}
+            className="inline-flex items-center text-gray-900 underline hover:no-underline"
+          >
+            <InfoBadge />
+            Детально про лого
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              if (currentLogo?.img) {
+                modal.open('Лого', <img src={currentLogo.img} alt={currentLogo.label} className="w-full rounded-lg" />);
+              }
+            }}
+            className="flex items-center gap-2 text-sm hover:text-[#00d1b3] transition-colors"
+          >
+            <Camera className="w-4 h-4" />
+            {currentLogo?.thumb && (
+              <img src={currentLogo.thumb} alt="" className="w-6 h-6 rounded-full object-cover" />
+            )}
+            <span>{currentLogo?.label}</span>
+          </button>
+        )}
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import ProductHeader from './ProductHeader';
 import TabContainer from './TabContainer';
 import CircularNav from './CircularNav';
 import CTAButton from './CTAButton';
+import { LOGOS } from '../../data/logos';
 
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Доставка', image: 'https://images.pexels.com/photos/4391470/pexels-photo-4391470.jpeg?auto=compress&cs=tinysrgb&w=300' },
@@ -53,13 +54,20 @@ const ProductOptions: React.FC<Props> = ({
   fixationPrice = 0,
   onBuyNow
 }) => {
+  // Calculate logo price based on material
+  const logoPrice = logoMaterial === 'steel' ? 280 : 200;
+  
+  // Calculate total price
+  const basePrice = product.price;
+  const totalLogoPrice = logo ? logoPrice : 0;
+  const totalPrice = basePrice + totalLogoPrice + fixationPrice;
+
   // Update fixation prop when mode changes
   React.useEffect(() => {
     setFixation(fixationMode === 'with' ? 'yes' : 'no');
   }, [fixationMode, setFixation]);
 
   const handleBuyNow = () => {
-    // Pass fixation details to parent component
     onBuyNow();
   };
 
@@ -72,6 +80,7 @@ const ProductOptions: React.FC<Props> = ({
             product={product} 
             hasLogo={hasLogo}
             hasFixation={hasFixation}
+            totalPrice={totalPrice}
           />
           <TabContainer
             product={product}
@@ -91,7 +100,7 @@ const ProductOptions: React.FC<Props> = ({
           <CTAButton 
             product={product} 
             onBuyNow={handleBuyNow} 
-            fixationPrice={fixationPrice}
+            totalPrice={totalPrice}
             className="mt-6" 
           />
         </div>
@@ -111,6 +120,7 @@ const ProductOptions: React.FC<Props> = ({
             product={product} 
             hasLogo={hasLogo}
             hasFixation={hasFixation}
+            totalPrice={totalPrice}
           />
           
           <div className="flex flex-col gap-[1.6rem] mt-8">
@@ -132,7 +142,7 @@ const ProductOptions: React.FC<Props> = ({
           <CTAButton 
             product={product} 
             onBuyNow={handleBuyNow} 
-            fixationPrice={fixationPrice}
+            totalPrice={totalPrice}
             className="mt-8"
           />
 
