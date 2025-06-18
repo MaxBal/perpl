@@ -14,20 +14,20 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPr
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Main title */}
-      <h1 className="text-[25.6px] mobile:text-[25.6px] font-semibold leading-tight">
-        Автокейс з&nbsp;лого&nbsp;Toyota
-      </h1>
-
-      {/* Notification badge aligned with H1 left edge and 5% larger */}
+      {/* Updated notification badge with gradient background, white text, and 10% smaller */}
       <p className="inline-flex items-center gap-1 px-2 py-0.5
                      text-xs font-light
                      rounded-md border border-black/40
-                     w-fit text-white scale-95"
+                     w-fit mt-6 md:mt-0 text-white scale-90"
          style={{ background: 'linear-gradient(to right, #232526, #414345)' }}>
         <Rocket className="w-3.5 h-3.5 text-[#66d1be] icon-blink" />
         Відправимо сьогодні після 18:00
       </p>
+
+      {/* Main title */}
+      <h1 className="text-[25.6px] mobile:text-[25.6px] font-semibold leading-tight">
+        Автокейс з&nbsp;лого&nbsp;Toyota
+      </h1>
 
       {/* Article number */}
       <p className="text-sm text-gray-500">
