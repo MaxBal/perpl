@@ -14,12 +14,12 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPr
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Updated notification badge */}
+      {/* Updated notification badge with thinner text, border, and animated icon */}
       <p className="inline-flex items-center gap-1 px-2 py-0.5
-                     text-body-sm font-medium
-                     rounded-md border border-black/80
+                     text-body-sm font-light
+                     rounded-md border border-black/40
                      bg-transparent w-fit mt-6 md:mt-0">
-        <Rocket className="w-4 h-4" />
+        <Rocket className="w-4 h-4 text-[#66d1be] icon-blink" />
         Відправимо сьогодні після 18:00
       </p>
 
