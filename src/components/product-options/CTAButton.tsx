@@ -23,7 +23,7 @@ const CTAButton: React.FC<Props> = ({ product, onBuyNow, fixationPrice = 0, clas
         ${className}
       `}
     >
-      <ShoppingCart className="h-5 w-5 text-white mr-2" />
+      <ShoppingCart className="h-5 w-5 mr-2 text-[#00d1b3] animate-pulse" />
       <span className="text-lg font-semibold">Купити</span>
       <span className="text-base font-bold">{currentPrice} ₴</span>
       <span className="text-xs line-through text-gray-300">{oldPrice} ₴</span>
