@@ -1,0 +1,45 @@
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { X } from "lucide-react";
+
+export interface TabSpec {
+  id: string;
+  label: string;
+  node: React.ReactNode;
+}
+
+interface Props {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  tabs: TabSpec[];
+  defaultTab: string;
+}
+
+export const InfoModal: React.FC<Props> = ({ open, onOpenChange, tabs, defaultTab }) => (
+  <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogContent className="max-w-[640px] p-6">
+      <div className="flex justify-between items-center mb-4">
+        <Tabs defaultValue={defaultTab} className="w-full">
+          <TabsList className="bg-transparent p-0 gap-4">
+            {tabs.map(t => (
+              <TabsTrigger key={t.id} value={t.id}>
+                {t.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+        <DialogClose asChild>
+          <button className="p-1 rounded-full hover:bg-muted/50">
+            <X size={20}/>
+          </button>
+        </DialogClose>
+      </div>
+
+      {tabs.map(t => (
+        <TabsContent key={t.id} value={t.id}>
+          {t.node}
+        </TabsContent>
+      ))}
+    </DialogContent>
+  </Dialog>
+);
