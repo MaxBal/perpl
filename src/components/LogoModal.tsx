@@ -12,7 +12,7 @@ const LogoModal: React.FC<Props> = ({ logo, initial }) => {
 
   return (
     <Tabs value={variant} onValueChange={v => setVariant(v as any)}>
-      <TabsList className="w-full justify-center mb-4">
+      <TabsList className="justify-start gap-6 mb-4">
         <TabsTrigger value="brass">Латунь</TabsTrigger>
         <TabsTrigger value="steel">Нержавіюча сталь</TabsTrigger>
       </TabsList>
