@@ -25,21 +25,17 @@ export const InfoModal: React.FC<Props> = ({
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent
       className={`
-        /* ─── mobile ≤ 640px ─── */
+        /* ───── mobile bottom-sheet ───── */
         fixed inset-x-0 bottom-0
-        mx-2                    /* воздух слева/справа */
-        w-auto
-        rounded-t-3xl
+        w-screen max-w-none
+        rounded-t-2xl
         transform-none
         max-h-[80vh] overflow-y-auto
-        bg-white
-        pt-0 pb-6 px-4
-        /* ─── desktop ≥ sm ─── */
-        sm:mx-0
+        px-4 pt-3 pb-6
+        /* ───── desktop ───── */
         sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2
         sm:w-[90vw] sm:max-w-lg
-        sm:rounded-xl
-        sm:px-6 sm:pt-6
+        sm:rounded-xl sm:px-6 sm:pt-6
       `}
     >
       <VisuallyHidden.Root>
@@ -47,7 +43,7 @@ export const InfoModal: React.FC<Props> = ({
       </VisuallyHidden.Root>
 
       <Tabs defaultValue={defaultTab} className="w-full">
-        {/* Header: вкладки + крестик */}
+        {/* Header: только вкладки + крестик */}
         <div className="flex justify-between items-center mb-4">
           <TabsList className="p-0 gap-6">
             {tabs.map((t) => (
