@@ -13,8 +13,8 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPr
   const oldPrice = 2600;
 
   return (
-    <div className="flex flex-col items-start gap-3">
-      {/* Notification badge aligned to left edge */}
+    <div className="flex flex-col gap-3">
+      {/* Updated notification badge with gradient background, white text, and 10% smaller */}
       <p className="inline-flex items-center gap-1 px-2 py-0.5
                      text-xs font-light
                      rounded-md border border-black/40
