@@ -8,7 +8,7 @@ interface Props {
   label: string;
   /**
    * Массив слов, которые должны быть зелёными (#00d3b1).
-   * Все остальные части — белым.
+   * Все остальные части — черным.
    * Например: ["L", "2.0", "Toyota"] или ["на", "дні"]
    */
   highlightWords?: string[];
@@ -23,9 +23,9 @@ export const Badge: React.FC<Props> = ({
   // Разбиваем label на слова по пробелу
   const parts = label.split(' ');
 
-  // Новые стили: прозрачный фон, черная рамка, черный текст по умолчанию
+  // Новые стили: прозрачный фон, тонкая черная рамка, черный текст
   const baseClass =
-    'inline-flex items-center gap-1.5 px-2 py-0.5 text-[13px] font-medium rounded-md border border-black/80 text-black bg-transparent select-none';
+    'inline-flex items-center gap-1.5 px-2 py-0.5 text-[13px] font-medium rounded-md border border-black bg-transparent text-black select-none';
 
   // Рендерим каждое слово: если в highlightWords — "#00d3b1", иначе — "text-black"
   const renderPart = (text: string, idx: number) => {
