@@ -1,5 +1,5 @@
 import React from 'react';
-import { Truck } from 'lucide-react';
+import { Rocket } from 'lucide-react';
 import { ProductData } from './types';
 
 interface Props {
@@ -14,9 +14,9 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPr
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Shipping notification with blinking truck icon - reduced rounding */}
-      <div className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1 text-sm font-light text-gray-700 mt-6 md:mt-0">
-        <Truck className="w-4 h-4 text-[#00d1b3] icon-blink" />
+      {/* Shipping notification with blinking rocket icon and gray background */}
+      <div className="inline-flex items-center gap-1 rounded-lg px-3 py-1 text-sm font-light text-gray-700 mt-6 md:mt-0" style={{ backgroundColor: '#eff1f3' }}>
+        <Rocket className="w-4 h-4 text-[#00d1b3] icon-blink" />
         <span>Відправимо сьогодні після 18:00</span>
       </div>
 
