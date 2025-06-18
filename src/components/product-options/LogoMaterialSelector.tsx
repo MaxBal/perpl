@@ -7,8 +7,8 @@ interface Props {
 }
 
 const MATERIALS = [
-  { id: 'steel' as const, label: 'Нержавіюча сталь' },
-  { id: 'brass' as const, label: 'Латунь' },
+  { id: 'steel' as const, label: 'Нержавіюча сталь', price: 280 },
+  { id: 'brass' as const, label: 'Латунь', price: 200 },
 ];
 
 const LogoMaterialSelector: React.FC<Props> = ({ logoMaterial, setLogoMaterial }) => {
@@ -36,7 +36,9 @@ const LogoMaterialSelector: React.FC<Props> = ({ logoMaterial, setLogoMaterial }
                 <Check className="h-3 w-3 text-white" strokeWidth={2} />
               )}
             </span>
-            <span className="text-base select-none">{material.label}</span>
+            <span className="text-base select-none">
+              {material.label} +{material.price} ₴
+            </span>
           </label>
         ))}
       </div>
