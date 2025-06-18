@@ -94,6 +94,16 @@
   @apply inline-flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium rounded-full;
 }
 
+/* Blinking animation for truck icon */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.icon-blink {
+  animation: blink 1.5s ease-in-out infinite;
+}
+
 @media (max-width: 768px) {
   .text-body {
     @apply text-lg leading-relaxed;
