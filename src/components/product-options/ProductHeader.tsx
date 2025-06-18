@@ -21,8 +21,8 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, fixatio
           <Magnet className="h-4 w-4 text-[#00d1b3] animate-pulse" strokeWidth={1.5} />
           Магнітна система
         </span>
-        <span className="inline-flex items-center gap-1.5 text-white text-xs font-medium px-2 py-1 rounded-full transform scale-110 md:scale-105" style={{ backgroundColor: '#2cceb2' }}>
-          <Rocket className="h-4 w-4 text-white" strokeWidth={1.5} />
+        <span className="inline-flex items-center gap-1.5 text-black text-xs font-medium px-2 py-1 rounded-full transform scale-110 md:scale-105" style={{ backgroundColor: '#2cceb2' }}>
+          <Rocket className="h-4 w-4 text-black" strokeWidth={1.5} />
           В наявності
         </span>
       </div>
