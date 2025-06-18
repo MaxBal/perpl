@@ -8,7 +8,7 @@ interface Props {
   label: string;
   /**
    * Массив слов, которые должны быть зелёными (#00d3b1).
-   * Все остальные части — черным.
+   * Все остальные части — amber-800.
    * Например: ["L", "2.0", "Toyota"] или ["на", "дні"]
    */
   highlightWords?: string[];
@@ -23,17 +23,17 @@ export const Badge: React.FC<Props> = ({
   // Разбиваем label на слова по пробелу
   const parts = label.split(' ');
 
-  // Стили как у табов: скругления [12px], прозрачный фон, тонкая черная рамка
+  // Янтарный стиль (Amber-Subtle): светлый фон, янтарная рамка, темно-янтарный текст
   const baseClass =
-    'inline-flex items-center gap-1.5 px-2 py-0.5 text-[13px] font-medium rounded-[12px] border border-black bg-transparent text-black select-none';
+    'inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[13px] bg-amber-50 border border-amber-200 text-amber-800 select-none';
 
-  // Рендерим каждое слово: если в highlightWords — "#00d3b1", иначе — "text-black"
+  // Рендерим каждое слово: если в highlightWords — "#00d3b1", иначе — "text-amber-800"
   const renderPart = (text: string, idx: number) => {
     const isHighlighted = highlightWords.includes(text);
     return (
       <React.Fragment key={idx}>
         {idx > 0 && ' '}
-        <span className={isHighlighted ? 'text-[#00d3b1]' : 'text-black'}>
+        <span className={isHighlighted ? 'text-[#00d3b1]' : 'text-amber-800'}>
           {text}
         </span>
       </React.Fragment>
