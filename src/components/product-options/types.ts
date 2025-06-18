@@ -13,4 +13,5 @@ export interface NavItem {
   label: string;
   image: string;
   href?: string;
+  modal?: string;
 }
