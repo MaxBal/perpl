@@ -8,6 +8,7 @@ interface UseProductOptionsProps {
 
 export function useProductOptions({ basePrice }: UseProductOptionsProps) {
   const [state, setState] = useState<ProductOptionsState>({
+    design: 'Carzo 1.0',
     size: 'M',
     logoMaterial: 'none',
     logoBrand: '',
@@ -20,6 +21,7 @@ export function useProductOptions({ basePrice }: UseProductOptionsProps) {
   // Update SKU and price when options change
   useEffect(() => {
     const newSku = buildSku({
+      design: state.design,
       size: state.size,
       logoMaterial: state.logoMaterial,
       logoBrand: state.logoBrand,
@@ -33,7 +35,11 @@ export function useProductOptions({ basePrice }: UseProductOptionsProps) {
       sku: newSku,
       totalPrice: newPrice
     }));
-  }, [state.size, state.logoMaterial, state.logoBrand, state.fixVariant, basePrice]);
+  }, [state.design, state.size, state.logoMaterial, state.logoBrand, state.fixVariant, basePrice]);
+
+  const setDesign = (design: string) => {
+    setState(prev => ({ ...prev, design }));
+  };
 
   const setSize = (size: Size) => {
     setState(prev => ({ ...prev, size }));
@@ -63,6 +69,7 @@ export function useProductOptions({ basePrice }: UseProductOptionsProps) {
 
   return {
     state,
+    setDesign,
     setSize,
     setLogoMaterial,
     setLogoBrand,

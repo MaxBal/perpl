@@ -1,14 +1,22 @@
 import { Size, LogoMaterial, FixVariant } from '../components/product-options/types';
 
 interface SkuParams {
+  design: string;
   size: Size;
   logoMaterial: LogoMaterial;
   logoBrand: string;
   fixVariant: FixVariant;
 }
 
-export function buildSku({ size, logoMaterial, logoBrand, fixVariant }: SkuParams): string {
-  const base = `${size}2.0`;
+export function buildSku({ design, size, logoMaterial, logoBrand, fixVariant }: SkuParams): string {
+  const designKey = design.toLowerCase().replace(/\s+/g, ''); // Carzo1.0
+  const sizeKey = size;                                       // S | M | L | XL
+
+  const logoPart = logoMaterial === 'none'
+    ? 'без-лого'
+    : (logoMaterial === 'steel' ? 'лого-метал' : 'лого-латунь');
+
+  const brandPart = logoMaterial === 'none' ? '' : `.${logoBrand.toLowerCase()}`;
 
   const fixKey = {
     none:  'без-фіксації',
@@ -17,14 +25,9 @@ export function buildSku({ size, logoMaterial, logoBrand, fixVariant }: SkuParam
     both:  'фікс-дно+стінка',
   }[fixVariant];
 
-  if (logoMaterial === 'none') {
-    //   ➜  L2.0.без-лого.фікс-дно+стінка
-    return `арт. ${base}.без-лого.${fixKey}`;
-  }
-
-  const matKey = logoMaterial === 'steel' ? 'лого-метал' : 'лого-латунь';
-  //   ➜  M2.0.лого-метал.toyota.без-фіксації
-  return `арт. ${base}.${matKey}.${logoBrand.toLowerCase()}.${fixKey}`;
+  // ➜ арт. Carzo1.0-S.лого-метал.mercedes.фікс-на-стінці
+  // ➜ арт. Carzo1.0-L.без-лого.фікс-дно+стінка
+  return `арт. ${designKey}-${sizeKey}.${logoPart}${brandPart}.${fixKey}`;
 }
 
 export function calculatePrice(

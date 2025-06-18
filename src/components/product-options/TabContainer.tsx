@@ -14,6 +14,8 @@ const TAB_META = [
 
 interface Props {
   product: ProductData;
+  design: string;
+  setDesign: (design: string) => void;
   size: Size;
   setSize: (size: Size) => void;
   logoMaterial: LogoMaterial;
@@ -27,6 +29,8 @@ interface Props {
 
 const TabContainer: React.FC<Props> = ({
   product,
+  design,
+  setDesign,
   size,
   setSize,
   logoMaterial,
@@ -57,7 +61,13 @@ const TabContainer: React.FC<Props> = ({
         ))}
       </div>
 
-      {activeTab === 'design' && <DesignSelector product={product} />}
+      {activeTab === 'design' && (
+        <DesignSelector 
+          product={product} 
+          selectedDesign={design}
+          setSelectedDesign={setDesign}
+        />
+      )}
       {activeTab === 'size' && (
         <SizeSelector
           product={product}

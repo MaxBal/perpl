@@ -5,17 +5,18 @@ import { InfoBadge } from '../ui/InfoBadge';
 
 interface Props {
   product: ProductData;
+  selectedDesign: string;
+  setSelectedDesign: (design: string) => void;
 }
 
 const DESIGN_OPTIONS = [
-  { id:'carzo1', label:'Carzo 1.0', colors:6 },
-  { id:'carzo2', label:'Carzo 2.0', colors:1 },
-  { id:'carzo3', label:'Carzo 3.0', colors:1 },
-  { id:'carzo4', label:'Carzo 4.0', colors:1 },
+  { id:'carzo1.0', label:'Carzo 1.0', colors:6 },
+  { id:'carzo2.0', label:'Carzo 2.0', colors:1 },
+  { id:'carzo3.0', label:'Carzo 3.0', colors:1 },
+  { id:'carzo4.0', label:'Carzo 4.0', colors:1 },
 ];
 
-const DesignSelector: React.FC<Props> = ({ product }) => {
-  const [selectedDesign, setSelectedDesign] = useState('carzo2');
+const DesignSelector: React.FC<Props> = ({ product, selectedDesign, setSelectedDesign }) => {
   const modal = useModal();
 
   const showDesignInfo = () => {
@@ -28,7 +29,7 @@ const DesignSelector: React.FC<Props> = ({ product }) => {
         </div>
         <div className="bg-gray-100 rounded-lg p-4">
           <h3 className="font-medium mb-2">Carzo 2.0</h3>
-          <p className="text-gray-700">Класичний дизайн з акцентом на функціональність та елегантність.</p>
+          <p className="text-gray-700">Класічний дизайн з акцентом на функціональність та елегантність.</p>
         </div>
         <div className="bg-gray-100 rounded-lg p-4">
           <h3 className="font-medium mb-2">Carzo 3.0</h3>

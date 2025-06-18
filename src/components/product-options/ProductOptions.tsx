@@ -1,5 +1,4 @@
 import React from 'react';
-import { useModal } from '../useModal';
 import { ProductData, NavItem } from './types';
 import ProductHeader from './ProductHeader';
 import TabContainer from './TabContainer';
@@ -21,7 +20,15 @@ interface Props {
 }
 
 const ProductOptions: React.FC<Props> = ({ product, onBuyNow }) => {
-  const { state, setSize, setLogoMaterial, setLogoBrand, setFixation, isValid } = useProductOptions({
+  const { 
+    state, 
+    setDesign,
+    setSize, 
+    setLogoMaterial, 
+    setLogoBrand, 
+    setFixation, 
+    isValid 
+  } = useProductOptions({
     basePrice: product.price
   });
 
@@ -47,6 +54,8 @@ const ProductOptions: React.FC<Props> = ({ product, onBuyNow }) => {
           />
           <TabContainer
             product={product}
+            design={state.design}
+            setDesign={setDesign}
             size={state.size}
             setSize={setSize}
             logoMaterial={state.logoMaterial}
@@ -88,6 +97,8 @@ const ProductOptions: React.FC<Props> = ({ product, onBuyNow }) => {
           <div className="flex flex-col gap-[1.6rem] mt-8">
             <TabContainer
               product={product}
+              design={state.design}
+              setDesign={setDesign}
               size={state.size}
               setSize={setSize}
               logoMaterial={state.logoMaterial}

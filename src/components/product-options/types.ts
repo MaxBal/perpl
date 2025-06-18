@@ -20,6 +20,7 @@ export type FixVariant = 'none' | 'floor' | 'wall' | 'both';
 export type Size = 'S' | 'M' | 'L' | 'XL';
 
 export interface ProductOptionsState {
+  design: string;
   size: Size;
   logoMaterial: LogoMaterial;
   logoBrand: string;

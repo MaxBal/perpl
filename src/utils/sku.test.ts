@@ -3,57 +3,62 @@ import { buildSku, calculatePrice } from './sku';
 describe('buildSku', () => {
   test('should generate SKU without logo and with fixation', () => {
     const result = buildSku({
+      design: 'Carzo 1.0',
       size: 'L',
       logoMaterial: 'none',
       logoBrand: '',
       fixVariant: 'both'
     });
     
-    expect(result).toBe('арт. L2.0.без-лого.фікс-дно+стінка');
+    expect(result).toBe('арт. carzo1.0-L.без-лого.фікс-дно+стінка');
   });
 
   test('should generate SKU with steel logo and no fixation', () => {
     const result = buildSku({
+      design: 'Carzo 1.0',
       size: 'M',
       logoMaterial: 'steel',
       logoBrand: 'toyota',
       fixVariant: 'none'
     });
     
-    expect(result).toBe('арт. M2.0.лого-метал.toyota.без-фіксації');
+    expect(result).toBe('арт. carzo1.0-M.лого-метал.toyota.без-фіксації');
   });
 
   test('should generate SKU with brass logo and floor fixation', () => {
     const result = buildSku({
+      design: 'Carzo 1.0',
       size: 'S',
       logoMaterial: 'brass',
-      logoBrand: 'Mercedes',
+      logoBrand: 'audi',
       fixVariant: 'floor'
     });
     
-    expect(result).toBe('арт. S2.0.лого-латунь.mercedes.фікс-на-дні');
+    expect(result).toBe('арт. carzo1.0-S.лого-латунь.audi.фікс-на-дні');
   });
 
   test('should generate SKU with wall fixation', () => {
     const result = buildSku({
+      design: 'Carzo 1.0',
       size: 'XL',
       logoMaterial: 'steel',
       logoBrand: 'BMW',
       fixVariant: 'wall'
     });
     
-    expect(result).toBe('арт. XL2.0.лого-метал.bmw.фікс-на-стінці');
+    expect(result).toBe('арт. carzo1.0-XL.лого-метал.bmw.фікс-на-стінці');
   });
 
   test('should generate SKU without logo and no fixation', () => {
     const result = buildSku({
+      design: 'Carzo 1.0',
       size: 'L',
       logoMaterial: 'none',
       logoBrand: '',
       fixVariant: 'none'
     });
     
-    expect(result).toBe('арт. L2.0.без-лого.без-фіксації');
+    expect(result).toBe('арт. carzo1.0-L.без-лого.без-фіксації');
   });
 });
 

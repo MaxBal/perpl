@@ -1,12 +1,12 @@
-import React from 'react';
-import { Camera } from 'lucide-react';
-import { useModal } from '../useModal';
+import React, { useState } from 'react';
 import { ProductData, LogoMaterial, LogoOption } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
 import { RadioItem } from '../ui/radio-group';
 import { Select, SelectItem } from '../ui/select';
 import { LOGOS } from '../../data/logos';
-import LogoModal from '../LogoModal';
+import LogoPreview from './LogoPreview';
+import LogoModalSteel from './LogoModalSteel';
+import LogoModalBrass from './LogoModalBrass';
 
 interface Props {
   product: ProductData;
@@ -29,42 +29,24 @@ const LogoSelector: React.FC<Props> = ({
   logoBrand, 
   setLogoBrand 
 }) => {
-  const modal = useModal();
+  const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
 
   // Find current logo data
   const currentLogoData = LOGOS.find(l => l.slug === logoBrand);
 
   const showLogoInfo = () => {
-    modal.open(
-      'Детально про лого',
-      <div className="space-y-4">
-        <div className="bg-gray-100 rounded-lg p-4">
-          <p className="text-gray-700">
-            Ми пропонуємо можливість додати фірмовий логотип вашого автомобільного бренду на автокейс.
-            Логотипи виготовляються з високоякісних матеріалів та мають відмінну стійкість до зношування.
-          </p>
-        </div>
-        <div className="bg-gray-100 rounded-lg p-4">
-          <h3 className="font-medium mb-2">Доступні логотипи:</h3>
-          <ul className="list-disc list-inside text-gray-700">
-            {LOGOS.map(logo => (
-              <li key={logo.slug}>{logo.name}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="bg-gray-100 rounded-lg p-4">
-          <h3 className="font-medium mb-2">Матеріали:</h3>
-          <ul className="list-disc list-inside text-gray-700">
-            <li>Нержавіюча сталь - класичний варіант з високою стійкістю (+280₴)</li>
-            <li>Латунь - преміальний варіант з благородним відтінком (+200₴)</li>
-          </ul>
-        </div>
-      </div>
-    );
+    // Show info modal logic here if needed
   };
 
   const handleLogoMaterialChange = (value: LogoMaterial) => {
     setLogoMaterial(value);
+    if (value === 'none') {
+      setLogoBrand('');
+    }
+  };
+
+  const openLogoModal = () => {
+    setIsLogoModalOpen(true);
   };
 
   return (
@@ -101,6 +83,13 @@ const LogoSelector: React.FC<Props> = ({
         </Select>
       </div>
 
+      {/* Logo Preview */}
+      <LogoPreview
+        logoMaterial={logoMaterial}
+        logoBrand={logoBrand}
+        onPhotoClick={openLogoModal}
+      />
+
       {/* Details section */}
       <div className="mt-14 md:mt-8">
         {logoMaterial === 'none' ? (
@@ -111,24 +100,27 @@ const LogoSelector: React.FC<Props> = ({
             <InfoBadge />
             Детально про лого
           </button>
-        ) : (
-          currentLogoData && logoBrand && (
-            <button
-              onClick={() =>
-                modal.open(
-                  `Фото лого ${currentLogoData.name}`,
-                  <LogoModal logo={currentLogoData} initial={logoMaterial === 'steel' ? 'steel' : 'brass'} />
-                )
-              }
-              className="flex items-center gap-2 text-sm hover:text-[#00d1b3] transition-colors"
-            >
-              <Camera className="w-4 h-4" />
-              <img src={currentLogoData.thumb} alt="" className="w-6 h-6 rounded-full object-cover" />
-              <span>{currentLogoData.name}</span>
-            </button>
-          )
-        )}
+        ) : null}
       </div>
+
+      {/* Separate Logo Modals */}
+      {currentLogoData && (
+        <>
+          <LogoModalSteel
+            open={logoMaterial === 'steel' && isLogoModalOpen}
+            onOpenChange={setIsLogoModalOpen}
+            title={`Лого ${currentLogoData.name} (нержавіюча сталь)`}
+            image={currentLogoData.imgSteel}
+          />
+          
+          <LogoModalBrass
+            open={logoMaterial === 'brass' && isLogoModalOpen}
+            onOpenChange={setIsLogoModalOpen}
+            title={`Лого ${currentLogoData.name} (латунь)`}
+            image={currentLogoData.imgBrass}
+          />
+        </>
+      )}
     </div>
   );
 };
