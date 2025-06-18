@@ -1,35 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch } from '@/components/ui/switch';
 import { RadioItem } from '@/components/ui/radio-group';
 import { useToast } from '@/components/ui/toast';
+import { FixVariant, FixationOption } from './types';
 
 interface Props {
-  onFixationChange: (
-    enabled: boolean,
-    variant: 'floor' | 'wall' | 'both',
-    price: number
-  ) => void;
+  fixEnabled: boolean;
+  fixVariant: FixVariant;
+  onFixationChange: (enabled: boolean, variant: FixVariant) => void;
 }
 
-const FixationSection: React.FC<Props> = ({ onFixationChange }) => {
+const FIXATION_OPTIONS: FixationOption[] = [
+  { label: 'на дні 0 ₴', value: 'floor', priceDelta: 0 },
+  { label: 'на стінці 0 ₴', value: 'wall', priceDelta: 0 },
+  { label: 'дно + стінка 80 ₴', value: 'both', priceDelta: 80 },
+];
+
+const FixationSection: React.FC<Props> = ({ fixEnabled, fixVariant, onFixationChange }) => {
   /** Магнітний тумблер (завжди true) */
-  const [magnetLock, setMagnetLock] = useState(true);
-
-  /** Чи увімкнено фіксацію + варіант */
-  const [fixEnabled, setFixEnabled] = useState(false);
-  const [fixVariant, setFixVariant] = useState<'floor' | 'wall' | 'both'>(
-    'floor'
-  );
-
+  const [magnetLock, setMagnetLock] = React.useState(true);
   const { toast } = useToast();
-
-  /** ціна */
-  const fixPrice = !fixEnabled ? 0 : fixVariant === 'both' ? 80 : 0;
-
-  /** репортаж наверх */
-  React.useEffect(() => {
-    onFixationChange(fixEnabled, fixVariant, fixPrice);
-  }, [fixEnabled, fixVariant, fixPrice, onFixationChange]);
 
   /** клік по «магнітному» тумблеру */
   const handleMagnetSwitchChange = (checked: boolean) => {
@@ -52,12 +42,12 @@ const FixationSection: React.FC<Props> = ({ onFixationChange }) => {
 
   /** клік по «фіксація в багажнику» */
   const handleFixationSwitchChange = (checked: boolean) => {
-    setFixEnabled(checked);
+    onFixationChange(checked, checked ? 'floor' : 'none');
   };
 
   /** вибір варіанта */
-  const handleVariantChange = (variant: 'floor' | 'wall' | 'both') => {
-    setFixVariant(variant);
+  const handleVariantChange = (variant: FixVariant) => {
+    onFixationChange(true, variant);
   };
 
   return (
@@ -83,29 +73,16 @@ const FixationSection: React.FC<Props> = ({ onFixationChange }) => {
       {/* Якщо вмикнено — показуємо варіанти */}
       {fixEnabled && (
         <div className="space-y-3 pl-4 border-l-2 border-gray-100">
-          <RadioItem
-            value="floor"
-            checked={fixVariant === 'floor'}
-            onCheckedChange={() => handleVariantChange('floor')}
-          >
-            на дні 0 ₴
-          </RadioItem>
-
-          <RadioItem
-            value="wall"
-            checked={fixVariant === 'wall'}
-            onCheckedChange={() => handleVariantChange('wall')}
-          >
-            на стінці 0 ₴
-          </RadioItem>
-
-          <RadioItem
-            value="both"
-            checked={fixVariant === 'both'}
-            onCheckedChange={() => handleVariantChange('both')}
-          >
-            дно + стінка 80 ₴
-          </RadioItem>
+          {FIXATION_OPTIONS.map(option => (
+            <RadioItem
+              key={option.value}
+              value={option.value}
+              checked={fixVariant === option.value}
+              onCheckedChange={() => handleVariantChange(option.value)}
+            >
+              {option.label}
+            </RadioItem>
+          ))}
         </div>
       )}
     </div>

@@ -2,39 +2,20 @@ import React from 'react';
 import { useModal } from '../useModal';
 import { InfoBadge } from '../ui/InfoBadge';
 import FixationSection from './FixationSection';
+import { FixVariant } from './types';
 
 interface Props {
-  fixationMode: 'none' | 'with';
-  setFixationMode: (mode: 'none' | 'with') => void;
-  subOptions: string[];
-  toggleSubOption: (option: string) => void;
-  onPriceChange?: (price: number) => void;
+  fixEnabled: boolean;
+  fixVariant: FixVariant;
+  onFixationChange: (enabled: boolean, variant: FixVariant) => void;
 }
 
 export const FixationSelector: React.FC<Props> = ({
-  fixationMode,
-  setFixationMode,
-  subOptions,
-  toggleSubOption,
-  onPriceChange
+  fixEnabled,
+  fixVariant,
+  onFixationChange
 }) => {
   const modal = useModal();
-
-  const handleFixationChange = (enabled: boolean, variant: 'floor' | 'wall' | 'both', price: number) => {
-    // Update fixation mode
-    setFixationMode(enabled ? 'with' : 'none');
-    
-    // Clear previous selections and set new one
-    subOptions.forEach(opt => toggleSubOption(opt));
-    if (enabled) {
-      toggleSubOption(variant);
-    }
-    
-    // Notify parent about price change
-    if (onPriceChange) {
-      onPriceChange(price);
-    }
-  };
 
   const showFixationInfo = () => {
     modal.open(
@@ -61,7 +42,11 @@ export const FixationSelector: React.FC<Props> = ({
 
   return (
     <div className="space-y-4">
-      <FixationSection onFixationChange={handleFixationChange} />
+      <FixationSection 
+        fixEnabled={fixEnabled}
+        fixVariant={fixVariant}
+        onFixationChange={onFixationChange}
+      />
 
       <div className="mt-14 md:mt-8">
         <button

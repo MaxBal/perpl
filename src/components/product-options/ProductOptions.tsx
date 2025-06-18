@@ -5,7 +5,7 @@ import ProductHeader from './ProductHeader';
 import TabContainer from './TabContainer';
 import CircularNav from './CircularNav';
 import CTAButton from './CTAButton';
-import { LOGOS } from '../../data/logos';
+import { useProductOptions } from '../../hooks/useProductOptions';
 
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Доставка', image: 'https://images.pexels.com/photos/4391470/pexels-photo-4391470.jpeg?auto=compress&cs=tinysrgb&w=300' },
@@ -17,64 +17,22 @@ export const NAV_ITEMS: NavItem[] = [
 
 interface Props {
   product: ProductData;
-  currentSize: string;
-  setCurrentSize: (size: string) => void;
-  logo: string;
-  setLogo: (logo: string) => void;
-  logoMaterial: 'brass' | 'steel';
-  setLogoMaterial: (material: 'brass' | 'steel') => void;
-  hasLogo: boolean;
-  fixation: 'yes' | 'no';
-  setFixation: (value: 'yes' | 'no') => void;
-  hasFixation: boolean;
-  fixationMode: 'none' | 'with';
-  setFixationMode: (mode: 'none' | 'with') => void;
-  fixationSub: string[];
-  toggleSubOption: (option: string) => void;
-  fixationPrice?: number;
   onBuyNow: () => void;
 }
 
-const ProductOptions: React.FC<Props> = ({
-  product,
-  currentSize,
-  setCurrentSize,
-  logo,
-  setLogo,
-  logoMaterial,
-  setLogoMaterial,
-  hasLogo,
-  fixation,
-  setFixation,
-  hasFixation,
-  fixationMode,
-  setFixationMode,
-  fixationSub,
-  toggleSubOption,
-  fixationPrice = 0,
-  onBuyNow
-}) => {
-  const [dynamicFixationPrice, setDynamicFixationPrice] = React.useState(0);
-
-  // Calculate logo price based on material
-  const logoPrice = logoMaterial === 'steel' ? 280 : 200;
-  
-  // Calculate total price
-  const basePrice = product.price;
-  const totalLogoPrice = logo ? logoPrice : 0;
-  const totalPrice = basePrice + totalLogoPrice + dynamicFixationPrice;
-
-  // Update fixation prop when mode changes
-  React.useEffect(() => {
-    setFixation(fixationMode === 'with' ? 'yes' : 'no');
-  }, [fixationMode, setFixation]);
+const ProductOptions: React.FC<Props> = ({ product, onBuyNow }) => {
+  const { state, setSize, setLogoMaterial, setLogoBrand, setFixation, isValid } = useProductOptions({
+    basePrice: product.price
+  });
 
   const handleBuyNow = () => {
-    onBuyNow();
+    if (isValid) {
+      onBuyNow();
+    }
   };
 
-  const handleFixationPriceChange = (price: number) => {
-    setDynamicFixationPrice(price);
+  const handleFixationChange = (enabled: boolean, variant: any) => {
+    setFixation(enabled, variant);
   };
 
   return (
@@ -84,30 +42,28 @@ const ProductOptions: React.FC<Props> = ({
         <div className="flex flex-col gap-[1.13rem]">
           <ProductHeader 
             product={product} 
-            hasLogo={hasLogo}
-            hasFixation={hasFixation}
-            totalPrice={totalPrice}
+            totalPrice={state.totalPrice}
+            sku={state.sku}
           />
           <TabContainer
             product={product}
-            currentSize={currentSize}
-            setCurrentSize={setCurrentSize}
-            logo={logo}
-            setLogo={setLogo}
-            logoMaterial={logoMaterial}
+            size={state.size}
+            setSize={setSize}
+            logoMaterial={state.logoMaterial}
             setLogoMaterial={setLogoMaterial}
-            fixationMode={fixationMode}
-            setFixationMode={setFixationMode}
-            fixationSub={fixationSub}
-            toggleSubOption={toggleSubOption}
-            onFixationPriceChange={handleFixationPriceChange}
+            logoBrand={state.logoBrand}
+            setLogoBrand={setLogoBrand}
+            fixEnabled={state.fixEnabled}
+            fixVariant={state.fixVariant}
+            onFixationChange={handleFixationChange}
           />
           
           {/* Buy button directly under tabs */}
           <CTAButton 
             product={product} 
             onBuyNow={handleBuyNow} 
-            totalPrice={totalPrice}
+            totalPrice={state.totalPrice}
+            isValid={isValid}
             className="mt-6" 
           />
         </div>
@@ -125,32 +81,30 @@ const ProductOptions: React.FC<Props> = ({
         <div className="rounded-2xl p-8 border border-gray-100 shadow-sm">
           <ProductHeader 
             product={product} 
-            hasLogo={hasLogo}
-            hasFixation={hasFixation}
-            totalPrice={totalPrice}
+            totalPrice={state.totalPrice}
+            sku={state.sku}
           />
           
           <div className="flex flex-col gap-[1.6rem] mt-8">
             <TabContainer
               product={product}
-              currentSize={currentSize}
-              setCurrentSize={setCurrentSize}
-              logo={logo}
-              setLogo={setLogo}
-              logoMaterial={logoMaterial}
+              size={state.size}
+              setSize={setSize}
+              logoMaterial={state.logoMaterial}
               setLogoMaterial={setLogoMaterial}
-              fixationMode={fixationMode}
-              setFixationMode={setFixationMode}
-              fixationSub={fixationSub}
-              toggleSubOption={toggleSubOption}
-              onFixationPriceChange={handleFixationPriceChange}
+              logoBrand={state.logoBrand}
+              setLogoBrand={setLogoBrand}
+              fixEnabled={state.fixEnabled}
+              fixVariant={state.fixVariant}
+              onFixationChange={handleFixationChange}
             />
           </div>
 
           <CTAButton 
             product={product} 
             onBuyNow={handleBuyNow} 
-            totalPrice={totalPrice}
+            totalPrice={state.totalPrice}
+            isValid={isValid}
             className="mt-8"
           />
 

@@ -1,19 +1,19 @@
 import React from 'react';
 import { useModal } from '../useModal';
-import { ProductData } from './types';
+import { ProductData, Size } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
 
 interface Props {
   product: ProductData;
-  currentSize: string;
-  setCurrentSize: (size: string) => void;
+  currentSize: Size;
+  setCurrentSize: (size: Size) => void;
 }
 
 const SIZES = [
-  { id: 'S', dimensions: 'S 40×30×30 см', price: 1690, oldPrice: 2000 },
-  { id: 'M', dimensions: 'M 50×30×30 см', price: 2090, oldPrice: 2300 },
-  { id: 'L', dimensions: 'L 60×30×30 см', price: 2290, oldPrice: 2600 },
-  { id: 'XL', dimensions: 'XL 80×30×30 см', price: 2790, oldPrice: 3100 },
+  { id: 'S' as Size, dimensions: 'S 40×30×30 см', price: 1690, oldPrice: 2000 },
+  { id: 'M' as Size, dimensions: 'M 50×30×30 см', price: 2090, oldPrice: 2300 },
+  { id: 'L' as Size, dimensions: 'L 60×30×30 см', price: 2290, oldPrice: 2600 },
+  { id: 'XL' as Size, dimensions: 'XL 80×30×30 см', price: 2790, oldPrice: 3100 },
 ];
 
 const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {

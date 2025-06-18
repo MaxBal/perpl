@@ -4,12 +4,11 @@ import { ProductData } from './types';
 
 interface Props {
   product: ProductData;
-  hasLogo: boolean;
-  hasFixation: boolean;
   totalPrice: number;
+  sku: string;
 }
 
-const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPrice }) => {
+const ProductHeader: React.FC<Props> = ({ product, totalPrice, sku }) => {
   const oldPrice = 2600;
 
   return (
@@ -28,9 +27,9 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPr
         Автокейс з&nbsp;лого&nbsp;Toyota
       </h1>
 
-      {/* Article number */}
+      {/* Dynamic SKU */}
       <p className="text-sm text-gray-500">
-        арт. L2.0.лого-метал.toyota.дно+стінка
+        {sku}
       </p>
 
       {/* Price section under H1 - aligned to left edge */}

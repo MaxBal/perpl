@@ -3,7 +3,7 @@ import DesignSelector from './DesignSelector';
 import SizeSelector   from './SizeSelector';
 import LogoSelector   from './LogoSelector';
 import { FixationSelector } from './FixationSelector';
-import { ProductData } from './types';
+import { ProductData, Size, LogoMaterial, FixVariant } from './types';
 
 const TAB_META = [
   { key: 'design', label: 'Дизайни' },
@@ -14,32 +14,28 @@ const TAB_META = [
 
 interface Props {
   product: ProductData;
-  currentSize: string;
-  setCurrentSize: (size: string) => void;
-  logo: string;
-  setLogo: (logo: string) => void;
-  logoMaterial: 'brass' | 'steel';
-  setLogoMaterial: (material: 'brass' | 'steel') => void;
-  fixationMode: 'none' | 'with';
-  setFixationMode: (mode: 'none' | 'with') => void;
-  fixationSub: string[];
-  toggleSubOption: (option: string) => void;
-  onFixationPriceChange?: (price: number) => void;
+  size: Size;
+  setSize: (size: Size) => void;
+  logoMaterial: LogoMaterial;
+  setLogoMaterial: (material: LogoMaterial) => void;
+  logoBrand: string;
+  setLogoBrand: (brand: string) => void;
+  fixEnabled: boolean;
+  fixVariant: FixVariant;
+  onFixationChange: (enabled: boolean, variant: FixVariant) => void;
 }
 
 const TabContainer: React.FC<Props> = ({
   product,
-  currentSize,
-  setCurrentSize,
-  logo,
-  setLogo,
+  size,
+  setSize,
   logoMaterial,
   setLogoMaterial,
-  fixationMode,
-  setFixationMode,
-  fixationSub,
-  toggleSubOption,
-  onFixationPriceChange,
+  logoBrand,
+  setLogoBrand,
+  fixEnabled,
+  fixVariant,
+  onFixationChange,
 }) => {
   const [activeTab, setActiveTab] = useState<'design' | 'size' | 'logo' | 'fixation'>('design');
 
@@ -65,26 +61,24 @@ const TabContainer: React.FC<Props> = ({
       {activeTab === 'size' && (
         <SizeSelector
           product={product}
-          currentSize={currentSize}
-          setCurrentSize={setCurrentSize}
+          currentSize={size}
+          setCurrentSize={setSize}
         />
       )}
       {activeTab === 'logo' && (
         <LogoSelector
           product={product}
-          logo={logo}
-          setLogo={setLogo}
           logoMaterial={logoMaterial}
           setLogoMaterial={setLogoMaterial}
+          logoBrand={logoBrand}
+          setLogoBrand={setLogoBrand}
         />
       )}
       {activeTab === 'fixation' && (
         <FixationSelector
-          fixationMode={fixationMode}
-          setFixationMode={setFixationMode}
-          subOptions={fixationSub}
-          toggleSubOption={toggleSubOption}
-          onPriceChange={onFixationPriceChange}
+          fixEnabled={fixEnabled}
+          fixVariant={fixVariant}
+          onFixationChange={onFixationChange}
         />
       )}
     </div>
