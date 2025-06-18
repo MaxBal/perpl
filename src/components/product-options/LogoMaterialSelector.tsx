@@ -14,7 +14,7 @@ const MATERIALS = [
 const LogoMaterialSelector: React.FC<Props> = ({ logoMaterial, setLogoMaterial }) => {
   return (
     <div className="space-y-2">
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-3 md:flex-row md:gap-4">
         {MATERIALS.map((material) => (
           <label key={material.id} className="flex items-center gap-2 cursor-pointer">
             <input
