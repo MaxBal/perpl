@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useModal } from '../useModal';
 import { ProductData, NavItem } from './types';
 import ProductHeader from './ProductHeader';
 import TabContainer from './TabContainer';
@@ -6,11 +7,11 @@ import CircularNav from './CircularNav';
 import CTAButton from './CTAButton';
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'Доставка', image: 'https://images.pexels.com/photos/4391470/pexels-photo-4391470.jpeg?auto=compress&cs=tinysrgb&w=300', modal: 'delivery' },
-  { label: 'Оплата',   image: 'https://images.pexels.com/photos/4386366/pexels-photo-4386366.jpeg?auto=compress&cs=tinysrgb&w=300', modal: 'payment' },
-  { label: 'Обмін',    image: 'https://images.pexels.com/photos/5076516/pexels-photo-5076516.jpeg?auto=compress&cs=tinysrgb&w=300', modal: 'exchange' },
-  { label: 'Акції',    image: 'https://images.pexels.com/photos/3755706/pexels-photo-3755706.jpeg?auto=compress&cs=tinysrgb&w=300', modal: 'promo' },
-  { label: 'Відгуки',  image: 'https://images.pexels.com/photos/8867431/pexels-photo-8867431.jpeg?auto=compress&cs=tinysrgb&w=300', modal: 'reviews' }
+  { label: 'Доставка', image: 'https://images.pexels.com/photos/4391470/pexels-photo-4391470.jpeg?auto=compress&cs=tinysrgb&w=300' },
+  { label: 'Оплата',   image: 'https://images.pexels.com/photos/4386366/pexels-photo-4386366.jpeg?auto=compress&cs=tinysrgb&w=300' },
+  { label: 'Обмін',    image: 'https://images.pexels.com/photos/5076516/pexels-photo-5076516.jpeg?auto=compress&cs=tinysrgb&w=300' },
+  { label: 'Акції',    image: 'https://images.pexels.com/photos/3755706/pexels-photo-3755706.jpeg?auto=compress&cs=tinysrgb&w=300' },
+  { label: 'Відгуки',  image: 'https://images.pexels.com/photos/8867431/pexels-photo-8867431.jpeg?auto=compress&cs=tinysrgb&w=300' }
 ];
 
 interface Props {
