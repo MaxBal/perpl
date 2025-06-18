@@ -16,9 +16,9 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPr
     <div className="flex flex-col gap-3">
       {/* Badges above H1 - increased horizontal spacing from gap-3 to gap-6 */}
       <div className="flex gap-6 mt-6 md:mt-0 flex-wrap">
-        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full transform scale-110 md:scale-105" style={{ backgroundColor: '#e6faf7', color: '#2cceb2' }}>
-          <Rocket className="h-4 w-4" strokeWidth={1.5} style={{ color: '#2cceb2' }} />
-          В наявності
+        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full transform scale-110 md:scale-105" style={{ backgroundColor: '#d5f7f5', color: '#00a88c' }}>
+          <Rocket className="h-4 w-4" strokeWidth={1.5} style={{ color: '#00a88c' }} />
+          Відправимо вже сьогодні
         </span>
       </div>
 
