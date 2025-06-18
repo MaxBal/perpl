@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useModal } from '../useModal';
 import { ProductData, NavItem } from './types';
 import ProductHeader from './ProductHeader';

@@ -5,7 +5,8 @@ import { ProductData } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
 import LogoMaterialSelector from './LogoMaterialSelector';
 import { Select, SelectItem } from '../ui/select';
-import { LOGOS } from '../../data/logos';
+import { LOGOS, LogoItem } from '../../data/logos';
+import LogoModal from '../LogoModal';
 
 interface Props {
   product: ProductData;
@@ -23,17 +24,18 @@ const LogoSelector: React.FC<Props> = ({ product, logo, setLogo, logoMaterial, s
 
   // Create logo options
   const logoOptions = [
-    { label: 'без лого', value: '' },
+    { label: 'без лого', value: '', display: 'без лого' },
     ...LOGOS.map(l => ({
-      label: `${l.name} +${logoPrice} ₴`,
+      ...l,
+      label: `${l.name} +${logoPrice} ₴`, // у списку
       value: l.slug,
-      img: l.img,
-      thumb: l.thumb
+      display: l.name                      // без ціни — для відображення під селектом
     }))
   ];
 
   // Find current logo data
   const currentLogo = logoOptions.find(opt => opt.value === logo);
+  const currentLogoData = LOGOS.find(l => l.slug === logo);
 
   const showLogoInfo = () => {
     modal.open(
@@ -90,20 +92,21 @@ const LogoSelector: React.FC<Props> = ({ product, logo, setLogo, logoMaterial, s
             Детально про лого
           </button>
         ) : (
-          <button
-            onClick={() => {
-              if (currentLogo?.img) {
-                modal.open('Лого', <img src={currentLogo.img} alt={currentLogo.label} className="w-full rounded-lg" />);
+          currentLogoData && (
+            <button
+              onClick={() =>
+                modal.open(
+                  `Фото лого ${currentLogoData.name}`,
+                  <LogoModal logo={currentLogoData} initial={logoMaterial} />
+                )
               }
-            }}
-            className="flex items-center gap-2 text-sm hover:text-[#00d1b3] transition-colors"
-          >
-            <Camera className="w-4 h-4" />
-            {currentLogo?.thumb && (
-              <img src={currentLogo.thumb} alt="" className="w-6 h-6 rounded-full object-cover" />
-            )}
-            <span>{currentLogo?.label}</span>
-          </button>
+              className="flex items-center gap-2 text-sm hover:text-[#00d1b3] transition-colors"
+            >
+              <Camera className="w-4 h-4" />
+              <img src={currentLogoData.thumb} alt="" className="w-6 h-6 rounded-full object-cover" />
+              <span>{currentLogo?.display}</span>
+            </button>
+          )
         )}
       </div>
     </div>
