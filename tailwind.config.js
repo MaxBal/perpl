@@ -21,6 +21,16 @@ export default {
       screens: {
         mobile: {'max': '639px'},
       },
+      keyframes: {
+        "in": {
+          "0%": { opacity: "0", transform: "translateX(100%)" },
+          "100%": { opacity: "1", transform: "translateX(0)" }
+        }
+      },
+      animation: {
+        "in": "in 0.3s ease-out",
+        "slide-in-from-right-full": "in 0.3s ease-out"
+      }
     },
   },
   plugins: [],

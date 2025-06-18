@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { RadioItem } from '@/components/ui/radio-group';
+import { useToast } from '@/components/ui/toast';
 
 interface Props {
   onFixationChange: (enabled: boolean, variant: 'floor' | 'wall' | 'both', price: number) => void;
 }
 
 const FixationSection: React.FC<Props> = ({ onFixationChange }) => {
+  const [magnetLock, setMagnetLock] = useState(true);   // всегда true
   const [fixEnabled, setFixEnabled] = useState(false);
   const [fixVariant, setFixVariant] = useState<'floor' | 'wall' | 'both'>('floor');
+  const { toast } = useToast();
 
   // Calculate price
   const fixPrice = !fixEnabled ? 0 : (fixVariant === 'both' ? 80 : 0);
@@ -18,7 +21,25 @@ const FixationSection: React.FC<Props> = ({ onFixationChange }) => {
     onFixationChange(fixEnabled, fixVariant, fixPrice);
   }, [fixEnabled, fixVariant, fixPrice, onFixationChange]);
 
-  const handleSwitchChange = (checked: boolean) => {
+  const handleMagnetSwitchChange = (checked: boolean) => {
+    if (!checked) {
+      toast({
+        title: 'Кейси з липучками ми ніколи не виготовляли.',
+        description: `Ще на старті у 2021 році ми одразу вирішили: тільки магніти.
+⠀
+Це було інтуїтивне рішення — і досвід підтвердив його правильність.
+За роки роботи ми десятки разів чули:
+«Спершу купив кейс на липучках — згодом пожалкував. Де ви були раніше?»
+⠀
+Магніти — це акуратність, зручність і довговічність.
+Тому опція з липучками просто не передбачена.`,
+        duration: 8000,
+      });
+    }
+    setMagnetLock(true);   // возвращаем в ON
+  };
+
+  const handleFixationSwitchChange = (checked: boolean) => {
     setFixEnabled(checked);
   };
 
@@ -28,13 +49,22 @@ const FixationSection: React.FC<Props> = ({ onFixationChange }) => {
 
   return (
     <div className="space-y-4">
-      {/* Main toggle */}
-      <label className="flex items-center justify-between mb-3">
-        <span className="font-medium">Фіксація в багажнику</span>
-        <Switch checked={fixEnabled} onCheckedChange={handleSwitchChange} />
+      {/* Magnetic system toggle - always first */}
+      <label className="flex items-center justify-between mb-4">
+        <span className="font-medium">Магнітна система фіксації кришки</span>
+        <Switch 
+          checked={magnetLock} 
+          onCheckedChange={handleMagnetSwitchChange} 
+        />
       </label>
 
-      {/* Options (only show if enabled) */}
+      {/* Trunk fixation toggle */}
+      <label className="flex items-center justify-between mb-3">
+        <span className="font-medium">Фіксація в багажнику</span>
+        <Switch checked={fixEnabled} onCheckedChange={handleFixationSwitchChange} />
+      </label>
+
+      {/* Options (only show if fixation enabled) */}
       {fixEnabled && (
         <div className="space-y-3 pl-4 border-l-2 border-gray-100">
           <RadioItem 
