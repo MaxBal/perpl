@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useModal } from '../useModal';
 import { NavItem } from './types';
+import { InfoModal } from '../InfoModal';
+import { DeliveryTab } from '../tabs/DeliveryTab';
 
 interface Props {
   items: NavItem[];
@@ -8,16 +10,17 @@ interface Props {
 
 const CircularNav: React.FC<Props> = ({ items }) => {
   const modal = useModal();
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
 
   const handleNavItemClick = (label: string) => {
+    // Only handle "Доставка" with InfoModal for now
+    if (label === 'Доставка') {
+      setInfoModalOpen(true);
+      return;
+    }
+
+    // Keep existing modal logic for other items
     const modalContent = {
-      'Доставка': (
-        <div className="bg-gray-100 rounded-lg p-4">
-          <p className="text-gray-700">
-            Доставка здійснюється по всій Україні через Нову Пошту. Термін доставки 1–3 робочих дні. Вартість доставки згідно тарифів перевізника.
-          </p>
-        </div>
-      ),
       'Оплата': (
         <div className="bg-gray-100 rounded-lg p-4">
           <p className="text-gray-700">
@@ -76,30 +79,49 @@ const CircularNav: React.FC<Props> = ({ items }) => {
     }
   };
 
+  // Prepare tabs for InfoModal (only delivery for now)
+  const deliveryTabs = [
+    {
+      id: 'delivery',
+      label: 'Доставка',
+      node: <DeliveryTab />
+    }
+  ];
+
   return (
-    <div className="flex gap-4">
-      {items.map(item => (
-        <button
-          key={item.label}
-          onClick={() => handleNavItemClick(item.label)}
-          className="flex flex-col items-center gap-2"
-        >
-          <div className="relative w-14 h-14">
-            <div className="absolute inset-0 rounded-full border-[3px] border-[#e8e8e8]" />
-            <div className="absolute inset-[3px] bg-white rounded-full">
-              <div className="absolute inset-[3px] rounded-full overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.label}
-                  className="w-full h-full object-cover"
-                />
+    <>
+      <div className="flex gap-4">
+        {items.map(item => (
+          <button
+            key={item.label}
+            onClick={() => handleNavItemClick(item.label)}
+            className="flex flex-col items-center gap-2"
+          >
+            <div className="relative w-14 h-14">
+              <div className="absolute inset-0 rounded-full border-[3px] border-[#e8e8e8]" />
+              <div className="absolute inset-[3px] bg-white rounded-full">
+                <div className="absolute inset-[3px] rounded-full overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.label}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <span className="text-xs text-gray-600">{item.label}</span>
-        </button>
-      ))}
-    </div>
+            <span className="text-xs text-gray-600">{item.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* InfoModal for Delivery */}
+      <InfoModal
+        open={infoModalOpen}
+        onOpenChange={setInfoModalOpen}
+        tabs={deliveryTabs}
+        defaultTab="delivery"
+      />
+    </>
   );
 };
 
