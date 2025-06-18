@@ -14,6 +14,7 @@ interface Props {
   onOpenChange: (v: boolean) => void;
   tabs: TabSpec[];
   defaultTab: string;
+  title?: string;           // показываем только ≥ sm
 }
 
 export const InfoModal: React.FC<Props> = ({
@@ -21,37 +22,45 @@ export const InfoModal: React.FC<Props> = ({
   onOpenChange,
   tabs,
   defaultTab,
+  title,
 }) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent
       className={`
-        /* ───── mobile bottom-sheet ───── */
+        /* ───────── Mobile ≤ 640px ───────── */
         fixed inset-x-0 bottom-0
         w-screen max-w-none
         rounded-t-2xl
         transform-none
         max-h-[80vh] overflow-y-auto
-        px-4 pt-3 pb-6
-        /* ───── desktop ───── */
+        px-4 py-6
+        /* ───────── Desktop ≥ sm ───────── */
         sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2
         sm:w-[90vw] sm:max-w-lg
-        sm:rounded-xl sm:px-6 sm:pt-6
+        sm:rounded-xl
+        sm:max-h-none sm:overflow-visible
+        sm:p-6
       `}
     >
       <VisuallyHidden.Root>
-        <DialogTitle>Modal</DialogTitle>
+        <DialogTitle>{title || "Modal"}</DialogTitle>
       </VisuallyHidden.Root>
 
       <Tabs defaultValue={defaultTab} className="w-full">
-        {/* Header: только вкладки + крестик */}
+        {/* Header: Tabs + Close */}
         <div className="flex justify-between items-center mb-4">
-          <TabsList className="p-0 gap-6">
-            {tabs.map((t) => (
-              <TabsTrigger key={t.id} value={t.id}>
-                {t.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div>
+            {/* Заголовок показываем только на desktop */}
+            {title && <h2 className="hidden sm:block text-2xl font-bold mb-2">{title}</h2>}
+
+            <TabsList className="p-0 gap-6">
+              {tabs.map((t) => (
+                <TabsTrigger key={t.id} value={t.id}>
+                  {t.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
           <DialogClose asChild>
             <button className="p-1 rounded-full hover:bg-muted/50">
