@@ -23,9 +23,9 @@ export const Badge: React.FC<Props> = ({
   // Разбиваем label на слова по пробелу
   const parts = label.split(' ');
 
-  // Новые стили: прозрачный фон, тонкая черная рамка, черный текст
+  // Стили как у табов: скругления [12px], прозрачный фон, тонкая черная рамка
   const baseClass =
-    'inline-flex items-center gap-1.5 px-2 py-0.5 text-[13px] font-medium rounded-md border border-black bg-transparent text-black select-none';
+    'inline-flex items-center gap-1.5 px-2 py-0.5 text-[13px] font-medium rounded-[12px] border border-black bg-transparent text-black select-none';
 
   // Рендерим каждое слово: если в highlightWords — "#00d3b1", иначе — "text-black"
   const renderPart = (text: string, idx: number) => {
