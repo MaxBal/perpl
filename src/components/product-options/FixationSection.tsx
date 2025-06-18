@@ -1,26 +1,23 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { RadioItem } from '@/components/ui/radio-group';
-import { useToast } from '@/components/ui/toast';   // ← назад на toast.ts
+import { useToast } from '@/components/ui/toast';
 
 interface Props {
-  onFixationChange: (
-    enabled: boolean,
-    variant: 'floor' | 'wall' | 'both',
-    price: number
-  ) => void;
+  onFixationChange: (enabled: boolean, variant: 'floor' | 'wall' | 'both', price: number) => void;
 }
 
 const FixationSection: React.FC<Props> = ({ onFixationChange }) => {
-  const [magnetLock, setMagnetLock] = useState(true);
+  const [magnetLock, setMagnetLock] = useState(true);   // всегда true
   const [fixEnabled, setFixEnabled] = useState(false);
   const [fixVariant, setFixVariant] = useState<'floor' | 'wall' | 'both'>('floor');
   const { toast } = useToast();
 
-  const fixPrice = !fixEnabled ? 0 : fixVariant === 'both' ? 80 : 0;
+  // Calculate price
+  const fixPrice = !fixEnabled ? 0 : (fixVariant === 'both' ? 80 : 0);
 
-  useEffect(() => {
+  // Notify parent when state changes
+  React.useEffect(() => {
     onFixationChange(fixEnabled, fixVariant, fixPrice);
   }, [fixEnabled, fixVariant, fixPrice, onFixationChange]);
 
@@ -36,35 +33,61 @@ const FixationSection: React.FC<Props> = ({ onFixationChange }) => {
 ⠀
 Магніти — це акуратність, зручність і довговічність.
 Тому опція з липучками просто не передбачена.`,
-        duration: Infinity,     // не закривається автоматично
+        duration: 8000,
       });
     }
-    setMagnetLock(true);
+    setMagnetLock(true);   // возвращаем в ON
+  };
+
+  const handleFixationSwitchChange = (checked: boolean) => {
+    setFixEnabled(checked);
+  };
+
+  const handleVariantChange = (variant: 'floor' | 'wall' | 'both') => {
+    setFixVariant(variant);
   };
 
   return (
     <div className="space-y-4">
+      {/* Magnetic system toggle - always first */}
       <label className="flex items-center justify-between mb-4">
         <span className="font-medium">Магнітна система фіксації кришки</span>
-        <Switch checked={magnetLock} onCheckedChange={handleMagnetSwitchChange} />
+        <Switch 
+          checked={magnetLock} 
+          onCheckedChange={handleMagnetSwitchChange} 
+        />
       </label>
 
+      {/* Trunk fixation toggle */}
       <label className="flex items-center justify-between mb-3">
         <span className="font-medium">Фіксація в багажнику</span>
-        <Switch checked={fixEnabled} onCheckedChange={setFixEnabled} />
+        <Switch checked={fixEnabled} onCheckedChange={handleFixationSwitchChange} />
       </label>
 
+      {/* Options (only show if fixation enabled) */}
       {fixEnabled && (
         <div className="space-y-3 pl-4 border-l-2 border-gray-100">
-          <RadioItem value="floor" checked={fixVariant === 'floor'} onCheckedChange={() => setFixVariant('floor')}>
+          <RadioItem 
+            value="floor" 
+            checked={fixVariant === 'floor'} 
+            onCheckedChange={() => handleVariantChange('floor')}
+          >
             на дні 0 ₴
           </RadioItem>
-
-          <RadioItem value="wall" checked={fixVariant === 'wall'} onCheckedChange={() => setFixVariant('wall')}>
+          
+          <RadioItem 
+            value="wall" 
+            checked={fixVariant === 'wall'} 
+            onCheckedChange={() => handleVariantChange('wall')}
+          >
             на стінці 0 ₴
           </RadioItem>
-
-          <RadioItem value="both" checked={fixVariant === 'both'} onCheckedChange={() => setFixVariant('both')}>
+          
+          <RadioItem 
+            value="both" 
+            checked={fixVariant === 'both'} 
+            onCheckedChange={() => handleVariantChange('both')}
+          >
             дно + стінка 80 ₴
           </RadioItem>
         </div>
