@@ -13,8 +13,13 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPr
 
   return (
     <div className="flex flex-col gap-3">
+      {/* Shipping text before H1 */}
+      <p className="mb-2 text-body-sm font-medium text-black mt-6 md:mt-0">
+        Відправимо сьогодні після 18:00
+      </p>
+
       {/* Main title */}
-      <h1 className="text-[25.6px] mobile:text-[25.6px] font-semibold leading-tight mt-6 md:mt-0">
+      <h1 className="text-[25.6px] mobile:text-[25.6px] font-semibold leading-tight">
         Автокейс з&nbsp;лого&nbsp;Toyota
       </h1>
 
