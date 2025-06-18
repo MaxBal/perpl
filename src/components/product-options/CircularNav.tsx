@@ -1,5 +1,5 @@
 import React from 'react';
-import { Truck, CreditCard, Repeat, Tag, MessageCircle } from 'lucide-react';
+import { Truck, CreditCard, RotateCcw, Percent, Star } from 'lucide-react';
 import { useModal } from '../useModal';
 import { NavItem } from './types';
 
@@ -10,7 +10,7 @@ interface Props {
 const CircularNav: React.FC<Props> = ({ items }) => {
   const modal = useModal();
 
-  const ICONS = [Truck, CreditCard, Repeat, Tag, MessageCircle];
+  const ICONS = [Truck, CreditCard, RotateCcw, Percent, Star];
   const LABELS = ['Доставка', 'Оплата', 'Обмін', 'Акції', 'Відгуки'];
 
   const handleNavItemClick = (label: string) => {
@@ -89,7 +89,7 @@ const CircularNav: React.FC<Props> = ({ items }) => {
           className="flex flex-col items-center gap-2"
         >
           <div className="p-3 bg-[#f2f4f6] rounded-full">
-            <Icon className="h-6 w-6 text-black" />
+            <Icon className="h-6 w-6 text-gray-600" />
           </div>
           <span className="text-xs text-gray-600">{LABELS[index]}</span>
         </button>
