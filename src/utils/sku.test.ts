@@ -1,48 +1,59 @@
 import { buildSku, calculatePrice } from './sku';
 
 describe('buildSku', () => {
-  test('should generate SKU without logo and fixation', () => {
+  test('should generate SKU without logo and with fixation', () => {
+    const result = buildSku({
+      size: 'L',
+      logoMaterial: 'none',
+      logoBrand: '',
+      fixVariant: 'both'
+    });
+    
+    expect(result).toBe('арт. L2.0.без-лого.дно+стінка');
+  });
+
+  test('should generate SKU with steel logo and no fixation', () => {
+    const result = buildSku({
+      size: 'M',
+      logoMaterial: 'steel',
+      logoBrand: 'toyota',
+      fixVariant: 'none'
+    });
+    
+    expect(result).toBe('арт. M2.0.лого-метал.toyota.без-фіксації');
+  });
+
+  test('should generate SKU with brass logo and floor fixation', () => {
+    const result = buildSku({
+      size: 'S',
+      logoMaterial: 'brass',
+      logoBrand: 'Mercedes',
+      fixVariant: 'floor'
+    });
+    
+    expect(result).toBe('арт. S2.0.лого-латунь.mercedes.дно');
+  });
+
+  test('should generate SKU with wall fixation', () => {
     const result = buildSku({
       size: 'XL',
+      logoMaterial: 'steel',
+      logoBrand: 'BMW',
+      fixVariant: 'wall'
+    });
+    
+    expect(result).toBe('арт. XL2.0.лого-метал.bmw.стінка');
+  });
+
+  test('should generate SKU without logo and no fixation', () => {
+    const result = buildSku({
+      size: 'L',
       logoMaterial: 'none',
       logoBrand: '',
       fixVariant: 'none'
     });
     
-    expect(result).toBe('арт. XL2.0.без-лого.none.без-фіксації');
-  });
-
-  test('should generate SKU with steel logo and combined fixation', () => {
-    const result = buildSku({
-      size: 'L',
-      logoMaterial: 'steel',
-      logoBrand: 'toyota',
-      fixVariant: 'both'
-    });
-    
-    expect(result).toBe('арт. L2.0.лого-метал.toyota.дно+стінка');
-  });
-
-  test('should generate SKU with brass logo and floor fixation', () => {
-    const result = buildSku({
-      size: 'M',
-      logoMaterial: 'brass',
-      logoBrand: 'mercedes',
-      fixVariant: 'floor'
-    });
-    
-    expect(result).toBe('арт. M2.0.лого-латунь.mercedes.дно');
-  });
-
-  test('should generate SKU with wall fixation', () => {
-    const result = buildSku({
-      size: 'S',
-      logoMaterial: 'steel',
-      logoBrand: 'bmw',
-      fixVariant: 'wall'
-    });
-    
-    expect(result).toBe('арт. S2.0.лого-метал.bmw.стінка');
+    expect(result).toBe('арт. L2.0.без-лого.без-фіксації');
   });
 });
 

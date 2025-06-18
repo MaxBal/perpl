@@ -8,16 +8,23 @@ interface SkuParams {
 }
 
 export function buildSku({ size, logoMaterial, logoBrand, fixVariant }: SkuParams): string {
-  const logoKey = logoMaterial === 'none' ? 'без-лого' : 
-                  logoMaterial === 'steel' ? 'лого-метал' : 'лого-латунь';
-  
-  const fixKey = fixVariant === 'none' ? 'без-фіксації' :
-                 fixVariant === 'floor' ? 'дно' :
-                 fixVariant === 'wall' ? 'стінка' : 'дно+стінка';
-  
-  const brandPart = logoBrand || 'none';
-  
-  return `арт. ${size}2.0.${logoKey}.${brandPart}.${fixKey}`;
+  const base = `${size}2.0`;
+
+  const fixKey = {
+    none: 'без-фіксації',
+    floor: 'дно',
+    wall: 'стінка',
+    both: 'дно+стінка',
+  }[fixVariant];
+
+  if (logoMaterial === 'none') {
+    //   ➜  L2.0.без-лого.дно+стінка
+    return `арт. ${base}.без-лого.${fixKey}`;
+  }
+
+  const matKey = logoMaterial === 'steel' ? 'лого-метал' : 'лого-латунь';
+  //   ➜  M2.0.лого-метал.toyota.без-фіксації
+  return `арт. ${base}.${matKey}.${logoBrand.toLowerCase()}.${fixKey}`;
 }
 
 export function calculatePrice(

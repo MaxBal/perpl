@@ -54,7 +54,7 @@ export const FixationSelector: React.FC<Props> = ({
           className="inline-flex items-center text-gray-900 underline hover:no-underline"
         >
           <InfoBadge />
-          Детальніше про фіксацію
+          Детальніше про фіксацію в багажнику
         </button>
       </div>
     </div>
