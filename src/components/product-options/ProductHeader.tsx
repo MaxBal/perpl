@@ -15,13 +15,13 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, fixatio
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Badges above H1 - mobile spacing added */}
+      {/* Badges above H1 - mobile spacing added and increased by 5% */}
       <div className="flex gap-3 mt-6 md:mt-0 flex-wrap">
-        <span className="inline-flex items-center gap-1.5 bg-black text-white text-xs font-medium px-2 py-1 rounded-full transform scale-105">
+        <span className="inline-flex items-center gap-1.5 bg-black text-white text-xs font-medium px-2 py-1 rounded-full transform scale-110 md:scale-105">
           <Magnet className="h-4 w-4 text-[#00d1b3] animate-pulse" strokeWidth={1.5} />
           Магнітна система
         </span>
-        <span className="inline-flex items-center gap-1.5 bg-[#fe5e03]/20 text-[#fe5e03] text-xs font-medium px-2 py-1 rounded-full transform scale-105">
+        <span className="inline-flex items-center gap-1.5 bg-[#fe5e03]/20 text-[#fe5e03] text-xs font-medium px-2 py-1 rounded-full transform scale-110 md:scale-105">
           <Rocket className="h-4 w-4" strokeWidth={1.5} />
           В наявності
         </span>
