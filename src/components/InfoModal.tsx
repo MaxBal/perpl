@@ -14,7 +14,7 @@ interface Props {
   onOpenChange: (v: boolean) => void;
   tabs: TabSpec[];
   defaultTab: string;
-  title?: string;
+  title?: string;           // показываем только ≥ sm
 }
 
 export const InfoModal: React.FC<Props> = ({
@@ -27,34 +27,40 @@ export const InfoModal: React.FC<Props> = ({
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent
       className={`
-        w-screen max-w-none sm:w-[90vw] sm:max-w-lg
-        left-0 sm:left-1/2
-        -translate-x-0 sm:-translate-x-1/2
-        top-1/2 -translate-y-1/2
-        rounded-none sm:rounded-xl
-        bg-white
-        px-4 py-6 sm:p-6
+        /* ───────── Mobile ≤ 640px ───────── */
+        fixed inset-x-0 bottom-0
+        w-screen max-w-none
+        rounded-t-2xl
+        transform-none
+        max-h-[80vh] overflow-y-auto
+        px-4 py-6
+        /* ───────── Desktop ≥ sm ───────── */
+        sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2
+        sm:w-[90vw] sm:max-w-lg
+        sm:rounded-xl
+        sm:max-h-none sm:overflow-visible
+        sm:p-6
       `}
     >
       <VisuallyHidden.Root>
         <DialogTitle>{title || "Modal"}</DialogTitle>
       </VisuallyHidden.Root>
-      
-      {/* заголовок для «Детально про дизайни» (desktop only) */}
-      {title && (
-        <h2 className="mb-4 text-2xl font-bold sm:hidden">{title}</h2>
-      )}
 
       <Tabs defaultValue={defaultTab} className="w-full">
-        {/* Header: вкладки + крестик */}
+        {/* Header: Tabs + Close */}
         <div className="flex justify-between items-center mb-4">
-          <TabsList className="p-0 gap-6">
-            {tabs.map((t) => (
-              <TabsTrigger key={t.id} value={t.id}>
-                {t.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div>
+            {/* Заголовок показываем только на desktop */}
+            {title && <h2 className="hidden sm:block text-2xl font-bold mb-2">{title}</h2>}
+
+            <TabsList className="p-0 gap-6">
+              {tabs.map((t) => (
+                <TabsTrigger key={t.id} value={t.id}>
+                  {t.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
           <DialogClose asChild>
             <button className="p-1 rounded-full hover:bg-muted/50">
@@ -65,7 +71,7 @@ export const InfoModal: React.FC<Props> = ({
 
         {/* Контент вкладок */}
         {tabs.map((t) => (
-          <TabsContent key={t.id} value={t.id} className="text-left">
+          <TabsContent key={t.id} value={t.id} className="text-left space-y-4">
             {t.node}
           </TabsContent>
         ))}
