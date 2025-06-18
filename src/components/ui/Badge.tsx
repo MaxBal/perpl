@@ -23,17 +23,17 @@ export const Badge: React.FC<Props> = ({
   // Разбиваем label на слова по пробелу
   const parts = label.split(' ');
 
-  // Общие стили: черный фон, скругления, отступы, белый текст по умолчанию
+  // Новые стили: прозрачный фон, черная рамка, черный текст по умолчанию
   const baseClass =
-    'inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[13px] bg-black select-none';
+    'inline-flex items-center gap-1.5 px-2 py-0.5 text-[13px] font-medium rounded-md border border-black/80 text-black bg-transparent select-none';
 
-  // Рендерим каждое слово: если в highlightWords — "#00d3b1", иначе — "text-white"
+  // Рендерим каждое слово: если в highlightWords — "#00d3b1", иначе — "text-black"
   const renderPart = (text: string, idx: number) => {
     const isHighlighted = highlightWords.includes(text);
     return (
       <React.Fragment key={idx}>
         {idx > 0 && ' '}
-        <span className={isHighlighted ? 'text-[#00d3b1]' : 'text-white'}>
+        <span className={isHighlighted ? 'text-[#00d3b1]' : 'text-black'}>
           {text}
         </span>
       </React.Fragment>
