@@ -21,7 +21,8 @@ export function useProductOptions({ basePrice }: UseProductOptionsProps) {
   // Update SKU and price when options change
   useEffect(() => {
     const newSku = buildSku({
-      design: state.design,
+      designName: 'Carzo',
+      designVersion: '1.0',
       size: state.size,
       logoMaterial: state.logoMaterial,
       logoBrand: state.logoBrand,
