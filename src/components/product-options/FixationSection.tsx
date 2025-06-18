@@ -44,7 +44,7 @@ const FixationSection: React.FC<Props> = ({ onFixationChange }) => {
 ⠀
 Магніти — це акуратність, зручність і довговічність.
 Тому опція з липучками просто не передбачена.`,
-        duration: Infinity, // ← НЕ закривається автоматично
+        duration: 0, // тост НЕ закрывается сам
       });
     }
     setMagnetLock(true); // повертаємо у ввімкнений стан

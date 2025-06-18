@@ -3,6 +3,11 @@ import * as React from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/cn";
 
+/**
+ * @property duration  В миллисекундах.  
+ *  – любое положительное число → авто-закрытие  
+ *  – 0, undefined или Infinity → тост живёт, пока его не закроют вручную
+ */
 interface ToastProps {
   title: string;
   description?: string;
@@ -24,9 +29,12 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     
     setToasts(prev => [...prev, newToast]);
     
-    setTimeout(() => {
-      setToasts(prev => prev.filter(t => t.id !== id));
-    }, props.duration || 5000);
+    // Авто-закрываем ТОЛЬКО если duration > 0 и не Infinity
+    if (props.duration && isFinite(props.duration) && props.duration > 0) {
+      setTimeout(() => {
+        setToasts(prev => prev.filter(t => t.id !== id));
+      }, props.duration);
+    }
   }, []);
 
   const removeToast = (id: string) => {
