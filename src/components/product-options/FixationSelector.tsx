@@ -1,41 +1,38 @@
 import React from 'react';
 import { useModal } from '../useModal';
 import { InfoBadge } from '../ui/InfoBadge';
+import FixationSection from './FixationSection';
 
 interface Props {
   fixationMode: 'none' | 'with';
   setFixationMode: (mode: 'none' | 'with') => void;
   subOptions: string[];
   toggleSubOption: (option: string) => void;
+  onPriceChange?: (price: number) => void;
 }
-
-const FIX_OPTS = [
-  { id:'none',    label:'Без фіксації', price:0 },
-  { id:'floor',   label:'на дні',       price:0 },
-  { id:'wall',    label:'на стінці',    price:0 },
-  { id:'combo',   label:'дно + стінка', price:80 },
-];
 
 export const FixationSelector: React.FC<Props> = ({
   fixationMode,
   setFixationMode,
   subOptions,
-  toggleSubOption
+  toggleSubOption,
+  onPriceChange
 }) => {
   const modal = useModal();
-  const [selectedOption, setSelectedOption] = React.useState('none');
 
-  const handleOptionChange = (optionId: string) => {
-    setSelectedOption(optionId);
-    if (optionId === 'none') {
-      setFixationMode('none');
-      // Clear all sub options
-      subOptions.forEach(opt => toggleSubOption(opt));
-    } else {
-      setFixationMode('with');
-      // Clear previous selections and set new one
-      subOptions.forEach(opt => toggleSubOption(opt));
-      toggleSubOption(optionId);
+  const handleFixationChange = (enabled: boolean, variant: 'floor' | 'wall' | 'both', price: number) => {
+    // Update fixation mode
+    setFixationMode(enabled ? 'with' : 'none');
+    
+    // Clear previous selections and set new one
+    subOptions.forEach(opt => toggleSubOption(opt));
+    if (enabled) {
+      toggleSubOption(variant);
+    }
+    
+    // Notify parent about price change
+    if (onPriceChange) {
+      onPriceChange(price);
     }
   };
 
@@ -53,8 +50,8 @@ export const FixationSelector: React.FC<Props> = ({
         <div className="bg-gray-100 rounded-lg p-4">
           <h3 className="font-medium mb-2">Варіанти фіксації:</h3>
           <ul className="list-disc list-inside text-gray-700 space-y-1">
-            <li>На дні - базове кріплення до підлоги багажника</li>
-            <li>На стінці - кріплення до бокової стінки</li>
+            <li>На дні - базове кріплення до підлоги багажника (безкоштовно)</li>
+            <li>На стінці - кріплення до бокової стінки (безкоштовно)</li>
             <li>Комбіноване - максимальна стабільність з доплатою 80₴</li>
           </ul>
         </div>
@@ -64,43 +61,7 @@ export const FixationSelector: React.FC<Props> = ({
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        {FIX_OPTS.map(option => (
-          <label
-            key={option.id}
-            className={`
-              flex items-center justify-between px-4 h-12 rounded-[12px] cursor-pointer transition-all
-              ${selectedOption === option.id
-                ? 'bg-white border-2 border-brand'
-                : 'bg-white border border-gray-200 hover:bg-gray-50'
-              }
-            `}
-          >
-            <span className="text-sm">
-              {option.label} {option.price > 0 ? `${option.price} ₴` : '0 ₴'}
-            </span>
-            <div className="relative">
-              <input
-                type="radio"
-                name="fixation"
-                value={option.id}
-                checked={selectedOption === option.id}
-                onChange={() => handleOptionChange(option.id)}
-                className="sr-only"
-              />
-              <div className={`w-5 h-5 rounded-full border-2 transition-colors ${
-                selectedOption === option.id 
-                  ? 'border-brand bg-brand' 
-                  : 'border-gray-300 bg-white'
-              }`}>
-                {selectedOption === option.id && (
-                  <div className="w-2 h-2 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-                )}
-              </div>
-            </div>
-          </label>
-        ))}
-      </div>
+      <FixationSection onFixationChange={handleFixationChange} />
 
       <div className="mt-14 md:mt-8">
         <button

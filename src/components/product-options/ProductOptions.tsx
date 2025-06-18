@@ -54,13 +54,15 @@ const ProductOptions: React.FC<Props> = ({
   fixationPrice = 0,
   onBuyNow
 }) => {
+  const [dynamicFixationPrice, setDynamicFixationPrice] = React.useState(0);
+
   // Calculate logo price based on material
   const logoPrice = logoMaterial === 'steel' ? 280 : 200;
   
   // Calculate total price
   const basePrice = product.price;
   const totalLogoPrice = logo ? logoPrice : 0;
-  const totalPrice = basePrice + totalLogoPrice + fixationPrice;
+  const totalPrice = basePrice + totalLogoPrice + dynamicFixationPrice;
 
   // Update fixation prop when mode changes
   React.useEffect(() => {
@@ -69,6 +71,10 @@ const ProductOptions: React.FC<Props> = ({
 
   const handleBuyNow = () => {
     onBuyNow();
+  };
+
+  const handleFixationPriceChange = (price: number) => {
+    setDynamicFixationPrice(price);
   };
 
   return (
@@ -94,6 +100,7 @@ const ProductOptions: React.FC<Props> = ({
             setFixationMode={setFixationMode}
             fixationSub={fixationSub}
             toggleSubOption={toggleSubOption}
+            onFixationPriceChange={handleFixationPriceChange}
           />
           
           {/* Buy button directly under tabs */}
@@ -136,6 +143,7 @@ const ProductOptions: React.FC<Props> = ({
               setFixationMode={setFixationMode}
               fixationSub={fixationSub}
               toggleSubOption={toggleSubOption}
+              onFixationPriceChange={handleFixationPriceChange}
             />
           </div>
 

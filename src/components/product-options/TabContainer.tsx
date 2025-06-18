@@ -24,6 +24,7 @@ interface Props {
   setFixationMode: (mode: 'none' | 'with') => void;
   fixationSub: string[];
   toggleSubOption: (option: string) => void;
+  onFixationPriceChange?: (price: number) => void;
 }
 
 const TabContainer: React.FC<Props> = ({
@@ -38,6 +39,7 @@ const TabContainer: React.FC<Props> = ({
   setFixationMode,
   fixationSub,
   toggleSubOption,
+  onFixationPriceChange,
 }) => {
   const [activeTab, setActiveTab] = useState<'design' | 'size' | 'logo' | 'fixation'>('design');
 
@@ -82,6 +84,7 @@ const TabContainer: React.FC<Props> = ({
           setFixationMode={setFixationMode}
           subOptions={fixationSub}
           toggleSubOption={toggleSubOption}
+          onPriceChange={onFixationPriceChange}
         />
       )}
     </div>
