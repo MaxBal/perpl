@@ -14,11 +14,14 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPr
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Shipping notification with blinking rocket icon and gray background */}
-      <div className="inline-flex items-center gap-1 rounded-lg px-3 py-1 text-sm font-light text-gray-700 mt-6 md:mt-0" style={{ backgroundColor: '#eff1f3' }}>
-        <Rocket className="w-4 h-4 text-[#00d1b3] icon-blink" />
-        <span>Відправимо сьогодні після 18:00</span>
-      </div>
+      {/* Updated notification badge */}
+      <p className="inline-flex items-center gap-1 px-2 py-0.5
+                     text-body-sm font-medium
+                     rounded-md border border-black/80
+                     bg-transparent w-fit mt-6 md:mt-0">
+        <Rocket className="w-4 h-4" />
+        Відправимо сьогодні після 18:00
+      </p>
 
       {/* Main title */}
       <h1 className="text-[25.6px] mobile:text-[25.6px] font-semibold leading-tight">
