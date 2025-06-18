@@ -1,4 +1,5 @@
 import React from 'react';
+import { Truck } from 'lucide-react';
 import { ProductData } from './types';
 
 interface Props {
@@ -13,10 +14,11 @@ const ProductHeader: React.FC<Props> = ({ product, hasLogo, hasFixation, totalPr
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Shipping text before H1 */}
-      <p className="mb-2 text-body-sm font-medium text-black mt-6 md:mt-0">
-        Відправимо сьогодні після 18:00
-      </p>
+      {/* Shipping notification with border, icon and animation */}
+      <div className="inline-flex items-center gap-1 rounded-full border border-[#00d1b3] px-3 py-1 text-sm font-light text-[#00d1b3] blink mt-6 md:mt-0">
+        <Truck className="w-4 h-4 text-[#00d1b3]" />
+        <span>Відправимо сьогодні після 18:00</span>
+      </div>
 
       {/* Main title */}
       <h1 className="text-[25.6px] mobile:text-[25.6px] font-semibold leading-tight">
