@@ -11,14 +11,14 @@ export function buildSku({ size, logoMaterial, logoBrand, fixVariant }: SkuParam
   const base = `${size}2.0`;
 
   const fixKey = {
-    none: 'без-фіксації',
-    floor: 'дно',
-    wall: 'стінка',
-    both: 'дно+стінка',
+    none:  'без-фіксації',
+    floor: 'фікс-на-дні',
+    wall:  'фікс-на-стінці',
+    both:  'фікс-дно+стінка',
   }[fixVariant];
 
   if (logoMaterial === 'none') {
-    //   ➜  L2.0.без-лого.дно+стінка
+    //   ➜  L2.0.без-лого.фікс-дно+стінка
     return `арт. ${base}.без-лого.${fixKey}`;
   }
 

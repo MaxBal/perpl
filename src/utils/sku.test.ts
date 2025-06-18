@@ -9,7 +9,7 @@ describe('buildSku', () => {
       fixVariant: 'both'
     });
     
-    expect(result).toBe('арт. L2.0.без-лого.дно+стінка');
+    expect(result).toBe('арт. L2.0.без-лого.фікс-дно+стінка');
   });
 
   test('should generate SKU with steel logo and no fixation', () => {
@@ -31,7 +31,7 @@ describe('buildSku', () => {
       fixVariant: 'floor'
     });
     
-    expect(result).toBe('арт. S2.0.лого-латунь.mercedes.дно');
+    expect(result).toBe('арт. S2.0.лого-латунь.mercedes.фікс-на-дні');
   });
 
   test('should generate SKU with wall fixation', () => {
@@ -42,7 +42,7 @@ describe('buildSku', () => {
       fixVariant: 'wall'
     });
     
-    expect(result).toBe('арт. XL2.0.лого-метал.bmw.стінка');
+    expect(result).toBe('арт. XL2.0.лого-метал.bmw.фікс-на-стінці');
   });
 
   test('should generate SKU without logo and no fixation', () => {
