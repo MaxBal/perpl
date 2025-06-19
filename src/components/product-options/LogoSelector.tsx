@@ -5,9 +5,9 @@ import { RadioItem } from '../ui/radio-group';
 import { Select, SelectItem } from '../ui/select';
 import { LOGOS } from '../../data/logos';
 import LogoPreview from './LogoPreview';
-import { UnifiedModal } from '../ui/UnifiedModal';
+import { Camera } from 'lucide-react';
 
-// Logo Modal Component using UnifiedModal
+// Simple Logo Modal Component
 const LogoModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
@@ -15,28 +15,38 @@ const LogoModal: React.FC<{
   brandName: string;
   image: string;
 }> = ({ isOpen, onClose, material, brandName, image }) => {
+  if (!isOpen) return null;
+
   const materialText = material === 'steel' ? 'нержавіюча сталь' : 'латунь';
   const title = `Лого ${brandName} (${materialText})`;
 
   return (
-    <UnifiedModal
-      open={isOpen}
-      onOpenChange={onClose}
-      title={title}
-      className="max-w-2xl"
-    >
-      <div className="aspect-video w-full rounded-xl overflow-hidden shadow mb-6">
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover"
-        />
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
+      <div className="bg-white w-full max-h-[80vh] md:max-w-2xl md:rounded-lg overflow-y-auto">
+        <div className="p-4 border-b flex justify-between items-center">
+          <h2 className="text-lg font-semibold">{title}</h2>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="p-4">
+          <div className="aspect-video w-full rounded-xl overflow-hidden shadow mb-6">
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <p className="text-sm text-gray-600">
+            Приклад розміщення логотипу {brandName} з матеріалу "{materialText}" на автокейсі. 
+            Логотип виготовляється з високоякісних матеріалів та має відмінну стійкість до зношування.
+          </p>
+        </div>
       </div>
-      <p className="text-sm text-gray-600">
-        Приклад розміщення логотипу {brandName} з матеріалу "{materialText}" на автокейсі. 
-        Логотип виготовляється з високоякісних матеріалів та має відмінну стійкість до зношування.
-      </p>
-    </UnifiedModal>
+    </div>
   );
 };
 
@@ -152,36 +162,47 @@ const LogoSelector: React.FC<Props> = ({
       )}
 
       {/* Info Modal */}
-      <UnifiedModal
-        open={isInfoModalOpen}
-        onOpenChange={setIsInfoModalOpen}
-        title="Детально про лого"
-      >
-        <div className="space-y-4">
-          <div className="bg-gray-100 rounded-lg p-4">
-            <h3 className="font-medium mb-2">Матеріали логотипу</h3>
-            <p className="text-gray-700">
-              Ми пропонуємо два преміальні матеріали для виготовлення логотипу: 
-              нержавіючу сталь та латунь. Обидва матеріали забезпечують довговічність 
-              та елегантний вигляд.
-            </p>
-          </div>
-          <div className="bg-gray-100 rounded-lg p-4">
-            <h3 className="font-medium mb-2">Нержавіюча сталь (+280 ₴)</h3>
-            <p className="text-gray-700">
-              Сучасний та стійкий матеріал з матовим покриттям. 
-              Ідеально підходить для мінімалістичного дизайну.
-            </p>
-          </div>
-          <div className="bg-gray-100 rounded-lg p-4">
-            <h3 className="font-medium mb-2">Латунь (+200 ₴)</h3>
-            <p className="text-gray-700">
-              Класичний матеріал з теплим золотистим відтінком. 
-              Надає автокейсу преміальний та розкішний вигляд.
-            </p>
+      {isInfoModalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
+          <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
+            <div className="p-4 border-b flex justify-between items-center">
+              <h2 className="text-lg font-semibold">Детально про лого</h2>
+              <button 
+                onClick={() => setIsInfoModalOpen(false)}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-4">
+              <div className="space-y-4">
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <h3 className="font-medium mb-2">Матеріали логотипу</h3>
+                  <p className="text-gray-700">
+                    Ми пропонуємо два преміальні матеріали для виготовлення логотипу: 
+                    нержавіючу сталь та латунь. Обидва матеріали забезпечують довговічність 
+                    та елегантний вигляд.
+                  </p>
+                </div>
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <h3 className="font-medium mb-2">Нержавіюча сталь (+280 ₴)</h3>
+                  <p className="text-gray-700">
+                    Сучасний та стійкий матеріал з матовим покриттям. 
+                    Ідеально підходить для мінімалістичного дизайну.
+                  </p>
+                </div>
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <h3 className="font-medium mb-2">Латунь (+200 ₴)</h3>
+                  <p className="text-gray-700">
+                    Класичний матеріал з теплим золотистим відтінком. 
+                    Надає автокейсу преміальний та розкішний вигляд.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </UnifiedModal>
+      )}
     </div>
   );
 };
