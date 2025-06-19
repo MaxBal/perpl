@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useModal } from '../useModal';
 import { ProductData, Size } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
-import SizeDetailsModal from '../SizeDetailsModal';
 
 interface Props {
   product: ProductData;
@@ -17,10 +17,27 @@ const SIZES = [
 ];
 
 const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const modal = useModal();
 
   const showSizeInfo = () => {
-    setIsModalOpen(true);
+    modal.open(
+      'Детально про розміри',
+      <div className="space-y-4">
+        {SIZES.map(size => (
+          <div key={size.id} className="bg-gray-100 rounded-lg p-4">
+            <h3 className="font-medium mb-2">Розмір {size.id}</h3>
+            <p className="text-gray-700">
+              Розміри: {size.dimensions}. Ідеально підходить для {
+                size.id === 'S' ? 'невеликих багажників' :
+                size.id === 'M' ? 'середніх багажників' :
+                size.id === 'L' ? 'великих багажників' :
+                'дуже великих багажників'
+              }.
+            </p>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -60,11 +77,6 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
           Детально про розміри
         </button>
       </div>
-
-      <SizeDetailsModal 
-        open={isModalOpen} 
-        onOpenChange={setIsModalOpen} 
-      />
     </div>
   );
 };
