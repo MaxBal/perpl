@@ -49,6 +49,12 @@ const LogoSelector: React.FC<Props> = ({
     setIsLogoModalOpen(true);
   };
 
+  const handleAddLogo = () => {
+    // Logic to add logo to cart or configuration
+    setIsLogoModalOpen(false);
+    console.log(`Adding ${logoMaterial} logo for ${logoBrand}`);
+  };
+
   return (
     <div className="space-y-4">
       {/* Logo Material Radio Group */}
@@ -103,7 +109,7 @@ const LogoSelector: React.FC<Props> = ({
         ) : null}
       </div>
 
-      {/* Separate Logo Modals */}
+      {/* Enhanced Logo Modals with Framer Motion */}
       {currentLogoData && (
         <>
           <LogoModalSteel
@@ -111,6 +117,7 @@ const LogoSelector: React.FC<Props> = ({
             onOpenChange={setIsLogoModalOpen}
             title={`Лого ${currentLogoData.name} (нержавіюча сталь)`}
             image={currentLogoData.imgSteel}
+            onAddLogo={handleAddLogo}
           />
           
           <LogoModalBrass
@@ -118,6 +125,7 @@ const LogoSelector: React.FC<Props> = ({
             onOpenChange={setIsLogoModalOpen}
             title={`Лого ${currentLogoData.name} (латунь)`}
             image={currentLogoData.imgBrass}
+            onAddLogo={handleAddLogo}
           />
         </>
       )}
