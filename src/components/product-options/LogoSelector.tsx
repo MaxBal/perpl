@@ -5,7 +5,7 @@ import { RadioItem } from '../ui/radio-group';
 import { Select, SelectItem } from '../ui/select';
 import { LOGOS } from '../../data/logos';
 import LogoPreview from './LogoPreview';
-import { LogoModalSteel, LogoModalBrass } from '../modals';
+import { LogoModal } from '../modals';
 
 interface Props {
   product: ProductData;
@@ -28,7 +28,7 @@ const LogoSelector: React.FC<Props> = ({
   logoBrand, 
   setLogoBrand 
 }) => {
-  const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
+  const [logoModalOpen, setLogoModalOpen] = useState(false);
 
   // Find current logo data
   const currentLogoData = LOGOS.find(l => l.slug === logoBrand);
@@ -45,16 +45,16 @@ const LogoSelector: React.FC<Props> = ({
   };
 
   const openLogoModal = useCallback(() => {
-    setIsLogoModalOpen(true);
+    setLogoModalOpen(true);
   }, []);
 
   const closeLogoModal = useCallback((open: boolean) => {
-    setIsLogoModalOpen(open);
+    setLogoModalOpen(open);
   }, []);
 
   const handleAddLogo = useCallback((material: "steel" | "brass") => {
     setLogoMaterial(material);
-    setIsLogoModalOpen(false);
+    setLogoModalOpen(false);
     console.log(`Adding ${material} logo for ${logoBrand}`);
   }, [setLogoMaterial, logoBrand]);
 
@@ -112,25 +112,20 @@ const LogoSelector: React.FC<Props> = ({
         ) : null}
       </div>
 
-      {/* Premium Logo Modals */}
-      {currentLogoData && (
-        <>
-          <LogoModalSteel
-            isOpen={logoMaterial === 'steel' && isLogoModalOpen}
-            onOpenChange={closeLogoModal}
-            brandName={currentLogoData.name}
-            steelImage={currentLogoData.imgSteel}
-            onAddLogo={handleAddLogo}
-          />
-          
-          <LogoModalBrass
-            isOpen={logoMaterial === 'brass' && isLogoModalOpen}
-            onOpenChange={closeLogoModal}
-            brandName={currentLogoData.name}
-            brassImage={currentLogoData.imgBrass}
-            onAddLogo={handleAddLogo}
-          />
-        </>
+      {/* Unified Logo Modal */}
+      {currentLogoData && logoMaterial !== 'none' && (
+        <LogoModal
+          open={logoModalOpen}
+          onOpenChange={setLogoModalOpen}
+          material={logoMaterial === "steel" ? "steel" : "brass"}
+          brandName={currentLogoData.name}
+          image={
+            logoMaterial === "steel"
+              ? currentLogoData.imgSteel
+              : currentLogoData.imgBrass
+          }
+          onAddLogo={handleAddLogo}
+        />
       )}
     </div>
   );
