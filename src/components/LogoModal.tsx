@@ -28,7 +28,7 @@ interface LogoModalProps {
   onAddLogo?: (material: "steel" | "brass") => void;
 }
 
-export const LogoModal: React.FC<LogoModalProps> = ({
+const LogoModal: React.FC<LogoModalProps> = ({
   open,
   onOpenChange,
   material,
@@ -36,12 +36,14 @@ export const LogoModal: React.FC<LogoModalProps> = ({
   image,
   onAddLogo,
 }) => {
-  /* ─── motion / a11y ─────────────────────────── */
+  /* ————————————————————————————————————————
+     Motion setup (+ reduced-motion fallback)
+  ———————————————————————————————————————— */
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const variants = prefersReducedMotion
+  const modalVariants = prefersReducedMotion
     ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
     : {
         initial: { opacity: 0, y: "100%" },
@@ -51,43 +53,50 @@ export const LogoModal: React.FC<LogoModalProps> = ({
 
   const transition = prefersReducedMotion
     ? { duration: 0.2 }
-    : { type: "spring", stiffness: 320, damping: 26 };
+    : { type: "spring", stiffness: 320, damping: 28 };
 
-  /* ─── callback ──────────────────────────────── */
+  /* ————————————————————————————————————————
+     Callbacks
+  ———————————————————————————————————————— */
   const handleAddLogo = useCallback(() => {
     onAddLogo?.(material);
   }, [onAddLogo, material]);
 
-  /* ─── derived ───────────────────────────────── */
+  /* ————————————————————————————————————————
+     Derived data
+  ———————————————————————————————————————— */
   const materialText = material === "steel" ? "нержавіюча сталь" : "латунь";
   const title = `Лого ${brandName} (${materialText})`;
 
-  /* ─── render ────────────────────────────────── */
+  /* ———————————————————————————————————————— */
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <AnimatePresence mode="wait">
         {open && (
           <DialogContent asChild>
             <motion.div
-              variants={variants}
+              variants={modalVariants}
               initial="initial"
               animate="animate"
               exit="exit"
               transition={transition}
+              /* ——————————————————————————————————
+                 Контейнер (моб = bottom sheet,
+                 десктоп = центровой card)
+              —————————————————————————————————— */
               className={cn(
                 "logo-modal-container",
-                /* mobile */
                 "sm:logo-modal-desktop"
               )}
             >
-              {/* скрытый title для SR */}
+              {/* Visually-hidden title for screen-readers */}
               <VisuallyHidden.Root>
                 <DialogTitle>{title}</DialogTitle>
               </VisuallyHidden.Root>
 
-              {/* header */}
-              <header className="flex items-start justify-between mb-4 md:mb-6">
-                <h2 className="text-[20px]/[1.3] md:text-2xl font-bold pr-8">
+              {/* ——— Header ——— */}
+              <header className="flex items-start justify-between mb-6">
+                <h2 className="text-2xl font-bold leading-tight pr-10">
                   {title}
                 </h2>
                 <DialogClose asChild>
@@ -95,13 +104,13 @@ export const LogoModal: React.FC<LogoModalProps> = ({
                     aria-label="Закрити модальне вікно"
                     className="rounded-full p-1.5 hover:bg-gray-100 transition"
                   >
-                    <X size={22} className="text-gray-600" />
+                    <X size={22} />
                   </button>
                 </DialogClose>
               </header>
 
-              {/* image */}
-              <figure className="aspect-video w-full rounded-xl overflow-hidden shadow-lg mb-5 md:mb-6">
+              {/* ——— Image (16×9, no CLS) ——— */}
+              <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg mb-6">
                 <img
                   src={image}
                   alt={`Лого ${brandName} на ${materialText}`}
@@ -111,10 +120,10 @@ export const LogoModal: React.FC<LogoModalProps> = ({
                   loading="eager"
                   decoding="async"
                 />
-              </figure>
+              </div>
 
-              {/* specs */}
-              <ul className="space-y-3 text-base leading-[1.35] mb-6">
+              {/* ——— Specs ——— */}
+              <ul className="space-y-3 text-base leading-[1.35] mb-8">
                 <li className="flex gap-3">
                   <Factory className="ico" />
                   <span className="font-medium">Власне виробництво</span>
@@ -133,13 +142,13 @@ export const LogoModal: React.FC<LogoModalProps> = ({
                 </li>
               </ul>
 
-              {/* CTA */}
+              {/* ——— CTA ——— */}
               {onAddLogo && (
                 <Button
                   variant="outline"
                   size="lg"
                   onClick={handleAddLogo}
-                  className="w-full sm:w-auto gap-2 font-semibold"
+                  className="w-full md:w-auto gap-2 font-semibold"
                 >
                   <PlusCircle className="w-5 h-5" />
                   Додати лого

@@ -12,14 +12,39 @@
          p-6 shadow-2xl;
 }
 
+/* Logo Modal Styles */
+/* mobile bottom-sheet */
+.logo-modal-container {
+  @apply fixed inset-x-0 bottom-0 z-50 max-h-[80vh] overflow-y-auto
+         rounded-t-2xl bg-white p-5 shadow-2xl text-gray-900;
+}
+
+/* ≥640px → card по центру */
+@media (min-width: 640px) {
+  .logo-modal-desktop {
+    @apply left-1/2 top-1/2 inset-auto -translate-x-1/2 -translate-y-1/2
+           max-w-[500px] w-[92vw] max-h-none rounded-2xl p-8;
+  }
+}
+
+/* единый стиль тёмной иконки 18 px */
+.ico {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #10b981; /* emerald-500 for better visual hierarchy */
+}
+
 /* Focus trap styles */
 .dialog-sheet:focus-within,
-.dialog-center:focus-within {
+.dialog-center:focus-within,
+.logo-modal-container:focus-within {
   @apply outline-none;
 }
 
 /* Smooth scrolling for mobile */
-.dialog-sheet {
+.dialog-sheet,
+.logo-modal-container {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
@@ -31,7 +56,8 @@
 
 /* Animation performance optimizations */
 .dialog-sheet,
-.dialog-center {
+.dialog-center,
+.logo-modal-container {
   will-change: transform, opacity;
   transform: translateZ(0);
 }
@@ -39,7 +65,8 @@
 /* Reduced motion fallback */
 @media (prefers-reduced-motion: reduce) {
   .dialog-sheet,
-  .dialog-center {
+  .dialog-center,
+  .logo-modal-container {
     transition: opacity 0.2s ease;
   }
 }
