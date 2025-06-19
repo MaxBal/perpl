@@ -1,34 +1,6 @@
 import React, { useState } from "react";
 import { NavItem } from "./types";
-
-// Simple modal component for circular nav
-const SimpleModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-}> = ({ isOpen, onClose, title, children }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
-      <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
-        <div className="p-4 border-b flex justify-between items-center">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <button 
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full"
-          >
-            ✕
-          </button>
-        </div>
-        <div className="p-4">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-};
+import { SelectorModal } from "../ui/SelectorModal";
 
 interface Props {
   items: NavItem[];
@@ -181,14 +153,14 @@ const CircularNav: React.FC<Props> = ({ items }) => {
         ))}
       </div>
 
-      {/* Simple Modal */}
-      <SimpleModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      {/* Unified Modal */}
+      <SelectorModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
         title={modalContent?.title || ""}
       >
         {modalContent?.content}
-      </SimpleModal>
+      </SelectorModal>
     </>
   );
 };

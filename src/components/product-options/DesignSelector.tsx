@@ -1,35 +1,7 @@
 import React, { useState } from 'react';
 import { ProductData } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
-
-// Simple modal component
-const SimpleModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-}> = ({ isOpen, onClose, title, children }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
-      <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
-        <div className="p-4 border-b flex justify-between items-center">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <button 
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full"
-          >
-            ✕
-          </button>
-        </div>
-        <div className="p-4">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-};
+import { SelectorModal } from '../ui/SelectorModal';
 
 interface Props {
   product: ProductData;
@@ -84,9 +56,9 @@ const DesignSelector: React.FC<Props> = ({ product, selectedDesign, setSelectedD
         </button>
       </div>
 
-      <SimpleModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      <SelectorModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
         title="Детально про дизайни"
       >
         <div className="space-y-4">
@@ -107,7 +79,7 @@ const DesignSelector: React.FC<Props> = ({ product, selectedDesign, setSelectedD
             <p className="text-gray-700">Преміальний дизайн з інноваційною системою організації простору.</p>
           </div>
         </div>
-      </SimpleModal>
+      </SelectorModal>
     </div>
   );
 };

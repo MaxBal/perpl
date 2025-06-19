@@ -5,9 +5,11 @@ import { RadioItem } from '../ui/radio-group';
 import { Select, SelectItem } from '../ui/select';
 import { LOGOS } from '../../data/logos';
 import LogoPreview from './LogoPreview';
-import { Camera } from 'lucide-react';
+import { SelectorModal } from '../ui/SelectorModal';
+import { Dialog, DialogContent, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import { X } from 'lucide-react';
 
-// Simple Logo Modal Component
+// Logo Modal Component using Radix structure
 const LogoModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
@@ -15,24 +17,19 @@ const LogoModal: React.FC<{
   brandName: string;
   image: string;
 }> = ({ isOpen, onClose, material, brandName, image }) => {
-  if (!isOpen) return null;
-
   const materialText = material === 'steel' ? 'нержавіюча сталь' : 'латунь';
   const title = `Лого ${brandName} (${materialText})`;
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
-      <div className="bg-white w-full max-h-[80vh] md:max-w-2xl md:rounded-lg overflow-y-auto">
-        <div className="p-4 border-b flex justify-between items-center">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <button 
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full"
-          >
-            ✕
-          </button>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92vw] max-w-2xl max-h-[80vh] rounded-lg bg-white p-0 shadow-lg">
+        <div className="sticky top-0 z-20 flex h-14 items-center justify-between bg-white px-6 border-b">
+          <DialogTitle className="text-[18px] leading-[28px] font-semibold">{title}</DialogTitle>
+          <DialogClose className="p-2 hover:bg-gray-100 rounded-full transition-colors" aria-label="Close">
+            <X size={20} />
+          </DialogClose>
         </div>
-        <div className="p-4">
+        <div className="overflow-y-auto px-6 pt-4 pb-6">
           <div className="aspect-video w-full rounded-xl overflow-hidden shadow mb-6">
             <img
               src={image}
@@ -45,8 +42,8 @@ const LogoModal: React.FC<{
             Логотип виготовляється з високоякісних матеріалів та має відмінну стійкість до зношування.
           </p>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
@@ -162,47 +159,36 @@ const LogoSelector: React.FC<Props> = ({
       )}
 
       {/* Info Modal */}
-      {isInfoModalOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
-          <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
-            <div className="p-4 border-b flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Детально про лого</h2>
-              <button 
-                onClick={() => setIsInfoModalOpen(false)}
-                className="p-2 hover:bg-gray-100 rounded-full"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="p-4">
-              <div className="space-y-4">
-                <div className="bg-gray-100 rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Матеріали логотипу</h3>
-                  <p className="text-gray-700">
-                    Ми пропонуємо два преміальні матеріали для виготовлення логотипу: 
-                    нержавіючу сталь та латунь. Обидва матеріали забезпечують довговічність 
-                    та елегантний вигляд.
-                  </p>
-                </div>
-                <div className="bg-gray-100 rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Нержавіюча сталь (+280 ₴)</h3>
-                  <p className="text-gray-700">
-                    Сучасний та стійкий матеріал з матовим покриттям. 
-                    Ідеально підходить для мінімалістичного дизайну.
-                  </p>
-                </div>
-                <div className="bg-gray-100 rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Латунь (+200 ₴)</h3>
-                  <p className="text-gray-700">
-                    Класичний матеріал з теплим золотистим відтінком. 
-                    Надає автокейсу преміальний та розкішний вигляд.
-                  </p>
-                </div>
-              </div>
-            </div>
+      <SelectorModal
+        open={isInfoModalOpen}
+        onOpenChange={setIsInfoModalOpen}
+        title="Детально про лого"
+      >
+        <div className="space-y-4">
+          <div className="bg-gray-100 rounded-lg p-4">
+            <h3 className="font-medium mb-2">Матеріали логотипу</h3>
+            <p className="text-gray-700">
+              Ми пропонуємо два преміальні матеріали для виготовлення логотипу: 
+              нержавіючу сталь та латунь. Обидва матеріали забезпечують довговічність 
+              та елегантний вигляд.
+            </p>
+          </div>
+          <div className="bg-gray-100 rounded-lg p-4">
+            <h3 className="font-medium mb-2">Нержавіюча сталь (+280 ₴)</h3>
+            <p className="text-gray-700">
+              Сучасний та стійкий матеріал з матовим покриттям. 
+              Ідеально підходить для мінімалістичного дизайну.
+            </p>
+          </div>
+          <div className="bg-gray-100 rounded-lg p-4">
+            <h3 className="font-medium mb-2">Латунь (+200 ₴)</h3>
+            <p className="text-gray-700">
+              Класичний матеріал з теплим золотистим відтінком. 
+              Надає автокейсу преміальний та розкішний вигляд.
+            </p>
           </div>
         </div>
-      )}
+      </SelectorModal>
     </div>
   );
 };
