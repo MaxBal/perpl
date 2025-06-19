@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react';
+import ModalBase from "@/components/ui/ModalBase";
 import { ProductData, LogoMaterial, LogoOption } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
 import { RadioItem } from '../ui/radio-group';
 import { Select, SelectItem } from '../ui/select';
 import { LOGOS } from '../../data/logos';
 import LogoPreview from './LogoPreview';
-import { Camera } from 'lucide-react';
 
 // Simple Logo Modal Component
 const LogoModal: React.FC<{
@@ -40,7 +40,7 @@ const LogoModal: React.FC<{
               className="w-full h-full object-cover"
             />
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-[15px] text-gray-600">
             Приклад розміщення логотипу {brandName} з матеріалу "{materialText}" на автокейсі. 
             Логотип виготовляється з високоякісних матеріалів та має відмінну стійкість до зношування.
           </p>
@@ -162,47 +162,36 @@ const LogoSelector: React.FC<Props> = ({
       )}
 
       {/* Info Modal */}
-      {isInfoModalOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
-          <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
-            <div className="p-4 border-b flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Детально про лого</h2>
-              <button 
-                onClick={() => setIsInfoModalOpen(false)}
-                className="p-2 hover:bg-gray-100 rounded-full"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="p-4">
-              <div className="space-y-4">
-                <div className="bg-gray-100 rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Матеріали логотипу</h3>
-                  <p className="text-gray-700">
-                    Ми пропонуємо два преміальні матеріали для виготовлення логотипу: 
-                    нержавіючу сталь та латунь. Обидва матеріали забезпечують довговічність 
-                    та елегантний вигляд.
-                  </p>
-                </div>
-                <div className="bg-gray-100 rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Нержавіюча сталь (+280 ₴)</h3>
-                  <p className="text-gray-700">
-                    Сучасний та стійкий матеріал з матовим покриттям. 
-                    Ідеально підходить для мінімалістичного дизайну.
-                  </p>
-                </div>
-                <div className="bg-gray-100 rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Латунь (+200 ₴)</h3>
-                  <p className="text-gray-700">
-                    Класичний матеріал з теплим золотистим відтінком. 
-                    Надає автокейсу преміальний та розкішний вигляд.
-                  </p>
-                </div>
-              </div>
-            </div>
+      <ModalBase
+        open={isInfoModalOpen}
+        onOpenChange={setIsInfoModalOpen}
+        title="Детально про лого"
+      >
+        <div className="space-y-4">
+          <div className="bg-[#f8fafc] rounded-lg p-4">
+            <h3 className="font-normal mb-2 text-[15px]">Матеріали логотипу</h3>
+            <p className="text-gray-700 text-[15px]">
+              Ми пропонуємо два преміальні матеріали для виготовлення логотипу: 
+              нержавіючу сталь та латунь. Обидва матеріали забезпечують довговічність 
+              та елегантний вигляд.
+            </p>
+          </div>
+          <div className="bg-[#f8fafc] rounded-lg p-4">
+            <h3 className="font-normal mb-2 text-[15px]">Нержавіюча сталь (+280 ₴)</h3>
+            <p className="text-gray-700 text-[15px]">
+              Сучасний та стійкий матеріал з матовим покриттям. 
+              Ідеально підходить для мінімалістичного дизайну.
+            </p>
+          </div>
+          <div className="bg-[#f8fafc] rounded-lg p-4">
+            <h3 className="font-normal mb-2 text-[15px]">Латунь (+200 ₴)</h3>
+            <p className="text-gray-700 text-[15px]">
+              Класичний матеріал з теплим золотистим відтінком. 
+              Надає автокейсу преміальний та розкішний вигляд.
+            </p>
           </div>
         </div>
-      )}
+      </ModalBase>
     </div>
   );
 };
