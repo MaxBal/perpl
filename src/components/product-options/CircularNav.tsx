@@ -1,83 +1,161 @@
 import React, { useState } from "react";
 import { NavItem } from "./types";
-import { InfoModal, TabSpec } from "../InfoModal";
 
-// вкладки
-import { DeliveryTab } from "../tabs/DeliveryTab";
-import { PaymentTab } from "../tabs/PaymentTab";
-import { ExchangeTab } from "../tabs/ExchangeTab";
-import { PromoTab } from "../tabs/PromoTab";
-import { LoyaltyTab } from "../tabs/LoyaltyTab";
-import { ReviewsTextTab } from "../tabs/ReviewsTextTab";
-import { ReviewsPhotoTab } from "../tabs/ReviewsPhotoTab";
+// Simple modal component for circular nav
+const SimpleModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}> = ({ isOpen, onClose, title, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
+      <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
+        <div className="p-4 border-b flex justify-between items-center">
+          <h2 className="text-lg font-semibold">{title}</h2>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="p-4">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface Props {
   items: NavItem[];
 }
 
-type ModalData = {
-  title: string;
-  defaultTab: string;
-  tabs: TabSpec[];
-};
-
 const CircularNav: React.FC<Props> = ({ items }) => {
-  const [open, setOpen] = useState(false);
-  const [modalData, setModalData] = useState<ModalData | null>(null);
-
-  /** Конфигурация: label кружка → данные для InfoModal */
-  const CONFIG: Record<string, ModalData> = {
-    "Доставка": {
-      title: "Інформація",
-      defaultTab: "delivery",
-      tabs: [
-        { id: "delivery", label: "Доставка", node: <DeliveryTab /> },
-        { id: "payment", label: "Оплата", node: <PaymentTab /> },
-        { id: "exchange", label: "Обмін", node: <ExchangeTab /> },
-      ],
-    },
-    "Оплата": {
-      title: "Інформація",
-      defaultTab: "payment",
-      tabs: [
-        { id: "delivery", label: "Доставка", node: <DeliveryTab /> },
-        { id: "payment", label: "Оплата", node: <PaymentTab /> },
-        { id: "exchange", label: "Обмін", node: <ExchangeTab /> },
-      ],
-    },
-    "Обмін": {
-      title: "Інформація",
-      defaultTab: "exchange",
-      tabs: [
-        { id: "delivery", label: "Доставка", node: <DeliveryTab /> },
-        { id: "payment", label: "Оплата", node: <PaymentTab /> },
-        { id: "exchange", label: "Обмін", node: <ExchangeTab /> },
-      ],
-    },
-    "Акції": {
-      title: "Акції",
-      defaultTab: "promo",
-      tabs: [
-        { id: "promo", label: "Акції", node: <PromoTab /> },
-        { id: "loyalty", label: "Клієнтська програма", node: <LoyaltyTab /> },
-      ],
-    },
-    "Відгуки": {
-      title: "Відгуки",
-      defaultTab: "text",
-      tabs: [
-        { id: "text", label: "Текст", node: <ReviewsTextTab /> },
-        { id: "photo", label: "Фото", node: <ReviewsPhotoTab /> },
-      ],
-    },
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<{ title: string; content: React.ReactNode } | null>(null);
 
   const handleClick = (label: string) => {
-    const data = CONFIG[label];
-    if (data) {
-      setModalData(data);
-      setOpen(true);
+    let content: React.ReactNode;
+    
+    switch (label) {
+      case "Доставка":
+        content = (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">
+              Доставка здійснюється по всій Україні через Нову Пошту. Термін — 1-3 дні.
+            </p>
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-medium text-sm mb-2">Умови доставки:</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Безкоштовна доставка від 3000 ₴</li>
+                <li>• Стандартна вартість доставки згідно тарифів НП</li>
+                <li>• Можливість доставки до відділення або поштомату</li>
+              </ul>
+            </div>
+          </div>
+        );
+        break;
+      case "Оплата":
+        content = (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">
+              Ми пропонуємо зручні та безпечні способи оплати.
+            </p>
+            <div className="space-y-3">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h4 className="font-medium text-sm mb-2">Передоплата 300 ₴</h4>
+                <p className="text-sm text-gray-600">
+                  Сплачуєте частину вартості для підтвердження замовлення.
+                </p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h4 className="font-medium text-sm mb-2">Повна передоплата</h4>
+                <p className="text-sm text-gray-600">
+                  Повна оплата замовлення на реквізити ФОП.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+        break;
+      case "Обмін":
+        content = (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">
+              Ми гарантуємо якість нашої продукції та надаємо можливість обміну або повернення товару.
+            </p>
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-medium text-sm mb-2">Умови обміну:</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Термін обміну: 14 днів з моменту отримання</li>
+                <li>• Товар має бути в оригінальній упаковці</li>
+                <li>• Збережений товарний вигляд</li>
+                <li>• Наявність документів про покупку</li>
+              </ul>
+            </div>
+          </div>
+        );
+        break;
+      case "Акції":
+        content = (
+          <div className="space-y-4">
+            <div className="bg-gradient-to-r from-[#00d1b3]/10 to-[#00d1b3]/5 rounded-lg p-4 border border-[#00d1b3]/20">
+              <h4 className="font-medium text-sm mb-2 text-[#00d1b3]">Діюча акція</h4>
+              <p className="text-sm text-gray-700 font-medium">
+                Знижка 20% на всі товари при замовленні від 5000 ₴
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-medium text-sm mb-2">Постійні пропозиції:</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Безкоштовна доставка від 3000 ₴</li>
+                <li>• Знижка 5% при повторному замовленні</li>
+                <li>• Спеціальні ціни для оптових покупців</li>
+              </ul>
+            </div>
+          </div>
+        );
+        break;
+      case "Відгуки":
+        content = (
+          <div className="space-y-4">
+            <div className="space-y-4">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex text-yellow-400">
+                    ⭐⭐⭐⭐⭐
+                  </div>
+                  <span className="text-sm font-medium">Олександр К.</span>
+                </div>
+                <p className="text-sm text-gray-700">
+                  "Чудовий автокейс! Якість матеріалів на високому рівні, все акуратно пошито."
+                </p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex text-yellow-400">
+                    ⭐⭐⭐⭐⭐
+                  </div>
+                  <span className="text-sm font-medium">Марія В.</span>
+                </div>
+                <p className="text-sm text-gray-700">
+                  "Замовляла для Toyota Camry. Підійшов ідеально! Швидка доставка, гарна упаковка."
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+        break;
+      default:
+        content = <p>Інформація недоступна</p>;
     }
+
+    setModalContent({ title: label, content });
+    setIsModalOpen(true);
   };
 
   return (
@@ -103,19 +181,14 @@ const CircularNav: React.FC<Props> = ({ items }) => {
         ))}
       </div>
 
-      {/* InfoModal */}
-      {modalData && (
-        <InfoModal
-          open={open}
-          onOpenChange={(v) => {
-            setOpen(v);
-            if (!v) setModalData(null);
-          }}
-          title={modalData.title}
-          defaultTab={modalData.defaultTab}
-          tabs={modalData.tabs}
-        />
-      )}
+      {/* Simple Modal */}
+      <SimpleModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={modalContent?.title || ""}
+      >
+        {modalContent?.content}
+      </SimpleModal>
     </>
   );
 };

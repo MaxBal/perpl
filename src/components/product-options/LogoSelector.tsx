@@ -5,7 +5,50 @@ import { RadioItem } from '../ui/radio-group';
 import { Select, SelectItem } from '../ui/select';
 import { LOGOS } from '../../data/logos';
 import LogoPreview from './LogoPreview';
-import { LogoModalSteel, LogoModalBrass } from '../modals';
+import { Camera } from 'lucide-react';
+
+// Simple Logo Modal Component
+const LogoModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  material: 'steel' | 'brass';
+  brandName: string;
+  image: string;
+}> = ({ isOpen, onClose, material, brandName, image }) => {
+  if (!isOpen) return null;
+
+  const materialText = material === 'steel' ? 'нержавіюча сталь' : 'латунь';
+  const title = `Лого ${brandName} (${materialText})`;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
+      <div className="bg-white w-full max-h-[80vh] md:max-w-2xl md:rounded-lg overflow-y-auto">
+        <div className="p-4 border-b flex justify-between items-center">
+          <h2 className="text-lg font-semibold">{title}</h2>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="p-4">
+          <div className="aspect-video w-full rounded-xl overflow-hidden shadow mb-6">
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <p className="text-sm text-gray-600">
+            Приклад розміщення логотипу {brandName} з матеріалу "{materialText}" на автокейсі. 
+            Логотип виготовляється з високоякісних матеріалів та має відмінну стійкість до зношування.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface Props {
   product: ProductData;
@@ -29,12 +72,13 @@ const LogoSelector: React.FC<Props> = ({
   setLogoBrand 
 }) => {
   const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
   // Find current logo data
   const currentLogoData = LOGOS.find(l => l.slug === logoBrand);
 
   const showLogoInfo = () => {
-    // Show info modal logic here if needed
+    setIsInfoModalOpen(true);
   };
 
   const handleLogoMaterialChange = (value: LogoMaterial) => {
@@ -48,15 +92,9 @@ const LogoSelector: React.FC<Props> = ({
     setIsLogoModalOpen(true);
   }, []);
 
-  const closeLogoModal = useCallback((open: boolean) => {
-    setIsLogoModalOpen(open);
-  }, []);
-
-  const handleAddLogo = useCallback((material: "steel" | "brass") => {
-    setLogoMaterial(material);
+  const closeLogoModal = useCallback(() => {
     setIsLogoModalOpen(false);
-    console.log(`Adding ${material} logo for ${logoBrand}`);
-  }, [setLogoMaterial, logoBrand]);
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -112,25 +150,58 @@ const LogoSelector: React.FC<Props> = ({
         ) : null}
       </div>
 
-      {/* Premium Logo Modals */}
-      {currentLogoData && (
-        <>
-          <LogoModalSteel
-            isOpen={logoMaterial === 'steel' && isLogoModalOpen}
-            onOpenChange={closeLogoModal}
-            brandName={currentLogoData.name}
-            steelImage={currentLogoData.imgSteel}
-            onAddLogo={handleAddLogo}
-          />
-          
-          <LogoModalBrass
-            isOpen={logoMaterial === 'brass' && isLogoModalOpen}
-            onOpenChange={closeLogoModal}
-            brandName={currentLogoData.name}
-            brassImage={currentLogoData.imgBrass}
-            onAddLogo={handleAddLogo}
-          />
-        </>
+      {/* Logo Modal */}
+      {currentLogoData && logoMaterial !== 'none' && (
+        <LogoModal
+          isOpen={isLogoModalOpen}
+          onClose={closeLogoModal}
+          material={logoMaterial === 'steel' ? 'steel' : 'brass'}
+          brandName={currentLogoData.name}
+          image={logoMaterial === 'steel' ? currentLogoData.imgSteel : currentLogoData.imgBrass}
+        />
+      )}
+
+      {/* Info Modal */}
+      {isInfoModalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
+          <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
+            <div className="p-4 border-b flex justify-between items-center">
+              <h2 className="text-lg font-semibold">Детально про лого</h2>
+              <button 
+                onClick={() => setIsInfoModalOpen(false)}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-4">
+              <div className="space-y-4">
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <h3 className="font-medium mb-2">Матеріали логотипу</h3>
+                  <p className="text-gray-700">
+                    Ми пропонуємо два преміальні матеріали для виготовлення логотипу: 
+                    нержавіючу сталь та латунь. Обидва матеріали забезпечують довговічність 
+                    та елегантний вигляд.
+                  </p>
+                </div>
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <h3 className="font-medium mb-2">Нержавіюча сталь (+280 ₴)</h3>
+                  <p className="text-gray-700">
+                    Сучасний та стійкий матеріал з матовим покриттям. 
+                    Ідеально підходить для мінімалістичного дизайну.
+                  </p>
+                </div>
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <h3 className="font-medium mb-2">Латунь (+200 ₴)</h3>
+                  <p className="text-gray-700">
+                    Класичний матеріал з теплим золотистим відтінком. 
+                    Надає автокейсу преміальний та розкішний вигляд.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

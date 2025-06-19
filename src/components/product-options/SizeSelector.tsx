@@ -1,7 +1,35 @@
-import React from 'react';
-import { useModal } from '../useModal';
+import React, { useState } from 'react';
 import { ProductData, Size } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
+
+// Simple modal component
+const SimpleModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}> = ({ isOpen, onClose, title, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
+      <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
+        <div className="p-4 border-b flex justify-between items-center">
+          <h2 className="text-lg font-semibold">{title}</h2>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="p-4">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface Props {
   product: ProductData;
@@ -17,27 +45,10 @@ const SIZES = [
 ];
 
 const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
-  const modal = useModal();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showSizeInfo = () => {
-    modal.open(
-      'Детально про розміри',
-      <div className="space-y-4">
-        {SIZES.map(size => (
-          <div key={size.id} className="bg-gray-100 rounded-lg p-4">
-            <h3 className="font-medium mb-2">Розмір {size.id}</h3>
-            <p className="text-gray-700">
-              Розміри: {size.dimensions}. Ідеально підходить для {
-                size.id === 'S' ? 'невеликих багажників' :
-                size.id === 'M' ? 'середніх багажників' :
-                size.id === 'L' ? 'великих багажників' :
-                'дуже великих багажників'
-              }.
-            </p>
-          </div>
-        ))}
-      </div>
-    );
+    setIsModalOpen(true);
   };
 
   return (
@@ -77,6 +88,28 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
           Детально про розміри
         </button>
       </div>
+
+      <SimpleModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Детально про розміри"
+      >
+        <div className="space-y-4">
+          {SIZES.map(size => (
+            <div key={size.id} className="bg-gray-100 rounded-lg p-4">
+              <h3 className="font-medium mb-2">Розмір {size.id}</h3>
+              <p className="text-gray-700">
+                Розміри: {size.dimensions}. Ідеально підходить для {
+                  size.id === 'S' ? 'невеликих багажників' :
+                  size.id === 'M' ? 'середніх багажників' :
+                  size.id === 'L' ? 'великих багажників' :
+                  'дуже великих багажників'
+                }.
+              </p>
+            </div>
+          ))}
+        </div>
+      </SimpleModal>
     </div>
   );
 };
