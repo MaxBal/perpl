@@ -59,3 +59,5 @@ export const LogoModal: React.FC<LogoModalProps> = ({
     </Dialog>
   );
 };
+
+export default LogoModal;
