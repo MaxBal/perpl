@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ProductData, LogoMaterial, LogoOption } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
 import { RadioItem } from '../ui/radio-group';
 import { Select, SelectItem } from '../ui/select';
 import { LOGOS } from '../../data/logos';
 import LogoPreview from './LogoPreview';
-import LogoModalSteel from './LogoModalSteel';
-import LogoModalBrass from './LogoModalBrass';
+import { LogoModalSteel, LogoModalBrass } from '../modals';
 
 interface Props {
   product: ProductData;
@@ -45,15 +44,19 @@ const LogoSelector: React.FC<Props> = ({
     }
   };
 
-  const openLogoModal = () => {
+  const openLogoModal = useCallback(() => {
     setIsLogoModalOpen(true);
-  };
+  }, []);
 
-  const handleAddLogo = () => {
-    // Logic to add logo to cart or configuration
+  const closeLogoModal = useCallback((open: boolean) => {
+    setIsLogoModalOpen(open);
+  }, []);
+
+  const handleAddLogo = useCallback((material: "steel" | "brass") => {
+    setLogoMaterial(material);
     setIsLogoModalOpen(false);
-    console.log(`Adding ${logoMaterial} logo for ${logoBrand}`);
-  };
+    console.log(`Adding ${material} logo for ${logoBrand}`);
+  }, [setLogoMaterial, logoBrand]);
 
   return (
     <div className="space-y-4">
@@ -109,22 +112,22 @@ const LogoSelector: React.FC<Props> = ({
         ) : null}
       </div>
 
-      {/* Enhanced Logo Modals with Framer Motion */}
+      {/* Premium Logo Modals */}
       {currentLogoData && (
         <>
           <LogoModalSteel
-            open={logoMaterial === 'steel' && isLogoModalOpen}
-            onOpenChange={setIsLogoModalOpen}
-            title={`Лого ${currentLogoData.name} (нержавіюча сталь)`}
-            image={currentLogoData.imgSteel}
+            isOpen={logoMaterial === 'steel' && isLogoModalOpen}
+            onOpenChange={closeLogoModal}
+            brandName={currentLogoData.name}
+            steelImage={currentLogoData.imgSteel}
             onAddLogo={handleAddLogo}
           />
           
           <LogoModalBrass
-            open={logoMaterial === 'brass' && isLogoModalOpen}
-            onOpenChange={setIsLogoModalOpen}
-            title={`Лого ${currentLogoData.name} (латунь)`}
-            image={currentLogoData.imgBrass}
+            isOpen={logoMaterial === 'brass' && isLogoModalOpen}
+            onOpenChange={closeLogoModal}
+            brandName={currentLogoData.name}
+            brassImage={currentLogoData.imgBrass}
             onAddLogo={handleAddLogo}
           />
         </>

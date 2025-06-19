@@ -1,0 +1,45 @@
+/* Dialog Modal Styles for Premium UX */
+
+/* Mobile Bottom Sheet */
+.dialog-sheet {
+  @apply fixed inset-x-0 bottom-0 max-h-[80vh] overflow-y-auto
+         rounded-t-2xl bg-white dark:bg-zinc-900 p-4 shadow-2xl;
+}
+
+/* Desktop Centered Modal */
+.dialog-center {
+  @apply max-w-[480px] rounded-2xl bg-white dark:bg-zinc-900
+         p-6 shadow-2xl;
+}
+
+/* Focus trap styles */
+.dialog-sheet:focus-within,
+.dialog-center:focus-within {
+  @apply outline-none;
+}
+
+/* Smooth scrolling for mobile */
+.dialog-sheet {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Backdrop blur effect */
+.dialog-backdrop {
+  @apply backdrop-blur-sm bg-black/40;
+}
+
+/* Animation performance optimizations */
+.dialog-sheet,
+.dialog-center {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Reduced motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  .dialog-sheet,
+  .dialog-center {
+    transition: opacity 0.2s ease;
+  }
+}

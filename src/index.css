@@ -1,3 +1,4 @@
+@import './styles/dialog.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -102,6 +103,35 @@
 
 .icon-blink {
   animation: blink 1.5s ease-in-out infinite;
+}
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @media (max-width: 768px) {
