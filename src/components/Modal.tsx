@@ -1,9 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
+"use client";
+import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 
+/**
+ * Базовый контейнер модалки. Используется всеми feature-модалками в проекте.
+ */
 interface Props {
+  /** null → модалка закрыта.  { title, body } → открыта */
   state: { title: string; body: React.ReactNode } | null;
   onClose: () => void;
 }
@@ -11,78 +16,100 @@ interface Props {
 export default function Modal({ state, onClose }: Props) {
   const [open, setOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  
+
+  /* ——— переключаем внутренний флаг анимации ——— */
   useEffect(() => setOpen(!!state), [state]);
+
+  /* ——— блокируем фон при открытой модалке ——— */
+  useEffect(() => {
+    if (open) {
+      document.documentElement.classList.add("overflow-hidden", "touch-none");
+    } else {
+      document.documentElement.classList.remove("overflow-hidden", "touch-none");
+    }
+    return () =>
+      document.documentElement.classList.remove(
+        "overflow-hidden",
+        "touch-none"
+      );
+  }, [open]);
+
+  /* ——— trap фокуса (доступность) ——— */
   useFocusTrap(modalRef, open, onClose);
 
-  if (typeof document === "undefined" || !state) return null;
+  if (!state) return null;
 
   const hide = () => {
     setOpen(false);
-    setTimeout(onClose, 300);
+    setTimeout(onClose, 300); // ждём анимацию
   };
 
   return createPortal(
     <>
+      {/* Overlay */}
       <div
         onClick={hide}
-        className={`fixed inset-0 z-50 bg-black/70 transition-opacity duration-300 ${open ? 'opacity-100' : 'opacity-0'}`}
+        className={`fixed inset-0 z-50 bg-black/70 transition-opacity duration-300 ${
+          open ? "opacity-100" : "opacity-0"
+        }`}
       />
-      {/* mobile: bottom sheet */}
-      <div 
+
+      {/* ——— MOBILE: bottom-sheet ——— */}
+      <div
         ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
         className={`md:hidden fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-[32px] transition-transform duration-300 ${
-          open ? 'translate-y-0' : 'translate-y-full'
+          open ? "translate-y-0" : "translate-y-full"
         }`}
-        style={{ height: 'calc(95vh - 56px)' }}
+        style={{ height: "calc(95vh - 56px)" }}
       >
-        <div className="h-full overflow-hidden flex flex-col">
-          <div className="px-6 pt-4 pb-3">
-            <div className="flex items-center justify-between">
-              <h2 id="modal-title" className="text-2xl font-semibold">{state.title}</h2>
-              <button 
-                onClick={hide}
-                aria-label="Close modal"
-                className="p-1.5 -mr-1.5 hover:bg-black/5 rounded-full transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-          </div>
-          <div className="flex-1 px-4 pb-8 overflow-y-auto">
-            {state.body}
-          </div>
-        </div>
+        <header className="flex items-center justify-between px-6 pt-4 pb-3">
+          <h2 id="modal-title" className="text-2xl font-semibold">
+            {state.title}
+          </h2>
+          <button
+            onClick={hide}
+            aria-label="Close modal"
+            className="p-1.5 -mr-1.5 hover:bg-black/5 rounded-full transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </header>
+
+        <section className="flex-1 px-4 pb-8 overflow-y-auto">
+          {state.body}
+        </section>
       </div>
-      {/* desktop: centered modal */}
+
+      {/* ——— DESKTOP: centered card ——— */}
       <div className="hidden md:flex fixed inset-0 z-50 items-center justify-center">
-        <div 
+        <div
           ref={modalRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
           className={`relative w-full max-w-[640px] bg-white rounded-[24px] transition-all duration-300 ${
-            open ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <div className="p-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 id="modal-title" className="text-2xl font-semibold">{state.title}</h2>
-              <button 
-                onClick={hide}
-                aria-label="Close modal"
-                className="p-1.5 -mr-1.5 hover:bg-black/5 rounded-full transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
-              {state.body}
-            </div>
-          </div>
+          <header className="flex items-center justify-between p-8 pb-6">
+            <h2 id="modal-title" className="text-2xl font-semibold">
+              {state.title}
+            </h2>
+            <button
+              onClick={hide}
+              aria-label="Close modal"
+              className="p-1.5 -mr-1.5 hover:bg-black/5 rounded-full transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </header>
+
+          <section className="overflow-y-auto max-h-[calc(100vh-200px)] p-8 pt-0">
+            {state.body}
+          </section>
         </div>
       </div>
     </>,
