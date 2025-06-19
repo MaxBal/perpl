@@ -1,7 +1,35 @@
 import React, { useState } from 'react';
 import { ProductData, Size } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
-import ModalBase from "@/components/ui/ModalBase";
+
+// Simple modal component
+const SimpleModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}> = ({ isOpen, onClose, title, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
+      <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
+        <div className="p-4 border-b flex justify-between items-center">
+          <h2 className="text-lg font-semibold">{title}</h2>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="p-4">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface Props {
   product: ProductData;
@@ -31,7 +59,7 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
             key={size.id}
             onClick={() => setCurrentSize(size.id)}
             className={`
-              px-4 py-2.5 rounded-[12px] text-[15px] transition-all
+              px-4 py-2.5 rounded-[12px] text-sm transition-all
               ${currentSize === size.id
                 ? 'bg-white border-2 border-[#00d1b3] shadow'
                 : 'bg-white border border-gray-200 hover:bg-gray-50'
@@ -41,7 +69,7 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
             <div className="flex flex-col items-start">
               <span className="text-[13px] text-gray-500">{size.dimensions}</span>
               <div className="flex items-center mt-1">
-                <span className="text-[15px] font-normal text-gray-900">{size.price} ₴</span>
+                <span className="text-[15px] font-semibold text-gray-900">{size.price} ₴</span>
                 {size.oldPrice && (
                   <span className="line-through text-gray-400 ml-1 text-[13px]">{size.oldPrice} ₴</span>
                 )}
@@ -61,15 +89,15 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
         </button>
       </div>
 
-      <ModalBase
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
+      <SimpleModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         title="Детально про розміри"
       >
         <div className="space-y-4">
           {SIZES.map(size => (
-            <div key={size.id} className="bg-[#f8fafc] rounded-lg p-4">
-              <h3 className="font-normal mb-2">Розмір {size.id}</h3>
+            <div key={size.id} className="bg-gray-100 rounded-lg p-4">
+              <h3 className="font-medium mb-2">Розмір {size.id}</h3>
               <p className="text-gray-700">
                 Розміри: {size.dimensions}. Ідеально підходить для {
                   size.id === 'S' ? 'невеликих багажників' :
@@ -81,7 +109,7 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
             </div>
           ))}
         </div>
-      </ModalBase>
+      </SimpleModal>
     </div>
   );
 };
