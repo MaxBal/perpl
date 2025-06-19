@@ -28,7 +28,7 @@ interface LogoModalProps {
   onAddLogo?: (material: "steel" | "brass") => void;
 }
 
-const LogoModal: React.FC<LogoModalProps> = ({
+export const LogoModal: React.FC<LogoModalProps> = ({
   open,
   onOpenChange,
   material,
@@ -36,14 +36,12 @@ const LogoModal: React.FC<LogoModalProps> = ({
   image,
   onAddLogo,
 }) => {
-  /* ————————————————————————————————————————
-     Motion setup (+ reduced-motion fallback)
-  ———————————————————————————————————————— */
+  /* ─── motion / a11y ─────────────────────────── */
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const modalVariants = prefersReducedMotion
+  const variants = prefersReducedMotion
     ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
     : {
         initial: { opacity: 0, y: "100%" },
@@ -53,54 +51,43 @@ const LogoModal: React.FC<LogoModalProps> = ({
 
   const transition = prefersReducedMotion
     ? { duration: 0.2 }
-    : { type: "spring", stiffness: 320, damping: 28 };
+    : { type: "spring", stiffness: 320, damping: 26 };
 
-  /* ————————————————————————————————————————
-     Callbacks
-  ———————————————————————————————————————— */
+  /* ─── callback ──────────────────────────────── */
   const handleAddLogo = useCallback(() => {
     onAddLogo?.(material);
   }, [onAddLogo, material]);
 
-  /* ————————————————————————————————————————
-     Derived data
-  ———————————————————————————————————————— */
+  /* ─── derived ───────────────────────────────── */
   const materialText = material === "steel" ? "нержавіюча сталь" : "латунь";
   const title = `Лого ${brandName} (${materialText})`;
 
-  /* ———————————————————————————————————————— */
+  /* ─── render ────────────────────────────────── */
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <AnimatePresence mode="wait">
         {open && (
           <DialogContent asChild>
             <motion.div
-              variants={modalVariants}
+              variants={variants}
               initial="initial"
               animate="animate"
               exit="exit"
               transition={transition}
-              /* ——————————————————————————————————
-                 Контейнер (моб = bottom sheet,
-                 десктоп = центровой card)
-              —————————————————————————————————— */
               className={cn(
-                "fixed z-50 bg-white shadow-xl text-gray-900",
-                /* mobile bottom-sheet */
-                "inset-x-0 bottom-0 max-h-[80vh] overflow-y-auto rounded-t-2xl p-5",
-                /* desktop centred card */
-                "md:left-1/2 md:top-1/2 md:inset-auto md:-translate-x-1/2 md:-translate-y-1/2",
-                "md:max-w-[500px] md:w-[92vw] md:max-h-none md:rounded-2xl md:p-8"
+                "logo-modal-container",
+                /* mobile */
+                "sm:logo-modal-desktop"
               )}
             >
-              {/* Visually-hidden title for screen-readers */}
+              {/* скрытый title для SR */}
               <VisuallyHidden.Root>
                 <DialogTitle>{title}</DialogTitle>
               </VisuallyHidden.Root>
 
-              {/* ——— Header ——— */}
-              <header className="flex items-start justify-between mb-6">
-                <h2 className="text-2xl font-bold leading-tight pr-10">
+              {/* header */}
+              <header className="flex items-start justify-between mb-4 md:mb-6">
+                <h2 className="text-[20px]/[1.3] md:text-2xl font-bold pr-8">
                   {title}
                 </h2>
                 <DialogClose asChild>
@@ -108,13 +95,13 @@ const LogoModal: React.FC<LogoModalProps> = ({
                     aria-label="Закрити модальне вікно"
                     className="rounded-full p-1.5 hover:bg-gray-100 transition"
                   >
-                    <X size={22} />
+                    <X size={22} className="text-gray-600" />
                   </button>
                 </DialogClose>
               </header>
 
-              {/* ——— Image (16×9, no CLS) ——— */}
-              <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg mb-6">
+              {/* image */}
+              <figure className="aspect-video w-full rounded-xl overflow-hidden shadow-lg mb-5 md:mb-6">
                 <img
                   src={image}
                   alt={`Лого ${brandName} на ${materialText}`}
@@ -124,35 +111,35 @@ const LogoModal: React.FC<LogoModalProps> = ({
                   loading="eager"
                   decoding="async"
                 />
-              </div>
+              </figure>
 
-              {/* ——— Specs ——— */}
-              <ul className="space-y-3 text-base leading-[1.35] mb-8">
+              {/* specs */}
+              <ul className="space-y-3 text-base leading-[1.35] mb-6">
                 <li className="flex gap-3">
-                  <Factory className="w-[18px] h-[18px] text-emerald-600 shrink-0" />
+                  <Factory className="ico" />
                   <span className="font-medium">Власне виробництво</span>
                 </li>
                 <li className="flex gap-3 text-gray-700">
-                  <Cpu className="w-[18px] h-[18px] text-emerald-600 shrink-0" />
+                  <Cpu className="ico" />
                   Метод виготовлення:&nbsp;фрезування
                 </li>
                 <li className="flex gap-3 text-gray-700">
-                  <Ruler className="w-[18px] h-[18px] text-emerald-600 shrink-0" />
+                  <Ruler className="ico" />
                   Розміри:&nbsp;82&nbsp;×&nbsp;18&nbsp;мм
                 </li>
                 <li className="flex gap-3 text-gray-700">
-                  <Sparkles className="w-[18px] h-[18px] text-emerald-600 shrink-0" />
+                  <Sparkles className="ico" />
                   Висока якість
                 </li>
               </ul>
 
-              {/* ——— CTA ——— */}
+              {/* CTA */}
               {onAddLogo && (
                 <Button
                   variant="outline"
                   size="lg"
                   onClick={handleAddLogo}
-                  className="w-full md:w-auto gap-2 font-semibold"
+                  className="w-full sm:w-auto gap-2 font-semibold"
                 >
                   <PlusCircle className="w-5 h-5" />
                   Додати лого
