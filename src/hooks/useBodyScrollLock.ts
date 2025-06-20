@@ -1,20 +1,29 @@
 import { useLayoutEffect } from "react";
 
+let lockCount = 0;              // одновременно открытых модалок
+let prevOverflow = "";          // чтобы вернуть исходное значение
+
+export const toggleBodyLock = (lock: boolean) => {
+  if (lock) {
+    if (lockCount === 0) {
+      prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+    }
+    lockCount += 1;
+  } else {
+    lockCount = Math.max(0, lockCount - 1);
+    if (lockCount === 0) {
+      document.body.style.overflow = prevOverflow;
+    }
+  }
+};
+
 /**
- * Блокирует scroll <body>, пока active === true.
- * Используем useLayoutEffect, чтобы исключить "скачок" контента.
+ * Лок ⟷ анлок, синхронно со state модалки.
  */
 export const useBodyScrollLock = (active: boolean) => {
   useLayoutEffect(() => {
-    if (!active) return;
-
-    const { overflow, touchAction } = document.body.style;
-    document.body.style.overflow = "hidden";
-    document.body.style.touchAction = "none";
-
-    return () => {
-      document.body.style.overflow = overflow;
-      document.body.style.touchAction = touchAction;
-    };
+    toggleBodyLock(active);
+    return () => toggleBodyLock(false);   // safety-net на размонтирование
   }, [active]);
 };

@@ -4,7 +4,29 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/cn";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
-export const Dialog = DialogPrimitive.Root;
+type RootProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>;
+
+export const Dialog: React.FC<RootProps> = ({ open, defaultOpen, onOpenChange, ...rest }) => {
+  // uncontrolled → ведём внутреннее состояние, чтобы знать фактический open
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false);
+  const isOpen = open ?? internalOpen;
+
+  // блокировка скролла всегда на уровне Root
+  useBodyScrollLock(isOpen);
+
+  return (
+    <DialogPrimitive.Root
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={(state) => {
+        onOpenChange?.(state);
+        setInternalOpen(state);
+      }}
+      {...rest}
+    />
+  );
+};
+
 export const DialogTrigger = DialogPrimitive.Trigger;
 export const DialogClose = DialogPrimitive.Close;
 export const DialogTitle = DialogPrimitive.Title;
@@ -13,13 +35,7 @@ export const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => {
-  /**
-   * Radix-Dialog автоматически вешает атрибут `data-state="open" | "closed"`
-   * на <DialogPrimitive.Content>.  Пользуемся им как индикатором.
-   */
-  // @ts-ignore — TS не знает про кастомные data-атрибуты
-  const isOpen = props["data-state"] === "open";
-  useBodyScrollLock(isOpen);
+  // скролл-лок теперь делает Root, здесь больше не нужен
 
   return (
     <DialogPrimitive.Portal>
