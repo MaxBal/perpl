@@ -6,12 +6,19 @@ import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 type RootProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>;
 
-export const Dialog: React.FC<RootProps> = ({ open, defaultOpen, onOpenChange, ...rest }) => {
-  // uncontrolled → ведём внутреннее состояние, чтобы знать фактический open
+export const Dialog: React.FC<RootProps> = ({
+  open,
+  defaultOpen,
+  onOpenChange,
+  children,
+  ...rest
+}) => {
+  // если open контролируется снаружи → используем его,
+  // иначе ведём внутреннее состояние
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false);
   const isOpen = open ?? internalOpen;
 
-  // блокировка скролла всегда на уровне Root
+  // Лочим / анлочим скролл
   useBodyScrollLock(isOpen);
 
   return (
@@ -23,7 +30,9 @@ export const Dialog: React.FC<RootProps> = ({ open, defaultOpen, onOpenChange, .
         setInternalOpen(state);
       }}
       {...rest}
-    />
+    >
+      {children}
+    </DialogPrimitive.Root>
   );
 };
 
@@ -35,8 +44,6 @@ export const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => {
-  // скролл-лок теперь делает Root, здесь больше не нужен
-
   return (
     <DialogPrimitive.Portal>
       {/* Overlay-кнопка закрытия */}

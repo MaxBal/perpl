@@ -1,29 +1,30 @@
 import { useLayoutEffect } from "react";
 
-let lockCount = 0;              // одновременно открытых модалок
-let prevOverflow = "";          // чтобы вернуть исходное значение
-
-export const toggleBodyLock = (lock: boolean) => {
-  if (lock) {
-    if (lockCount === 0) {
-      prevOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-    }
-    lockCount += 1;
-  } else {
-    lockCount = Math.max(0, lockCount - 1);
-    if (lockCount === 0) {
-      document.body.style.overflow = prevOverflow;
-    }
-  }
-};
-
 /**
- * Лок ⟷ анлок, синхронно со state модалки.
+ * Абсолютная блокировка прокрутки фона:
+ * 1) фиксируем <body> в текущей позиции (position: fixed + top)
+ * 2) возвращаем всё на место и восстанавливаем scroll после закрытия
  */
-export const useBodyScrollLock = (active: boolean) => {
+export const useBodyScrollLock = (lock: boolean) => {
   useLayoutEffect(() => {
-    toggleBodyLock(active);
-    return () => toggleBodyLock(false);   // safety-net на размонтирование
-  }, [active]);
+    if (!lock) return;
+
+    const scrollY = window.scrollY;
+    const { position, top, overflow, width } = document.body.style;
+
+    // Фиксируем
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+
+    // Чистим при размонтировании / закрытии
+    return () => {
+      document.body.style.position = position;
+      document.body.style.top = top;
+      document.body.style.overflow = overflow;
+      document.body.style.width = width;
+      window.scrollTo(0, scrollY);
+    };
+  }, [lock]);
 };
