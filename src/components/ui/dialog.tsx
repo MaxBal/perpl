@@ -13,8 +13,13 @@ export const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => {
-  // Блокируем скролл body, когда диалог открыт
-  useBodyScrollLock(true);
+  /**
+   * Radix-Dialog автоматически вешает атрибут `data-state="open" | "closed"`
+   * на <DialogPrimitive.Content>.  Пользуемся им как индикатором.
+   */
+  // @ts-ignore — TS не знает про кастомные data-атрибуты
+  const isOpen = props["data-state"] === "open";
+  useBodyScrollLock(isOpen);
 
   return (
     <DialogPrimitive.Portal>
