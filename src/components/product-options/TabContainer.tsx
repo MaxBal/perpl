@@ -3,6 +3,7 @@ import DesignSelector from './DesignSelector';
 import SizeSelector   from './SizeSelector';
 import LogoSelector   from './LogoSelector';
 import { FixationSelector } from './FixationSelector';
+import { ColorSwatches } from './ColorSwatches';
 import { ProductData, Size, LogoMaterial, FixVariant, ColorCode } from './types';
 
 const TAB_META = [
@@ -46,6 +47,7 @@ const TabContainer: React.FC<Props> = ({
   onFixationChange,
 }) => {
   const [activeTab, setActiveTab] = useState<'design' | 'size' | 'logo' | 'fixation'>('design');
+  const isCarzo1 = design === 'Carzo 1.0';
 
   return (
     <div className="space-y-4">
@@ -66,13 +68,19 @@ const TabContainer: React.FC<Props> = ({
       </div>
 
       {activeTab === 'design' && (
-        <DesignSelector 
-          product={product} 
-          selectedDesign={design}
-          setSelectedDesign={setDesign}
-          color={color}
-          setColor={setColor}
-        />
+        <div className="space-y-6">
+          <DesignSelector 
+            product={product} 
+            selectedDesign={design}
+            setSelectedDesign={setDesign}
+          />
+          {isCarzo1 && (
+            <ColorSwatches 
+              value={color} 
+              onChange={setColor} 
+            />
+          )}
+        </div>
       )}
       {activeTab === 'size' && (
         <SizeSelector
