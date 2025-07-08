@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ProductData } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
+import { ColorSwatches } from './ColorSwatches';
+import { ColorCode } from './types';
 
 // Simple modal component
 const SimpleModal: React.FC<{
@@ -35,6 +37,8 @@ interface Props {
   product: ProductData;
   selectedDesign: string;
   setSelectedDesign: (design: string) => void;
+  color?: ColorCode | null;
+  setColor?: (color: ColorCode | null) => void;
 }
 
 const DESIGN_OPTIONS = [
@@ -44,8 +48,15 @@ const DESIGN_OPTIONS = [
   { id:'carzo4.0', label:'Carzo 4.0', colors:1 },
 ];
 
-const DesignSelector: React.FC<Props> = ({ product, selectedDesign, setSelectedDesign }) => {
+const DesignSelector: React.FC<Props> = ({ 
+  product, 
+  selectedDesign, 
+  setSelectedDesign,
+  color,
+  setColor 
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isCarzo1 = selectedDesign === 'Carzo 1.0';
 
   const showDesignInfo = () => {
     setIsModalOpen(true);
@@ -73,6 +84,16 @@ const DesignSelector: React.FC<Props> = ({ product, selectedDesign, setSelectedD
           </button>
         ))}
       </div>
+      
+      {/* Color swatches for Carzo 1.0 */}
+      {isCarzo1 && setColor && (
+        <div className="mt-6">
+          <ColorSwatches 
+            value={color || null} 
+            onChange={setColor} 
+          />
+        </div>
+      )}
       
       <div className="mt-14 md:mt-8">
         <button

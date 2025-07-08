@@ -68,19 +68,13 @@ const TabContainer: React.FC<Props> = ({
       </div>
 
       {activeTab === 'design' && (
-        <div className="space-y-6">
-          <DesignSelector 
-            product={product} 
-            selectedDesign={design}
-            setSelectedDesign={setDesign}
-          />
-          {isCarzo1 && (
-            <ColorSwatches 
-              value={color} 
-              onChange={setColor} 
-            />
-          )}
-        </div>
+        <DesignSelector 
+          product={product} 
+          selectedDesign={design}
+          setSelectedDesign={setDesign}
+          color={color}
+          setColor={setColor}
+        />
       )}
       {activeTab === 'size' && (
         <SizeSelector
