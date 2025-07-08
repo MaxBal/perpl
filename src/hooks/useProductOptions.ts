@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ProductOptionsState, Size, LogoMaterial, FixVariant, ColorCode } from '../components/product-options/types';
+import { ProductOptionsState, Size, LogoMaterial, FixVariant } from '../components/product-options/types';
 import { buildSku, calculatePrice } from '../utils/sku';
 
 interface UseProductOptionsProps {
@@ -10,7 +10,6 @@ export function useProductOptions({ basePrice }: UseProductOptionsProps) {
   const [state, setState] = useState<ProductOptionsState>({
     design: 'Carzo 1.0',
     size: 'M',
-    color: null,
     logoMaterial: 'none',
     logoBrand: '',
     fixEnabled: false,
@@ -22,13 +21,11 @@ export function useProductOptions({ basePrice }: UseProductOptionsProps) {
   // Update SKU and price when options change
   useEffect(() => {
     const [designName, designVersion] = state.design.split(' ');
-    const isCarzo1 = state.design === 'Carzo 1.0';
     
     const newSku = buildSku({
       designName,
       designVersion,
       size: state.size,
-      color: isCarzo1 ? state.color : null,
       logoMaterial: state.logoMaterial,
       logoBrand: state.logoBrand,
       fixVariant: state.fixVariant
@@ -41,14 +38,7 @@ export function useProductOptions({ basePrice }: UseProductOptionsProps) {
       sku: newSku,
       totalPrice: newPrice
     }));
-  }, [state.design, state.size, state.color, state.logoMaterial, state.logoBrand, state.fixVariant, basePrice]);
-
-  // Reset color when switching away from Carzo 1.0
-  useEffect(() => {
-    if (state.design !== 'Carzo 1.0') {
-      setState(prev => ({ ...prev, color: null }));
-    }
-  }, [state.design]);
+  }, [state.design, state.size, state.logoMaterial, state.logoBrand, state.fixVariant, basePrice]);
 
   const setDesign = (design: string) => {
     setState(prev => ({ ...prev, design }));
@@ -56,10 +46,6 @@ export function useProductOptions({ basePrice }: UseProductOptionsProps) {
 
   const setSize = (size: Size) => {
     setState(prev => ({ ...prev, size }));
-  };
-
-  const setColor = (color: ColorCode | null) => {
-    setState(prev => ({ ...prev, color }));
   };
 
   const setLogoMaterial = (logoMaterial: LogoMaterial) => {
@@ -88,7 +74,6 @@ export function useProductOptions({ basePrice }: UseProductOptionsProps) {
     state,
     setDesign,
     setSize,
-    setColor,
     setLogoMaterial,
     setLogoBrand,
     setFixation,

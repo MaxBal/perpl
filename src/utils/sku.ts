@@ -1,18 +1,17 @@
-import { Size, LogoMaterial, FixVariant, ColorCode } from '../components/product-options/types';
+import { Size, LogoMaterial, FixVariant } from '../components/product-options/types';
 
 interface SkuParams {
   designName: string;
   designVersion: string;
   size: Size;
-  color: ColorCode | null;
   logoMaterial: LogoMaterial;
   logoBrand: string;
   fixVariant: FixVariant;
 }
 
-export function buildSku({ designName, designVersion, size, color, logoMaterial, logoBrand, fixVariant }: SkuParams): string {
+export function buildSku({ designName, designVersion, size, logoMaterial, logoBrand, fixVariant }: SkuParams): string {
   const base = `${designName} ${designVersion}`;   // Carzo 1.0
-  const sizePart = `${size}${color ? `-${color}` : ''}`;
+  const sizePart = size;
 
   const logoPart = logoMaterial === 'none'
     ? 'без лого'

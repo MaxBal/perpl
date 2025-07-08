@@ -18,12 +18,10 @@ export interface NavItem {
 export type LogoMaterial = 'none' | 'steel' | 'brass';
 export type FixVariant = 'none' | 'floor' | 'wall' | 'both';
 export type Size = 'S' | 'M' | 'L' | 'XL';
-export type ColorCode = 'black' | 'black-grey' | 'black-blue' | 'black-red' | 'brown' | 'beige';
 
 export interface ProductOptionsState {
   design: string;
   size: Size;
-  color: ColorCode | null;
   logoMaterial: LogoMaterial;
   logoBrand: string;
   fixEnabled: boolean;
