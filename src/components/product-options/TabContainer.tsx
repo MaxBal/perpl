@@ -3,7 +3,8 @@ import DesignSelector from './DesignSelector';
 import SizeSelector   from './SizeSelector';
 import LogoSelector   from './LogoSelector';
 import { FixationSelector } from './FixationSelector';
-import { ProductData, Size, LogoMaterial, FixVariant } from './types';
+import { ColorSwatches } from './ColorSwatches';
+import { ProductData, Size, LogoMaterial, FixVariant, ColorCode } from './types';
 
 const TAB_META = [
   { key: 'design', label: 'Дизайни' },
@@ -18,6 +19,8 @@ interface Props {
   setDesign: (design: string) => void;
   size: Size;
   setSize: (size: Size) => void;
+  color: ColorCode | null;
+  setColor: (color: ColorCode | null) => void;
   logoMaterial: LogoMaterial;
   setLogoMaterial: (material: LogoMaterial) => void;
   logoBrand: string;
@@ -33,6 +36,8 @@ const TabContainer: React.FC<Props> = ({
   setDesign,
   size,
   setSize,
+  color,
+  setColor,
   logoMaterial,
   setLogoMaterial,
   logoBrand,
@@ -42,6 +47,7 @@ const TabContainer: React.FC<Props> = ({
   onFixationChange,
 }) => {
   const [activeTab, setActiveTab] = useState<'design' | 'size' | 'logo' | 'fixation'>('design');
+  const isCarzo1 = design === 'Carzo 1.0';
 
   return (
     <div className="space-y-4">
@@ -62,11 +68,19 @@ const TabContainer: React.FC<Props> = ({
       </div>
 
       {activeTab === 'design' && (
-        <DesignSelector 
-          product={product} 
-          selectedDesign={design}
-          setSelectedDesign={setDesign}
-        />
+        <div className="space-y-6">
+          <DesignSelector 
+            product={product} 
+            selectedDesign={design}
+            setSelectedDesign={setDesign}
+          />
+          {isCarzo1 && (
+            <ColorSwatches 
+              value={color} 
+              onChange={setColor} 
+            />
+          )}
+        </div>
       )}
       {activeTab === 'size' && (
         <SizeSelector
