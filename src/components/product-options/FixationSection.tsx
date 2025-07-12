@@ -52,15 +52,6 @@ const FixationSection: React.FC<Props> = ({ fixEnabled, fixVariant, onFixationCh
 
   return (
     <div className="space-y-4">
-      {/* Магнітна система — перший рядок */}
-      <label className="flex items-center justify-between mb-4">
-        <span className="font-normal">Магнітна система фіксації кришки</span>
-        <Switch
-          checked={magnetLock}
-          onCheckedChange={handleMagnetSwitchChange}
-        />
-      </label>
-
       {/* Перемикач фіксації в багажнику */}
       <label className="flex items-center justify-between mb-3">
         <span className="font-normal">Фіксація в багажнику</span>
