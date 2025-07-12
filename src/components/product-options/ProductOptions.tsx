@@ -61,8 +61,6 @@ const ProductOptions: React.FC<Props> = ({ product, onBuyNow }) => {
             setSize={setSize}
             color={state.color}
             setColor={setColor}
-            color={state.color}
-            setColor={setColor}
             logoMaterial={state.logoMaterial}
             setLogoMaterial={setLogoMaterial}
             logoBrand={state.logoBrand}
@@ -106,6 +104,8 @@ const ProductOptions: React.FC<Props> = ({ product, onBuyNow }) => {
               setDesign={setDesign}
               size={state.size}
               setSize={setSize}
+              color={state.color}
+              setColor={setColor}
               logoMaterial={state.logoMaterial}
               setLogoMaterial={setLogoMaterial}
               logoBrand={state.logoBrand}
