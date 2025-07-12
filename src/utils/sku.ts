@@ -11,24 +11,22 @@ interface SkuParams {
 }
 
 export function buildSku({ designName, designVersion, size, color, logoMaterial, logoBrand, fixVariant }: SkuParams): string {
-  const base = `${designName} ${designVersion}`;   // Carzo 1.0
-  const sizePart = `${size}${color ? `-${color}` : ''}`;
+  // Build components
+  const designPart = `${size} ${designName} ${designVersion}`;
 
-  const logoPart = logoMaterial === 'none'
-    ? 'без лого'
-    : (logoMaterial === 'steel'
-        ? `лого.метал.${logoBrand.toLowerCase()}`
-        : `лого.латунь.${logoBrand.toLowerCase()}`);
+  const logoPart = logoMaterial === 'none' 
+    ? 'лого=без лого'
+    : `лого=${logoMaterial === 'steel' ? 'метал' : 'латунь'}(${logoBrand})`;
 
   const fixPart = {
-    none:  'без фіксації',
-    floor: 'фікс-на-дні',
-    wall:  'фікс-на-стінці',
-    both:  'фікс-дно+стінка',
+    none:  'фіксація=без фіксації',
+    floor: 'фіксація=на дні',
+    wall:  'фіксація=на стінці',
+    both:  'фіксація=дно+стінка',
   }[fixVariant];
 
-  // ➜ арт. Carzo 1.0-M-без лого-без фіксації
-  return `арт. ${base}-${sizePart}-${logoPart}-${fixPart}`;
+  // Format: арт. М Carzo 2.0 | лого=латунь(Mercedes) | фіксація=дно+стінка
+  return `арт. ${designPart} | ${logoPart} | ${fixPart}`;
 }
 
 export function calculatePrice(

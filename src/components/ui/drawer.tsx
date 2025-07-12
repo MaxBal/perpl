@@ -48,16 +48,19 @@ export const DrawerContent = React.forwardRef<
 
   return (
     <DrawerPrimitive.Portal>
-      <DrawerPrimitive.Overlay className="fixed inset-0 z-40 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in" />
+      <DrawerPrimitive.Overlay className="fixed inset-0 z-40 bg-black/60 transition-opacity duration-200 ease-out data-[state=closed]:opacity-0 data-[state=open]:opacity-100" />
       <DrawerPrimitive.Content
         ref={ref}
         className={cn(
-          // Mobile: bottom drawer
-          "fixed bottom-0 left-0 right-0 z-50 max-h-[80vh] overflow-y-auto rounded-t-2xl bg-white p-4 shadow-xl outline-none",
-          "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom",
-          // Desktop: center modal
-          "md:bottom-auto md:left-1/2 md:top-1/2 md:max-h-[90vh] md:w-full md:max-w-lg md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-lg",
-          "md:data-[state=closed]:slide-out-to-bottom-0 md:data-[state=open]:slide-in-from-bottom-0",
+          "fixed z-50 bg-white shadow-xl outline-none overflow-y-auto",
+          // Mobile: slide from bottom
+          "bottom-0 left-0 right-0 max-h-[80vh] rounded-t-2xl p-4",
+          "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=closed]:duration-180",
+          "data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=open]:duration-180",
+          // Desktop: slide from right
+          "md:right-0 md:top-0 md:bottom-0 md:left-auto md:h-full md:w-full md:max-w-md md:rounded-none md:p-6",
+          "md:data-[state=closed]:animate-out md:data-[state=closed]:slide-out-to-right md:data-[state=closed]:duration-200",
+          "md:data-[state=open]:animate-in md:data-[state=open]:slide-in-from-right md:data-[state=open]:duration-200",
           className
         )}
         {...props}

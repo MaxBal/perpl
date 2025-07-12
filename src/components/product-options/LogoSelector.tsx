@@ -78,6 +78,7 @@ const LogoSelector: React.FC<Props> = ({
           disabled={logoMaterial === 'none'}
         >
           <SelectItem value="" disabled>
+            <h3 className="text-sm font-medium mb-4">Детально про лого</h3>
             {logoMaterial === 'none' ? 'без лого' : 'Оберіть марку авто'}
           </SelectItem>
           {LOGOS.map(logo => (

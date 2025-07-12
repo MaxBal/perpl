@@ -28,7 +28,7 @@ const ProductHeader: React.FC<Props> = ({ product, totalPrice, sku }) => {
       </h1>
 
       {/* Dynamic SKU */}
-      <p className="text-sm text-gray-500">
+      <p className="text-xs tracking-tight text-gray-500">
         {sku}
       </p>
 
