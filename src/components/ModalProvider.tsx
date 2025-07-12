@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 
 interface ModalCtx {
   open: (content: ReactNode) => void;
@@ -14,9 +14,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   return (
     <Ctx.Provider value={{ open: setContent, close: () => setContent(null) }}>
       {children}
-      <Dialog open={!!content} onOpenChange={(o) => !o && setContent(null)}>
-        <DialogContent className="max-w-lg p-0">{content}</DialogContent>
-      </Dialog>
+      <Drawer open={!!content} onOpenChange={(o) => !o && setContent(null)}>
+        <DrawerContent className="max-w-lg p-0">{content}</DrawerContent>
+      </Drawer>
     </Ctx.Provider>
   );
 };

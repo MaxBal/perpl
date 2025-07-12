@@ -1,35 +1,7 @@
 import React, { useState } from 'react';
 import { ProductData } from './types';
 import { InfoBadge } from '../ui/InfoBadge';
-
-// Simple modal component
-const SimpleModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-}> = ({ isOpen, onClose, title, children }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
-      <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
-        <div className="p-4 border-b flex justify-between items-center">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <button 
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full"
-          >
-            ✕
-          </button>
-        </div>
-        <div className="p-4">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-};
+import { ModalShell } from '../ModalShell';
 
 interface Props {
   product: ProductData;
@@ -45,11 +17,6 @@ const DESIGN_OPTIONS = [
 ];
 
 const DesignSelector: React.FC<Props> = ({ product, selectedDesign, setSelectedDesign }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showDesignInfo = () => {
-    setIsModalOpen(true);
-  };
 
   return (
     <div className="space-y-4">
@@ -75,39 +42,35 @@ const DesignSelector: React.FC<Props> = ({ product, selectedDesign, setSelectedD
       </div>
       
       <div className="mt-14 md:mt-8">
-        <button
-          onClick={showDesignInfo}
-          className="inline-flex items-center text-gray-900 underline hover:no-underline"
+        <ModalShell
+          trigger={
+            <button className="inline-flex items-center text-gray-900 underline hover:no-underline">
+              <InfoBadge />
+              Детальніше про дизайни
+            </button>
+          }
+          title="Детально про дизайни"
         >
-          <InfoBadge />
-          Детальніше про дизайни
-        </button>
+          <div className="space-y-4">
+            <div className="bg-gray-100 rounded-lg p-4">
+              <h3 className="font-medium mb-2">Carzo 1.0</h3>
+              <p className="text-gray-700">Базовий дизайн з 6 варіантами кольорів. Простий та функціональний.</p>
+            </div>
+            <div className="bg-gray-100 rounded-lg p-4">
+              <h3 className="font-medium mb-2">Carzo 2.0</h3>
+              <p className="text-gray-700">Класічний дизайн з акцентом на функціональність та елегантність.</p>
+            </div>
+            <div className="bg-gray-100 rounded-lg p-4">
+              <h3 className="font-medium mb-2">Carzo 3.0</h3>
+              <p className="text-gray-700">Сучасний дизайн з покращеною ергономікою та додатковими відділеннями.</p>
+            </div>
+            <div className="bg-gray-100 rounded-lg p-4">
+              <h3 className="font-medium mb-2">Carzo 4.0</h3>
+              <p className="text-gray-700">Преміальний дизайн з інноваційною системою організації простору.</p>
+            </div>
+          </div>
+        </ModalShell>
       </div>
-
-      <SimpleModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Детально про дизайни"
-      >
-        <div className="space-y-4">
-          <div className="bg-gray-100 rounded-lg p-4">
-            <h3 className="font-medium mb-2">Carzo 1.0</h3>
-            <p className="text-gray-700">Базовий дизайн з 6 варіантами кольорів. Простий та функціональний.</p>
-          </div>
-          <div className="bg-gray-100 rounded-lg p-4">
-            <h3 className="font-medium mb-2">Carzo 2.0</h3>
-            <p className="text-gray-700">Класічний дизайн з акцентом на функціональність та елегантність.</p>
-          </div>
-          <div className="bg-gray-100 rounded-lg p-4">
-            <h3 className="font-medium mb-2">Carzo 3.0</h3>
-            <p className="text-gray-700">Сучасний дизайн з покращеною ергономікою та додатковими відділеннями.</p>
-          </div>
-          <div className="bg-gray-100 rounded-lg p-4">
-            <h3 className="font-medium mb-2">Carzo 4.0</h3>
-            <p className="text-gray-700">Преміальний дизайн з інноваційною системою організації простору.</p>
-          </div>
-        </div>
-      </SimpleModal>
     </div>
   );
 };

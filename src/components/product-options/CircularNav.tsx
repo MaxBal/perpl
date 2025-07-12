@@ -1,44 +1,14 @@
 import React, { useState } from "react";
 import { NavItem } from "./types";
-
-// Simple modal component for circular nav
-const SimpleModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-}> = ({ isOpen, onClose, title, children }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center">
-      <div className="bg-white w-full max-h-[80vh] md:max-w-lg md:rounded-lg overflow-y-auto">
-        <div className="p-4 border-b flex justify-between items-center">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <button 
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full"
-          >
-            ✕
-          </button>
-        </div>
-        <div className="p-4">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-};
+import { ModalShell } from '../ModalShell';
 
 interface Props {
   items: NavItem[];
 }
 
 const CircularNav: React.FC<Props> = ({ items }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState<{ title: string; content: React.ReactNode } | null>(null);
 
-  const handleClick = (label: string) => {
+  const getModalContent = (label: string): React.ReactNode => {
     let content: React.ReactNode;
     
     switch (label) {
@@ -154,8 +124,7 @@ const CircularNav: React.FC<Props> = ({ items }) => {
         content = <p>Інформація недоступна</p>;
     }
 
-    setModalContent({ title: label, content });
-    setIsModalOpen(true);
+    return content;
   };
 
   return (
@@ -163,32 +132,27 @@ const CircularNav: React.FC<Props> = ({ items }) => {
       {/* кружки */}
       <div className="flex gap-4">
         {items.map((it) => (
-          <button
+          <ModalShell
             key={it.label}
-            onClick={() => handleClick(it.label)}
-            className="flex flex-col items-center gap-2"
-          >
-            <div className="relative w-14 h-14">
-              <div className="absolute inset-0 rounded-full border-[3px] border-[#e8e8e8]" />
-              <div className="absolute inset-[3px] bg-white rounded-full">
-                <div className="absolute inset-[3px] rounded-full overflow-hidden">
-                  <img src={it.image} alt={it.label} className="w-full h-full object-cover" />
+            trigger={
+              <button className="flex flex-col items-center gap-2">
+                <div className="relative w-14 h-14">
+                  <div className="absolute inset-0 rounded-full border-[3px] border-[#e8e8e8]" />
+                  <div className="absolute inset-[3px] bg-white rounded-full">
+                    <div className="absolute inset-[3px] rounded-full overflow-hidden">
+                      <img src={it.image} alt={it.label} className="w-full h-full object-cover" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <span className="text-xs text-gray-600">{it.label}</span>
-          </button>
+                <span className="text-xs text-gray-600">{it.label}</span>
+              </button>
+            }
+            title={it.label}
+          >
+            {getModalContent(it.label)}
+          </ModalShell>
         ))}
       </div>
-
-      {/* Simple Modal */}
-      <SimpleModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={modalContent?.title || ""}
-      >
-        {modalContent?.content}
-      </SimpleModal>
     </>
   );
 };
