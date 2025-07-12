@@ -41,7 +41,7 @@ export const ColorSwatches: React.FC<Props> = ({ value, onChange }) => {
             aria-label={title}
             title={title}
             onClick={() => onChange(id)}
-            className={`w-6 h-6 rounded-full border border-gray-300 cursor-pointer transition-all ${style}
+            className={`w-7 h-7 sm:w-6 sm:h-6 rounded-full border border-gray-300 cursor-pointer transition-all ${style}
               ${value === id ? "ring-2 ring-black ring-offset-1" : "hover:scale-105"}`}
           />
         ))}
