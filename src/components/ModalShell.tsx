@@ -1,4 +1,9 @@
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+  DrawerTitle,        // <-- появился
+} from "@/components/ui/drawer";
 import { ReactNode } from "react";
 
 interface Props {
@@ -12,8 +17,17 @@ export const ModalShell = ({ trigger, title, children }: Props) => (
     <DrawerTrigger asChild>{trigger}</DrawerTrigger>
 
     <DrawerContent>
-      <h2 className="mb-4 text-lg font-semibold">{title}</h2>
+      {/* Вариант A — заголовок отображается */}
+      <DrawerTitle className="mb-4 text-lg font-semibold">
+        {title}
+      </DrawerTitle>
+
+      {/* Вариант B — заголовок скрыт визуально, но доступен SR:
+          <DrawerTitle className="sr-only">{title}</DrawerTitle>
+      */}
+
       {children}
     </DrawerContent>
   </Drawer>
 );
+
