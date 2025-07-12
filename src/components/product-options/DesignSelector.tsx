@@ -52,7 +52,7 @@ const DesignSelector: React.FC<Props> = ({ product, selectedDesign, setSelectedD
           title="Детально про дизайни"
         >
           <div className="space-y-4">
-            <h3 className="text-sm font-medium mb-4">Детальніше про дизайни</h3>
+            <h3 className="text-sm font-semibold mb-4">Детальніше про дизайни</h3>
             <div className="bg-gray-100 rounded-lg p-4">
               <h3 className="font-medium mb-2">Carzo 1.0</h3>
               <p className="text-gray-700">Базовий дизайн з 6 варіантами кольорів. Простий та функціональний.</p>

@@ -35,7 +35,7 @@ export const FixationSelector: React.FC<Props> = ({
           title="Детально про фіксацію"
         >
           <div className="space-y-4">
-            <h3 className="text-sm font-medium mb-4">Детально про фіксацію</h3>
+            <h3 className="text-sm font-semibold mb-4">Детально про фіксацію</h3>
             <div className="bg-gray-100 rounded-lg p-4">
               <p className="text-gray-700">
                 Система фіксації забезпечує надійне кріплення автокейса в багажнику. 

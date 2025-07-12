@@ -57,7 +57,7 @@ const SizeSelector: React.FC<Props> = ({ currentSize, setCurrentSize }) => {
           title="Детально про розміри"
         >
           <div className="space-y-4">
-            <h3 className="text-sm font-medium mb-4">Детально про розміри</h3>
+            <h3 className="text-sm font-semibold mb-4">Детально про розміри</h3>
             {SIZES.map(size => (
               <div key={size.id} className="bg-gray-100 rounded-lg p-4">
                 <h3 className="font-medium mb-2">Розмір {size.id}</h3>

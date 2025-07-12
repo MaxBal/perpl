@@ -1,5 +1,14 @@
 import { Size, LogoMaterial, FixVariant, ColorCode } from '../components/product-options/types';
 
+export const COLOR_NAMES: Record<ColorCode, string> = {
+  black: "чорний",
+  "black-grey": "чорно-сірий", 
+  "black-blue": "чорно-синій",
+  "black-red": "чорно-червоний",
+  brown: "коричневий",
+  beige: "бежевий",
+};
+
 interface SkuParams {
   designName: string;
   designVersion: string;
@@ -14,6 +23,8 @@ export function buildSku({ designName, designVersion, size, color, logoMaterial,
   // Build components
   const designPart = `${size} ${designName} ${designVersion}`;
 
+  const colorPart = color ? `колір=${COLOR_NAMES[color] || color}` : null;
+
   const logoPart = logoMaterial === 'none' 
     ? 'лого=без лого'
     : `лого=${logoMaterial === 'steel' ? 'метал' : 'латунь'}(${logoBrand})`;
@@ -25,8 +36,12 @@ export function buildSku({ designName, designVersion, size, color, logoMaterial,
     both:  'фіксація=дно+стінка',
   }[fixVariant];
 
-  // Format: арт. М Carzo 2.0 | лого=латунь(Mercedes) | фіксація=дно+стінка
-  return `арт. ${designPart} | ${logoPart} | ${fixPart}`;
+  // Format: арт. М Carzo 2.0 | колір=чорно-синій | лого=латунь(Mercedes) | фіксація=дно+стінка
+  const parts = [`арт. ${designPart}`];
+  if (colorPart) parts.push(colorPart);
+  parts.push(logoPart, fixPart);
+  
+  return parts.join(' | ');
 }
 
 export function calculatePrice(
