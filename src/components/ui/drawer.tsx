@@ -3,16 +3,22 @@ import * as React from "react";
 import * as DrawerPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { cn } from "@/lib/cn";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 export const Drawer = DrawerPrimitive.Root;
 export const DrawerTrigger = DrawerPrimitive.Trigger;
 export const DrawerClose = DrawerPrimitive.Close;
+export const DrawerTitle = DrawerPrimitive.Title;
+export const DrawerDescription = DrawerPrimitive.Description;
 
 export const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
+    title?: string;
+    description?: string;
+  }
+>(({ className, children, title, description, ...props }, ref) => {
   const [isOpen, setIsOpen] = React.useState(false);
   
   // Lock body scroll when drawer is open
@@ -56,6 +62,16 @@ export const DrawerContent = React.forwardRef<
         )}
         {...props}
       >
+        {title && (
+          <VisuallyHidden.Root>
+            <DrawerTitle>{title}</DrawerTitle>
+          </VisuallyHidden.Root>
+        )}
+        {description && (
+          <VisuallyHidden.Root>
+            <DrawerDescription>{description}</DrawerDescription>
+          </VisuallyHidden.Root>
+        )}
         <DrawerClose className="absolute right-4 top-4 grid h-6 w-6 place-items-center rounded-full transition-colors hover:bg-gray-100">
           <X className="h-4 w-4" />
           <span className="sr-only">Закрыть</span>

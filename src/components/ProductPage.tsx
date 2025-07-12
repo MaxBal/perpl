@@ -7,7 +7,7 @@ import { Header } from './Header';
 import { CartDrawer } from './CartDrawer';
 import { MobileMenu } from './MobileMenu';
 import { CartWatcher } from './CartWatcher';
-import { Drawer, DrawerContent } from './ui/drawer';
+import { Drawer, DrawerContent, DrawerTitle } from './ui/drawer';
 import { GALLERY, PRODUCT, NAV_ITEMS } from '../data/constants';
 
 const ProductPage: React.FC = () => {
@@ -61,11 +61,9 @@ const ProductPage: React.FC = () => {
       {/* Simple cart overlay */}
       {isCartOpen && (
         <Drawer open={isCartOpen} onOpenChange={setIsCartOpen}>
-          <DrawerContent>
-            <div className="pt-4">
-              <h2 className="text-lg font-semibold mb-4">Кошик</h2>
-              <CartDrawer items={cartItems} dispatch={dispatch} />
-            </div>
+          <DrawerContent title="Кошик">
+            <DrawerTitle className="text-lg font-semibold mb-4">Кошик</DrawerTitle>
+            <CartDrawer items={cartItems} dispatch={dispatch} />
           </DrawerContent>
         </Drawer>
       )}
