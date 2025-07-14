@@ -35,7 +35,8 @@ export const DrawerContent = React.forwardRef<
           // позиционирование
           "bottom-0 left-0 right-0 md:top-0 md:bottom-0 md:left-auto p-4 md:p-6",
           // анимации mobile
-          "translate-y-full animate-in slide-in-from-bottom duration-180",
+          "data-[state=closed]:translate-y-full",
+          "data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=open]:duration-180",
           "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=closed]:duration-180",
           // анимации desktop
           "md:translate-x-full md:animate-in md:slide-in-from-right md:duration-200",
