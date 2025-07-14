@@ -26,15 +26,21 @@ export const DrawerContent = React.forwardRef<
         ref={ref}
         className={cn(
           "fixed z-50 bg-white shadow-xl outline-none overflow-y-auto",
+          // базовые стили
           "md:right-0 w-full md:max-w-md",
+          // высота
           "h-screen md:h-screen",
+          // скругление
           "rounded-t-3xl md:rounded-none md:rounded-l-3xl",
+          // позиционирование
           "bottom-0 left-0 right-0 md:top-0 md:bottom-0 md:left-auto p-4 md:p-6",
+          // анимации mobile
+          // анимации mobile (STATE-AWARE)
           "data-[state=closed]:translate-y-full",
           "data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=open]:duration-180",
           "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=closed]:duration-180",
-          "md:data-[state=closed]:translate-x-full md:data-[state=closed]:translate-y-0",
-          "md:data-[state=open]:animate-in md:data-[state=open]:slide-in-from-right md:data-[state=open]:duration-200",
+          // анимации desktop
+          "md:translate-x-full md:animate-in md:slide-in-from-right md:duration-200",
           "md:data-[state=closed]:animate-out md:data-[state=closed]:slide-out-to-right md:data-[state=closed]:duration-200",
           className
         )}
