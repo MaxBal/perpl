@@ -49,11 +49,11 @@ export const Select: React.FC<SelectProps> = ({
         onClick={handleClick}
         disabled={disabled}
         className={cn(
-          "w-full h-12 px-4 border border-gray-300 rounded-[14px] text-sm focus:border-[#00d1b3] focus:ring-1 focus:ring-[#00d1b3] outline-none bg-white flex items-center justify-between truncate",
+          "w-full h-12 px-4 border border-gray-300 rounded-[14px] text-sm focus:border-[#00d1b3] focus:ring-1 focus:ring-[#00d1b3] outline-none bg-white flex items-center justify-between",
           disabled && "bg-gray-100 text-gray-400 cursor-not-allowed"
         )}
       >
-        <span className="truncate flex-1 text-left">{selectedChild?.props?.children || 'Select...'}</span>
+        <span className="truncate flex-1 text-left min-w-0 pr-2">{selectedChild?.props?.children || 'Select...'}</span>
         <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
       </button>
       

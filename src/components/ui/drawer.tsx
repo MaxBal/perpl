@@ -19,33 +19,6 @@ export const DrawerContent = React.forwardRef<
     description?: string;
   }
 >(({ className, children, title, description, ...props }, ref) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  
-  // Lock body scroll when drawer is open
-  useBodyScrollLock(isOpen);
-
-  React.useEffect(() => {
-    const handleOpenChange = (open: boolean) => {
-      setIsOpen(open);
-    };
-
-    // Listen for state changes from the drawer primitive
-    const element = ref as React.MutableRefObject<HTMLElement>;
-    if (element?.current) {
-      const observer = new MutationObserver(() => {
-        const state = element.current?.getAttribute('data-state');
-        handleOpenChange(state === 'open');
-      });
-      
-      observer.observe(element.current, {
-        attributes: true,
-        attributeFilter: ['data-state']
-      });
-      
-      return () => observer.disconnect();
-    }
-  }, [ref]);
-
   return (
     <DrawerPrimitive.Portal>
       <DrawerPrimitive.Overlay className="fixed inset-0 z-40 bg-black/60 transition-opacity duration-200 ease-out data-[state=closed]:opacity-0 data-[state=open]:opacity-100" />
