@@ -60,8 +60,6 @@ export default {
         "slide-out-to-bottom": "slide-out-to-bottom 0.3s ease-out",
         "slide-in-from-right": "slide-in-from-right 0.2s ease-out",
         "slide-out-to-right": "slide-out-to-right 0.2s ease-out"
-        "slide-in-from-bottom": "slide-in-from-bottom 0.18s ease-out forwards",
-        "slide-out-to-bottom": "slide-out-to-bottom 0.18s ease-in forwards",
       }
     },
   },
